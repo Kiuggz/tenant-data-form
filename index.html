@@ -217,16 +217,81 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
             .form-row {
                 grid-template-columns: 1fr;
             }
             
+            .header {
+                padding: 30px 20px;
+            }
+            
             .header h1 {
-                font-size: 24px;
+                font-size: 22px;
+            }
+            
+            .header p {
+                font-size: 13px;
             }
             
             .form-content {
-                padding: 30px 20px;
+                padding: 25px 15px;
+            }
+            
+            .section {
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="date"],
+            input[type="number"],
+            select,
+            textarea {
+                padding: 14px 12px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .radio-group,
+            .checkbox-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .radio-option,
+            .checkbox-option {
+                padding: 10px;
+                background: #f8f9ff;
+                border-radius: 6px;
+            }
+            
+            input[type="radio"],
+            input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .btn-submit {
+                width: 100%;
+                padding: 16px 30px;
+                font-size: 18px;
+            }
+            
+            .file-upload {
+                padding: 15px;
+            }
+            
+            label {
+                font-size: 15px;
             }
         }
     </style>
@@ -285,7 +350,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="maritalStatus">Marital Status *</label>
-                            <select id="maritalStatus" name="maritalStatus" required>
+                            <select id="maritalStatus" name="maritalStatus" required onchange="toggleSpouseDetails()">
                                 <option value="">Select...</option>
                                 <option value="single">Single</option>
                                 <option value="married">Married</option>
@@ -363,25 +428,27 @@
                         <span class="section-number">4</span>
                         Next of Kin Details
                     </h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="spouseName">Name of Spouse</label>
-                            <input type="text" id="spouseName" name="spouseName">
+                    <div id="spouseDetailsGroup" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spouseName">Name of Spouse</label>
+                                <input type="text" id="spouseName" name="spouseName">
+                            </div>
+                            <div class="form-group">
+                                <label for="spouseEmployment">Employment Status</label>
+                                <select id="spouseEmployment" name="spouseEmployment">
+                                    <option value="">Select...</option>
+                                    <option value="employed">Employed</option>
+                                    <option value="self-employed">Self-Employed</option>
+                                    <option value="unemployed">Unemployed</option>
+                                    <option value="student">Student</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="spouseEmployment">Employment Status</label>
-                            <select id="spouseEmployment" name="spouseEmployment">
-                                <option value="">Select...</option>
-                                <option value="employed">Employed</option>
-                                <option value="self-employed">Self-Employed</option>
-                                <option value="unemployed">Unemployed</option>
-                                <option value="student">Student</option>
-                            </select>
+                            <label for="spousePhone">Spouse Phone Number</label>
+                            <input type="tel" id="spousePhone" name="spousePhone">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="spousePhone">Spouse Phone Number</label>
-                        <input type="tel" id="spousePhone" name="spousePhone">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
@@ -445,11 +512,11 @@
                         <input type="text" id="residenceDuration" name="residenceDuration" placeholder="e.g., 2 years 3 months" required>
                     </div>
                     <div class="form-group">
-                        <label>Proof of Last Rent Payment *</label>
+                        <label>Proof of Last Rent Payment (Optional)</label>
                         <div class="file-upload" onclick="document.getElementById('rentProof').click()">
-                            <input type="file" id="rentProof" name="rentProof" accept=".pdf,.jpg,.jpeg,.png" required>
+                            <input type="file" id="rentProof" name="rentProof" accept=".pdf,.jpg,.jpeg,.png">
                             <span class="file-label">📄 Click to upload receipt or statement</span>
-                            <p style="font-size: 12px; color: #666; margin-top: 8px;">PDF, JPG, or PNG (Max 5MB)</p>
+                            <p style="font-size: 12px; color: #666; margin-top: 8px;">PDF, JPG, or PNG (Max 5MB) - Transaction SMS is also acceptable</p>
                         </div>
                     </div>
                 </div>
@@ -600,6 +667,22 @@
     </div>
 
     <script>
+        function toggleSpouseDetails() {
+            const maritalStatus = document.getElementById('maritalStatus').value;
+            const spouseGroup = document.getElementById('spouseDetailsGroup');
+            
+            // Show spouse details only if married
+            if (maritalStatus === 'married') {
+                spouseGroup.style.display = 'block';
+            } else {
+                spouseGroup.style.display = 'none';
+                // Clear spouse fields when hidden
+                document.getElementById('spouseName').value = '';
+                document.getElementById('spouseEmployment').value = '';
+                document.getElementById('spousePhone').value = '';
+            }
+        }
+
         function togglePetVaccination(show) {
             const group = document.getElementById('petVaccinationGroup');
             group.style.display = show ? 'block' : 'none';
