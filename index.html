@@ -512,12 +512,8 @@
                         <input type="text" id="residenceDuration" name="residenceDuration" placeholder="e.g., 2 years 3 months" required>
                     </div>
                     <div class="form-group">
-                        <label>Proof of Last Rent Payment (Optional)</label>
-                        <div class="file-upload" onclick="document.getElementById('rentProof').click()">
-                            <input type="file" id="rentProof" name="rentProof" accept=".pdf,.jpg,.jpeg,.png">
-                            <span class="file-label">📄 Click to upload receipt or statement</span>
-                            <p style="font-size: 12px; color: #666; margin-top: 8px;">PDF, JPG, or PNG (Max 5MB) - Transaction SMS is also acceptable</p>
-                        </div>
+                        <label for="rentProofDetails">Last Rent Payment Details (Optional)</label>
+                        <textarea id="rentProofDetails" name="rentProofDetails" placeholder="Paste your rent payment transaction message here (e.g., M-PESA confirmation SMS, bank transfer details, or payment reference number)"></textarea>
                     </div>
                 </div>
 
@@ -692,15 +688,6 @@
             const group = document.getElementById('evictionMeasuresGroup');
             group.style.display = show ? 'block' : 'none';
         }
-
-        document.getElementById('rentProof').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const label = e.target.parentElement.querySelector('.file-label');
-                label.textContent = `✓ ${file.name}`;
-                label.style.color = '#28a745';
-            }
-        });
 
         document.getElementById('tenantForm').addEventListener('submit', async function(e) {
             e.preventDefault();
