@@ -150,7 +150,7 @@
             height: 18px;
         }
         
-        .file-upload {
+        .file-upload-group {
             border: 2px dashed #667eea;
             border-radius: 8px;
             padding: 20px;
@@ -158,21 +158,98 @@
             background: #f8f9ff;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
         
-        .file-upload:hover {
+        .file-upload-group:hover {
             background: #f0f2ff;
             border-color: #764ba2;
         }
         
-        .file-upload input[type="file"] {
+        .file-upload-group input[type="file"] {
             display: none;
         }
         
-        .file-label {
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .file-upload-icon {
+            font-size: 32px;
+        }
+        
+        .file-upload-text {
             color: #667eea;
             font-weight: 500;
+        }
+        
+        .file-upload-hint {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .file-preview {
+            margin-top: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            display: none;
+        }
+        
+        .file-preview.active {
+            display: block;
+        }
+        
+        .file-preview-text {
+            color: #27ae60;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .file-preview-remove {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 4px 8px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .file-preview-remove:hover {
+            background: #c0392b;
+        }
+        
+        .file-error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .file-error.active {
+            display: block;
+        }
+
+        .email-error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .email-error.active {
+            display: block;
         }
         
         .declaration-box {
@@ -214,6 +291,145 @@
         
         .btn-submit:active {
             transform: translateY(0);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Summary Modal */
+        .summary-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .summary-modal.active {
+            display: block;
+        }
+
+        .summary-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: -30px -30px 20px -30px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+
+        .summary-header h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .summary-header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .summary-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .summary-section:last-child {
+            border-bottom: none;
+        }
+
+        .summary-section h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .summary-item {
+            font-size: 14px;
+        }
+
+        .summary-label {
+            color: #666;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .summary-value {
+            color: #333;
+            margin-top: 4px;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .btn-print {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-print:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .btn-close {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-close:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .email-confirmation-note {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
         }
         
         @media (max-width: 768px) {
@@ -258,7 +474,7 @@
             select,
             textarea {
                 padding: 14px 12px;
-                font-size: 16px; /* Prevents zoom on iOS */
+                font-size: 16px;
             }
             
             .radio-group,
@@ -286,12 +502,25 @@
                 font-size: 18px;
             }
             
-            .file-upload {
+            .file-upload-group {
                 padding: 15px;
             }
             
             label {
                 font-size: 15px;
+            }
+
+            .summary-row {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-actions {
+                flex-direction: column;
+            }
+
+            .btn-print,
+            .btn-close {
+                width: 100%;
             }
         }
     </style>
@@ -300,7 +529,7 @@
     <div class="container">
         <div class="header">
             <h1>Prospective Tenant Application Form</h1>
-            <p>This form is to be completed by all prospective tenants. The information provided will be used solely for tenancy processing and verification purposes. By submitting this form, you consent to the collection and use of your data by our office and the respective landlord.</p>
+            <p>Please complete this form and ensure that all required information is provided accurately and in full. The information you provide will be treated confidentially and used solely for tenant screening, tenancy processing, preparation of the tenancy agreement, and verification purposes. By submitting this form, you consent to the collection and use of your information by our office and the respective landlord for purposes related to your tenancy application.</p>
         </div>
         
         <div class="form-content">
@@ -347,6 +576,22 @@
                             <input type="text" id="citizenship" name="citizenship" required>
                         </div>
                     </div>
+
+                    <!-- File Upload for ID/Passport -->
+                    <div class="form-group">
+                        <label for="idPassportFile">Upload ID / Passport (PDF or JPEG) *</label>
+                        <div class="file-upload-group" onclick="document.getElementById('idPassportFile').click()">
+                            <label for="idPassportFile" class="file-upload-label">
+                                <span class="file-upload-icon">📄</span>
+                                <span class="file-upload-text">Click to upload or drag and drop</span>
+                                <span class="file-upload-hint">PDF or JPEG (Max 5MB)</span>
+                            </label>
+                            <input type="file" id="idPassportFile" name="idPassportFile" accept=".pdf,.jpg,.jpeg" required onchange="handleFileUpload(event, 'idPassport')">
+                        </div>
+                        <div class="file-preview" id="idPassportPreview"></div>
+                        <div class="file-error" id="idPassportError"></div>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="maritalStatus">Marital Status *</label>
@@ -370,12 +615,17 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" required onchange="validateEmailMatch()">
                         </div>
                         <div class="form-group">
                             <label for="phone1">Phone No. 1 *</label>
                             <input type="tel" id="phone1" name="phone1" required>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailConfirm">Confirm Email Address *</label>
+                        <input type="email" id="emailConfirm" name="emailConfirm" placeholder="Re-enter your email to verify" required onchange="validateEmailMatch()">
+                        <div class="email-error" id="emailMatchError"></div>
                     </div>
                     <div class="form-group">
                         <label for="phone2">Phone No. 2</label>
@@ -466,54 +716,54 @@
                     </div>
                 </div>
 
-                <!-- Section 5: Details of Current Residence -->
+                <!-- Section 5: Current Home Information -->
                 <div class="section">
                     <h2 class="section-title">
                         <span class="section-number">5</span>
-                        Details of Current Residence
+                        Your Current Home
                     </h2>
                     <div class="form-group">
-                        <label for="currentLocation">Where do you currently stay? (Estate / Location) *</label>
-                        <input type="text" id="currentLocation" name="currentLocation" required>
+                        <label for="currentLocation">Where are you staying now? (Estate / Area) *</label>
+                        <input type="text" id="currentLocation" name="currentLocation" placeholder="e.g., Westlands, Mombasa" required>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="currentLandlord">Name of your current landlord *</label>
+                            <label for="currentRent">Monthly rent you pay now? *</label>
+                            <input type="number" id="currentRent" name="currentRent" placeholder="KES" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="residenceDuration">How long have you lived here? *</label>
+                            <input type="text" id="residenceDuration" name="residenceDuration" placeholder="e.g., 2 years, 6 months" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currentLandlord">Landlord's name *</label>
                             <input type="text" id="currentLandlord" name="currentLandlord" required>
                         </div>
                         <div class="form-group">
-                            <label for="landlordPhone">Landlord's Phone Number *</label>
+                            <label for="landlordPhone">Landlord's phone number *</label>
                             <input type="tel" id="landlordPhone" name="landlordPhone" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="agentDetails">Agent or Caretaker Name and Contact (if applicable)</label>
-                        <input type="text" id="agentDetails" name="agentDetails" placeholder="Leave blank if not applicable">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="currentRent">What is your current monthly rent? *</label>
-                            <input type="number" id="currentRent" name="currentRent" placeholder="KES" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="rentDueDate">When is your rent usually due? *</label>
-                            <select id="rentDueDate" name="rentDueDate" required>
-                                <option value="">Select...</option>
-                                <option value="1">1st of the month</option>
-                                <option value="5">5th of the month</option>
-                                <option value="10">10th of the month</option>
-                                <option value="15">15th of the month</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
+                        <label for="agentDetails">Agent or Caretaker (if you pay through them)</label>
+                        <input type="text" id="agentDetails" name="agentDetails" placeholder="Name and phone number (optional)">
                     </div>
                     <div class="form-group">
-                        <label for="residenceDuration">How long have you stayed in your current residence? *</label>
-                        <input type="text" id="residenceDuration" name="residenceDuration" placeholder="e.g., 2 years 3 months" required>
+                        <label for="rentDueDate">When do you usually pay rent? *</label>
+                        <select id="rentDueDate" name="rentDueDate" required>
+                            <option value="">Select...</option>
+                            <option value="1">1st of the month</option>
+                            <option value="5">5th of the month</option>
+                            <option value="10">10th of the month</option>
+                            <option value="15">15th of the month</option>
+                            <option value="other">Other date</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="rentProofDetails">Last Rent Payment Details (Optional)</label>
-                        <textarea id="rentProofDetails" name="rentProofDetails" placeholder="Paste your rent payment transaction message here (e.g., M-PESA confirmation SMS, bank transfer details, or payment reference number)"></textarea>
+                        <label for="rentProofDetails">Proof of your last rent payment (Optional)</label>
+                        <textarea id="rentProofDetails" name="rentProofDetails" placeholder="Paste M-PESA message, bank transfer details, or payment reference (optional)"></textarea>
                     </div>
                 </div>
 
@@ -538,8 +788,23 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="rentPayer">Who will be responsible for paying the rent? *</label>
-                        <input type="text" id="rentPayer" name="rentPayer" required>
+                        <label>Who will pay the rent? *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="rentPayerType" value="self" required onchange="toggleRentPayerDetails()"> Me (I will pay)
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="rentPayerType" value="other" onchange="toggleRentPayerDetails()"> Someone else
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="rentPayerDetailsGroup" style="display: none;">
+                        <label for="rentPayer">Who will pay the rent? (Name) *</label>
+                        <input type="text" id="rentPayer" name="rentPayer" placeholder="Their full name">
+                    </div>
+                    <div class="form-group" id="rentPayerPhoneGroup" style="display: none;">
+                        <label for="rentPayerPhone">Their phone number *</label>
+                        <input type="tel" id="rentPayerPhone" name="rentPayerPhone" placeholder="Phone number">
                     </div>
                     <div class="form-group">
                         <label>Do you have one month's rent and deposit ready in advance? *</label>
@@ -662,17 +927,99 @@
         </div>
     </div>
 
+    <!-- Summary Modal -->
+    <div class="summary-modal" id="summaryModal">
+        <div class="summary-content">
+            <div class="summary-header">
+                <h2>✅ Application Submitted Successfully!</h2>
+                <p>Your information has been sent to the landlord</p>
+            </div>
+            
+            <div class="email-confirmation-note">
+                📧 A confirmation copy of your application has been sent to: <strong id="confirmationEmail"></strong>
+            </div>
+
+            <div id="summaryBody"></div>
+
+            <div class="summary-actions">
+                <button class="btn-print" onclick="printSummary()">🖨️ Print / Save as PDF</button>
+                <button class="btn-close" onclick="closeSummary()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const MAX_FILE_SIZE = 5 * 1024 * 1024;
+        const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/jpg'];
+        let formDataForSummary = {};
+
+        function handleFileUpload(event, fieldType) {
+            const file = event.target.files[0];
+            const fileGroup = fieldType === 'idPassport' ? 'idPassport' : 'rentReceipt';
+            const preview = document.getElementById(`${fileGroup}Preview`);
+            const error = document.getElementById(`${fileGroup}Error`);
+
+            preview.classList.remove('active');
+            error.classList.remove('active');
+
+            if (!file) return;
+
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                error.textContent = '❌ Invalid file format. Please upload a PDF or JPEG file.';
+                error.classList.add('active');
+                event.target.value = '';
+                return;
+            }
+
+            if (file.size > MAX_FILE_SIZE) {
+                error.textContent = '❌ File is too large. Maximum size is 5MB.';
+                error.classList.add('active');
+                event.target.value = '';
+                return;
+            }
+
+            preview.innerHTML = `
+                <div class="file-preview-text">
+                    ✅ ${file.name} (${(file.size / 1024).toFixed(2)} KB)
+                    <button type="button" class="file-preview-remove" onclick="removeFile('${fileGroup}')">Remove</button>
+                </div>
+            `;
+            preview.classList.add('active');
+        }
+
+        function removeFile(fieldType) {
+            const fileInput = document.getElementById(`${fieldType}File`);
+            const preview = document.getElementById(`${fieldType}Preview`);
+            const error = document.getElementById(`${fieldType}Error`);
+            
+            fileInput.value = '';
+            preview.classList.remove('active');
+            error.classList.remove('active');
+        }
+
+        function validateEmailMatch() {
+            const email = document.getElementById('email').value;
+            const emailConfirm = document.getElementById('emailConfirm').value;
+            const error = document.getElementById('emailMatchError');
+
+            if (emailConfirm && email !== emailConfirm) {
+                error.textContent = '❌ Email addresses do not match. Please check and try again.';
+                error.classList.add('active');
+                return false;
+            } else {
+                error.classList.remove('active');
+                return true;
+            }
+        }
+
         function toggleSpouseDetails() {
             const maritalStatus = document.getElementById('maritalStatus').value;
             const spouseGroup = document.getElementById('spouseDetailsGroup');
             
-            // Show spouse details only if married
             if (maritalStatus === 'married') {
                 spouseGroup.style.display = 'block';
             } else {
                 spouseGroup.style.display = 'none';
-                // Clear spouse fields when hidden
                 document.getElementById('spouseName').value = '';
                 document.getElementById('spouseEmployment').value = '';
                 document.getElementById('spousePhone').value = '';
@@ -689,19 +1036,240 @@
             group.style.display = show ? 'block' : 'none';
         }
 
+        function toggleRentPayerDetails() {
+            const rentPayerType = document.querySelector('input[name="rentPayerType"]:checked').value;
+            const detailsGroup = document.getElementById('rentPayerDetailsGroup');
+            const phoneGroup = document.getElementById('rentPayerPhoneGroup');
+            const rentPayerInput = document.getElementById('rentPayer');
+            const rentPayerPhoneInput = document.getElementById('rentPayerPhone');
+            
+            if (rentPayerType === 'other') {
+                detailsGroup.style.display = 'block';
+                phoneGroup.style.display = 'block';
+                rentPayerInput.required = true;
+                rentPayerPhoneInput.required = true;
+            } else {
+                detailsGroup.style.display = 'none';
+                phoneGroup.style.display = 'none';
+                rentPayerInput.required = false;
+                rentPayerPhoneInput.required = false;
+                rentPayerInput.value = '';
+                rentPayerPhoneInput.value = '';
+            }
+        }
+
+        function buildSummaryHTML() {
+            const form = document.getElementById('tenantForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            formDataForSummary = data;
+
+            let html = '';
+
+            // Section 1: Property Details
+            html += `
+                <div class="summary-section">
+                    <h3>Property Details</h3>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Property Name</div>
+                            <div class="summary-value">${data.propertyName || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Premises No.</div>
+                            <div class="summary-value">${data.premisesNo || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Application Date</div>
+                            <div class="summary-value">${data.applicationDate || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Section 2: Personal Information
+            html += `
+                <div class="summary-section">
+                    <h3>Personal Information</h3>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Full Name</div>
+                            <div class="summary-value">${data.fullName || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">ID / Passport No.</div>
+                            <div class="summary-value">${data.idNumber || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Citizenship</div>
+                            <div class="summary-value">${data.citizenship || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Marital Status</div>
+                            <div class="summary-value">${data.maritalStatus || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Email</div>
+                            <div class="summary-value">${data.email || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Phone 1</div>
+                            <div class="summary-value">${data.phone1 || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Postal Address</div>
+                            <div class="summary-value">${data.postalAddress || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Section 3: Employment & Income
+            html += `
+                <div class="summary-section">
+                    <h3>Employment & Income</h3>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Employer</div>
+                            <div class="summary-value">${data.employer || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Position</div>
+                            <div class="summary-value">${data.position || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Monthly Income</div>
+                            <div class="summary-value">${data.income || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Section 4: Current Residence
+            html += `
+                <div class="summary-section">
+                    <h3>Current Residence</h3>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Current Location</div>
+                            <div class="summary-value">${data.currentLocation || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Current Landlord</div>
+                            <div class="summary-value">${data.currentLandlord || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Current Monthly Rent</div>
+                            <div class="summary-value">KES ${data.currentRent || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Duration at Current Place</div>
+                            <div class="summary-value">${data.residenceDuration || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Section 5: Vetting Information
+            html += `
+                <div class="summary-section">
+                    <h3>Vetting Information</h3>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Move-in Date</div>
+                            <div class="summary-value">${data.moveInDate || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Number of Occupants</div>
+                            <div class="summary-value">${data.numberOfOccupants || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Intended Rental Duration</div>
+                            <div class="summary-value">${data.intendedDuration || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Deposit Ready</div>
+                            <div class="summary-value">${data.depositReady || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-item">
+                            <div class="summary-label">Has Pets</div>
+                            <div class="summary-value">${data.hasPets || '-'}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Smoking</div>
+                            <div class="summary-value">${data.smoking || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function showSummaryModal() {
+            const modal = document.getElementById('summaryModal');
+            const summaryBody = document.getElementById('summaryBody');
+            const emailDisplay = document.getElementById('confirmationEmail');
+            
+            summaryBody.innerHTML = buildSummaryHTML();
+            emailDisplay.textContent = document.getElementById('email').value;
+            modal.classList.add('active');
+        }
+
+        function closeSummary() {
+            const modal = document.getElementById('summaryModal');
+            modal.classList.remove('active');
+            // Reset form
+            document.getElementById('tenantForm').reset();
+            document.getElementById('applicationDate').valueAsDate = new Date();
+            document.getElementById('declarationDate').valueAsDate = new Date();
+            document.getElementById('idPassportPreview').classList.remove('active');
+        }
+
+        function printSummary() {
+            window.print();
+        }
+
         document.getElementById('tenantForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Validate emails match
+            if (!validateEmailMatch()) {
+                alert('❌ Please fix the email address mismatch.');
+                return;
+            }
+
+            const fileInput = document.getElementById('idPassportFile');
+            if (!fileInput.files.length) {
+                alert('❌ Please upload a copy of your ID or Passport.');
+                return;
+            }
+
             const submitBtn = document.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = '⏳ Submitting...';
             submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.7';
             
             const formData = new FormData(e.target);
             
             try {
-                console.log('Attempting to submit form...');
+                console.log('Attempting to submit form with file...');
                 
                 const response = await fetch('https://formspree.io/f/myzlgaog', {
                     method: 'POST',
@@ -716,25 +1284,19 @@
                 console.log('Response data:', data);
                 
                 if (response.ok) {
-                    // Success
                     submitBtn.textContent = '✅ Submitted!';
                     submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
                     
-                    alert('✅ Application submitted successfully!\n\nThank you for your application. The landlord will review your information and contact you soon.');
+                    // Show summary modal
+                    showSummaryModal();
                     
-                    e.target.reset();
-                    // Reset date fields to today
-                    document.getElementById('applicationDate').valueAsDate = new Date();
-                    document.getElementById('declarationDate').valueAsDate = new Date();
-                    
-                    // Reset button after 3 seconds
+                    // Reset button after 2 seconds
                     setTimeout(() => {
                         submitBtn.textContent = originalText;
                         submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                        submitBtn.style.opacity = '1';
-                    }, 3000);
+                        submitBtn.disabled = false;
+                    }, 2000);
                 } else {
-                    // Error from Formspree
                     throw new Error(data.error || 'Submission failed');
                 }
             } catch (error) {
@@ -743,19 +1305,43 @@
                 submitBtn.textContent = '❌ Failed';
                 submitBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
                 
-                alert('❌ There was an error submitting your application.\n\nPlease check:\n1. Your internet connection\n2. All required fields are filled\n3. Try again in a moment\n\nIf the problem persists, please contact the landlord directly.');
+                alert('❌ There was an error submitting your application.\n\nPlease check:\n1. Your internet connection\n2. All required fields are filled\n3. Your file is in the correct format (PDF or JPEG) and under 5MB\n4. Try again in a moment\n\nIf the problem persists, please contact the landlord directly.');
                 
-                // Reset button after 3 seconds
                 setTimeout(() => {
                     submitBtn.textContent = originalText;
                     submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
                     submitBtn.disabled = false;
-                    submitBtn.style.opacity = '1';
                 }, 3000);
             }
         });
 
-        // Set today's date as default for application date
+        // Drag and drop functionality
+        const fileUploadGroup = document.querySelector('.file-upload-group');
+        
+        fileUploadGroup.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadGroup.style.background = '#f0f2ff';
+            fileUploadGroup.style.borderColor = '#764ba2';
+        });
+        
+        fileUploadGroup.addEventListener('dragleave', () => {
+            fileUploadGroup.style.background = '#f8f9ff';
+            fileUploadGroup.style.borderColor = '#667eea';
+        });
+        
+        fileUploadGroup.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadGroup.style.background = '#f8f9ff';
+            fileUploadGroup.style.borderColor = '#667eea';
+            
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                document.getElementById('idPassportFile').files = files;
+                handleFileUpload({ target: { files: files } }, 'idPassport');
+            }
+        });
+
+        // Set today's date as default
         document.getElementById('applicationDate').valueAsDate = new Date();
         document.getElementById('declarationDate').valueAsDate = new Date();
     </script>
