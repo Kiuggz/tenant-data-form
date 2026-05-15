@@ -150,96 +150,7 @@
             height: 18px;
         }
         
-        .file-upload-group {
-            border: 2px dashed #667eea;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            background: #f8f9ff;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .file-upload-group:hover {
-            background: #f0f2ff;
-            border-color: #764ba2;
-        }
-        
-        .file-upload-group input[type="file"] {
-            display: none;
-        }
-        
-        .file-upload-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        
-        .file-upload-icon {
-            font-size: 32px;
-        }
-        
-        .file-upload-text {
-            color: #667eea;
-            font-weight: 500;
-        }
-        
-        .file-upload-hint {
-            color: #999;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-        
-        .file-preview {
-            margin-top: 12px;
-            padding: 10px;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
-            display: none;
-        }
-        
-        .file-preview.active {
-            display: block;
-        }
-        
-        .file-preview-text {
-            color: #27ae60;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .file-preview-remove {
-            display: inline-block;
-            margin-left: 8px;
-            padding: 4px 8px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        .file-preview-remove:hover {
-            background: #c0392b;
-        }
-        
-        .file-error {
-            color: #e74c3c;
-            font-size: 12px;
-            margin-top: 8px;
-            display: none;
-        }
-        
-        .file-error.active {
-            display: block;
-        }
+
 
         .email-error {
             color: #e74c3c;
@@ -502,10 +413,6 @@
                 font-size: 18px;
             }
             
-            .file-upload-group {
-                padding: 15px;
-            }
-            
             label {
                 font-size: 15px;
             }
@@ -575,21 +482,6 @@
                             <label for="citizenship">Citizenship *</label>
                             <input type="text" id="citizenship" name="citizenship" required>
                         </div>
-                    </div>
-
-                    <!-- File Upload for ID/Passport -->
-                    <div class="form-group">
-                        <label for="idPassportFile">Upload ID / Passport (PDF or JPEG) *</label>
-                        <div class="file-upload-group" onclick="document.getElementById('idPassportFile').click()">
-                            <label for="idPassportFile" class="file-upload-label">
-                                <span class="file-upload-icon">📄</span>
-                                <span class="file-upload-text">Click to upload or drag and drop</span>
-                                <span class="file-upload-hint">PDF or JPEG (Max 5MB)</span>
-                            </label>
-                            <input type="file" id="idPassportFile" name="idPassportFile" accept=".pdf,.jpg,.jpeg" required onchange="handleFileUpload(event, 'idPassport')">
-                        </div>
-                        <div class="file-preview" id="idPassportPreview"></div>
-                        <div class="file-error" id="idPassportError"></div>
                     </div>
 
                     <div class="form-row">
@@ -788,7 +680,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Who will pay the rent? *</label>
+                        <label>Who will be paying the rent? *</label>
                         <div class="radio-group">
                             <label class="radio-option">
                                 <input type="radio" name="rentPayerType" value="self" required onchange="toggleRentPayerDetails()"> Me (I will pay)
@@ -799,7 +691,7 @@
                         </div>
                     </div>
                     <div class="form-group" id="rentPayerDetailsGroup" style="display: none;">
-                        <label for="rentPayer">Who will pay the rent? (Name) *</label>
+                        <label for="rentPayer">Who will be paying the rent? (Name) *</label>
                         <input type="text" id="rentPayer" name="rentPayer" placeholder="Their full name">
                     </div>
                     <div class="form-group" id="rentPayerPhoneGroup" style="display: none;">
@@ -920,6 +812,18 @@
                     </div>
                 </div>
 
+                <!-- Hidden Formspree fields for autoresponse -->
+                <input type="hidden" name="_subject" value="Tenant Application Confirmation">
+                <input type="hidden" name="_autoresponse.subject" value="We received your tenant application">
+                <input type="hidden" name="_autoresponse.text" value="Dear applicant,
+
+Thank you for submitting your prospective tenant application. We have received all your information and will review your application shortly.
+
+A copy of your submitted information is attached below for your reference.
+
+Best regards,
+Property Management">
+
                 <div class="submit-section">
                     <button type="submit" class="btn-submit">Submit Application</button>
                 </div>
@@ -949,53 +853,7 @@
     </div>
 
     <script>
-        const MAX_FILE_SIZE = 5 * 1024 * 1024;
-        const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/jpg'];
         let formDataForSummary = {};
-
-        function handleFileUpload(event, fieldType) {
-            const file = event.target.files[0];
-            const fileGroup = fieldType === 'idPassport' ? 'idPassport' : 'rentReceipt';
-            const preview = document.getElementById(`${fileGroup}Preview`);
-            const error = document.getElementById(`${fileGroup}Error`);
-
-            preview.classList.remove('active');
-            error.classList.remove('active');
-
-            if (!file) return;
-
-            if (!ALLOWED_TYPES.includes(file.type)) {
-                error.textContent = '❌ Invalid file format. Please upload a PDF or JPEG file.';
-                error.classList.add('active');
-                event.target.value = '';
-                return;
-            }
-
-            if (file.size > MAX_FILE_SIZE) {
-                error.textContent = '❌ File is too large. Maximum size is 5MB.';
-                error.classList.add('active');
-                event.target.value = '';
-                return;
-            }
-
-            preview.innerHTML = `
-                <div class="file-preview-text">
-                    ✅ ${file.name} (${(file.size / 1024).toFixed(2)} KB)
-                    <button type="button" class="file-preview-remove" onclick="removeFile('${fileGroup}')">Remove</button>
-                </div>
-            `;
-            preview.classList.add('active');
-        }
-
-        function removeFile(fieldType) {
-            const fileInput = document.getElementById(`${fieldType}File`);
-            const preview = document.getElementById(`${fieldType}Preview`);
-            const error = document.getElementById(`${fieldType}Error`);
-            
-            fileInput.value = '';
-            preview.classList.remove('active');
-            error.classList.remove('active');
-        }
 
         function validateEmailMatch() {
             const email = document.getElementById('email').value;
@@ -1255,12 +1113,6 @@
                 return;
             }
 
-            const fileInput = document.getElementById('idPassportFile');
-            if (!fileInput.files.length) {
-                alert('❌ Please upload a copy of your ID or Passport.');
-                return;
-            }
-
             const submitBtn = document.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = '⏳ Submitting...';
@@ -1312,32 +1164,6 @@
                     submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
                     submitBtn.disabled = false;
                 }, 3000);
-            }
-        });
-
-        // Drag and drop functionality
-        const fileUploadGroup = document.querySelector('.file-upload-group');
-        
-        fileUploadGroup.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUploadGroup.style.background = '#f0f2ff';
-            fileUploadGroup.style.borderColor = '#764ba2';
-        });
-        
-        fileUploadGroup.addEventListener('dragleave', () => {
-            fileUploadGroup.style.background = '#f8f9ff';
-            fileUploadGroup.style.borderColor = '#667eea';
-        });
-        
-        fileUploadGroup.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUploadGroup.style.background = '#f8f9ff';
-            fileUploadGroup.style.borderColor = '#667eea';
-            
-            const files = e.dataTransfer.files;
-            if (files.length) {
-                document.getElementById('idPassportFile').files = files;
-                handleFileUpload({ target: { files: files } }, 'idPassport');
             }
         });
 
