@@ -483,6 +483,9 @@
                             <input type="text" id="citizenship" name="citizenship" required>
                         </div>
                     </div>
+                    <div class="email-confirmation-note">
+                        📌 Since ID/Passport upload is not included in this form, please send a copy of your ID or Passport immediately after submitting your application.
+                    </div>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -814,8 +817,9 @@
 
                 <!-- Hidden Formspree fields for autoresponse -->
                 <input type="hidden" name="_subject" value="Tenant Application Confirmation">
+                <input type="hidden" name="_replyto" id="_replyto" value="">
                 <input type="hidden" name="_autoresponse.subject" value="We received your tenant application">
-                <input type="hidden" name="_autoresponse.text" value="Dear applicant,
+                <input type="hidden" name="_autoresponse.body" value="Dear applicant,
 
 Thank you for submitting your prospective tenant application. We have received all your information and will review your application shortly.
 
@@ -1097,7 +1101,6 @@ Property Management">
             document.getElementById('tenantForm').reset();
             document.getElementById('applicationDate').valueAsDate = new Date();
             document.getElementById('declarationDate').valueAsDate = new Date();
-            document.getElementById('idPassportPreview').classList.remove('active');
         }
 
         function printSummary() {
@@ -1113,6 +1116,8 @@ Property Management">
                 return;
             }
 
+            document.getElementById('_replyto').value = document.getElementById('email').value;
+
             const submitBtn = document.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = '⏳ Submitting...';
@@ -1121,7 +1126,7 @@ Property Management">
             const formData = new FormData(e.target);
             
             try {
-                console.log('Attempting to submit form with file...');
+                console.log('Attempting to submit form...');
                 
                 const response = await fetch('https://formspree.io/f/myzlgaog', {
                     method: 'POST',
@@ -1157,7 +1162,7 @@ Property Management">
                 submitBtn.textContent = '❌ Failed';
                 submitBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
                 
-                alert('❌ There was an error submitting your application.\n\nPlease check:\n1. Your internet connection\n2. All required fields are filled\n3. Your file is in the correct format (PDF or JPEG) and under 5MB\n4. Try again in a moment\n\nIf the problem persists, please contact the landlord directly.');
+                alert('❌ There was an error submitting your application.\n\nPlease check:\n1. Your internet connection\n2. All required fields are filled\n3. Try again in a moment\n\nIf the problem persists, please contact the landlord directly.');
                 
                 setTimeout(() => {
                     submitBtn.textContent = originalText;
