@@ -556,9 +556,7 @@
                         <label class="checkbox-option key-option" data-key-section="doors_windows"><span class="key-main"><input type="checkbox" name="lockFitted_MainDoor" value="Yes" data-lock-checkbox> Main door lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Main door" data-key-checkbox disabled> Main door key given</span><input type="number" class="key-quantity" name="keyCount_MainDoor" min="1" placeholder="No. of keys" disabled></label>
                         <label class="checkbox-option key-option" data-key-section="doors_windows"><span class="key-main"><input type="checkbox" name="lockFitted_BackDoor" value="Yes" data-lock-checkbox> Back door lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Back door" data-key-checkbox disabled> Back door key given</span><input type="number" class="key-quantity" name="keyCount_BackDoor" min="1" placeholder="No. of keys" disabled></label>
                         <label class="checkbox-option key-option" data-key-section="main_room"><span class="key-main"><input type="checkbox" name="lockFitted_MainRoom" value="Yes" data-lock-checkbox> Main room lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Main room / living area" data-key-checkbox disabled> Main room key given</span><input type="number" class="key-quantity" name="keyCount_MainRoom" min="1" placeholder="No. of keys" disabled></label>
-                        <label class="checkbox-option key-option" data-key-section="bedrooms"><span class="key-main"><input type="checkbox" name="lockFitted_Bedroom1" value="Yes" data-lock-checkbox> Bedroom 1 lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Bedroom 1" data-key-checkbox disabled> Bedroom 1 key given</span><input type="number" class="key-quantity" name="keyCount_Bedroom1" min="1" placeholder="No. of keys" disabled></label>
-                        <label class="checkbox-option key-option" data-key-section="bedrooms"><span class="key-main"><input type="checkbox" name="lockFitted_Bedroom2" value="Yes" data-lock-checkbox> Bedroom 2 lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Bedroom 2" data-key-checkbox disabled> Bedroom 2 key given</span><input type="number" class="key-quantity" name="keyCount_Bedroom2" min="1" placeholder="No. of keys" disabled></label>
-                        <label class="checkbox-option key-option" data-key-section="bedrooms"><span class="key-main"><input type="checkbox" name="lockFitted_Bedroom3" value="Yes" data-lock-checkbox> Bedroom 3 lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Bedroom 3" data-key-checkbox disabled> Bedroom 3 key given</span><input type="number" class="key-quantity" name="keyCount_Bedroom3" min="1" placeholder="No. of keys" disabled></label>
+                        <span id="bedroomKeysAnchor" hidden></span>
                         <label class="checkbox-option key-option" data-key-section="kitchen"><span class="key-main"><input type="checkbox" name="lockFitted_Kitchen" value="Yes" data-lock-checkbox> Kitchen lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Kitchen" data-key-checkbox disabled> Kitchen key given</span><input type="number" class="key-quantity" name="keyCount_Kitchen" min="1" placeholder="No. of keys" disabled></label>
                         <label class="checkbox-option key-option" data-key-section="store"><span class="key-main"><input type="checkbox" name="lockFitted_StorePantry" value="Yes" data-lock-checkbox> Store / pantry lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Store / pantry" data-key-checkbox disabled> Store / pantry key given</span><input type="number" class="key-quantity" name="keyCount_StorePantry" min="1" placeholder="No. of keys" disabled></label>
                         <label class="checkbox-option key-option" data-key-section="toilet"><span class="key-main"><input type="checkbox" name="lockFitted_Toilet" value="Yes" data-lock-checkbox> Toilet lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Toilet" data-key-checkbox disabled> Toilet key given</span><input type="number" class="key-quantity" name="keyCount_Toilet" min="1" placeholder="No. of keys" disabled></label>
@@ -1014,6 +1012,8 @@
                 bedroomFields.dataset.count = '0';
             }
 
+            renderBedroomKeyRows(activeSections.has('bedrooms') ? bedroomCount : 0);
+
             document.querySelectorAll('[data-key-section]').forEach(function (label) {
                 const keySection = label.dataset.keySection;
                 const visible = keySection === 'always' || activeSections.has(keySection);
@@ -1054,6 +1054,22 @@
             waterReading.required = waterMetered === 'Yes';
             electricityMeter.required = electricityType === 'Postpaid';
             electricityReading.required = electricityType === 'Postpaid';
+        }
+
+        function renderBedroomKeyRows(count) {
+            const anchor = document.getElementById('bedroomKeysAnchor');
+            if (!anchor) return;
+            if (anchor.dataset.count === String(count)) return;
+            document.querySelectorAll('[data-bedroom-key-row]').forEach(function (el) { el.remove(); });
+            for (let i = 1; i <= count; i += 1) {
+                const label = document.createElement('label');
+                label.className = 'checkbox-option key-option';
+                label.dataset.keySection = 'bedrooms';
+                label.setAttribute('data-bedroom-key-row', '');
+                label.innerHTML = `<span class="key-main"><input type="checkbox" name="lockFitted_Bedroom${i}" value="Yes" data-lock-checkbox> Bedroom ${i} lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Bedroom ${i}" data-key-checkbox disabled> Bedroom ${i} key given</span><input type="number" class="key-quantity" name="keyCount_Bedroom${i}" min="1" placeholder="No. of keys" disabled>`;
+                anchor.parentNode.insertBefore(label, anchor);
+            }
+            anchor.dataset.count = String(count);
         }
 
         function updateKeyQuantities() {
@@ -1319,11 +1335,11 @@
             });
         });
 
-        document.querySelectorAll('[data-key-checkbox], [data-lock-checkbox]').forEach(function (input) {
-            input.addEventListener('change', function () {
+        document.getElementById('keysGrid').addEventListener('change', function (event) {
+            if (event.target.matches('[data-lock-checkbox], [data-key-checkbox]')) {
                 updateKeyQuantities();
                 resetDownloadGate();
-            });
+            }
         });
 
         document.getElementById('inspectionForm').addEventListener('input', function (event) {
