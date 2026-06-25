@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Inspection Report</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 940px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { font-size: 14px; opacity: 0.95; line-height: 1.6; }
+
+        .form-content { padding: 40px 30px; }
+
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section:last-child { border-bottom: none; }
+        .section[hidden], .scope-panel[hidden], .conditional-field[hidden] { display: none; }
+
+        .section-title {
+            color: #667eea;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-number {
+            background: #667eea;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+            flex: 0 0 32px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-row, .form-row-3 {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-row { grid-template-columns: 1fr 1fr; }
+        .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea { resize: vertical; min-height: 90px; }
+        .notes-area { min-height: 140px; }
+
+        .radio-group, .checkbox-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .radio-group { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .checkbox-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f8f9ff;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            min-height: 46px;
+        }
+
+        .key-option {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .key-main {
+            display: flex;
+            align-items: center;
+        }
+
+        .key-quantity {
+            width: 100%;
+            padding: 8px 10px;
+        }
+
+        .radio-option:hover, .checkbox-option:hover { border-color: #667eea; }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+        }
+
+        .scope-panel {
+            background: #f8f9ff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 10px;
+        }
+
+        .inspection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .inspection-grid .form-group:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            color: #777;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .download-note {
+            background: #fff8e1;
+            border: 1px solid #ffe0a3;
+            color: #7a5c00;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .submit-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-pdf, .btn-submit, .btn-print, .btn-close {
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-pdf {
+            background: #f39c12;
+            padding: 13px 35px;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.35);
+        }
+
+        .btn-pdf.done { background: #27ae60; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.35); }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 50px;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+        .btn-pdf:hover, .btn-submit:hover, .btn-print:hover, .btn-close:hover { transform: translateY(-2px); }
+
+        .declaration-box {
+            background: #f8f9ff;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .declaration-box p { color: #333; line-height: 1.8; }
+
+        .signoff-block {
+            background: #fafbff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .signoff-block h4 { color: #667eea; font-size: 15px; margin-bottom: 14px; }
+        .submit-section { text-align: center; margin-top: 30px; }
+
+        .summary-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .summary-modal.active { display: block; }
+
+        .summary-content {
+            background-color: #fff;
+            margin: 6% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 760px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            margin: -30px -30px 20px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+
+        .summary-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .summary-section:last-child { border-bottom: none; }
+        .summary-section h3 { color: #667eea; font-size: 16px; margin-bottom: 12px; }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .summary-item.full { grid-column: 1 / -1; }
+        .summary-item { font-size: 14px; }
+        .summary-label { color: #666; font-weight: 500; font-size: 12px; text-transform: uppercase; }
+        .summary-value { color: #333; margin-top: 4px; white-space: pre-wrap; }
+
+        .summary-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .pdf-source {
+            position: fixed;
+            left: -9999px;
+            top: 0;
+            width: 794px;
+            background: #fff;
+            color: #333;
+            padding: 28px;
+        }
+
+        .btn-print { background: #27ae60; padding: 12px 25px; }
+        .btn-close { background: #95a5a6; padding: 12px 25px; }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .container, .summary-content { box-shadow: none; border-radius: 0; max-width: none; }
+            .form-content, .header, .submit-section, .summary-actions { display: none; }
+            .summary-modal { display: block; position: static; background: #fff; }
+            .summary-content { margin: 0; padding: 20px; width: 100%; }
+            .summary-header { background: #fff; color: #333; margin: 0 0 20px; padding: 0; }
+            .summary-section h3 { color: #333; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .form-row, .form-row-3, .radio-group, .checkbox-grid, .summary-row, .inspection-grid { grid-template-columns: 1fr; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 22px; }
+            .form-content { padding: 25px 15px; }
+            .btn-submit, .btn-pdf, .btn-print, .btn-close { width: 100%; }
+            input[type="text"], input[type="date"], input[type="number"], select, textarea { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Property Inspection Report</h1>
+            <p>This report records the condition of the rented premises at the time of inspection. Please complete only the parts that apply to the unit being inspected. This form is to be completed together with the Caretaker or Property Manager.</p>
+        </div>
+
+        <div class="form-content">
+            <form id="inspectionForm" action="https://formspree.io/f/mzdlezna" method="POST">
+                <div class="section">
+                    <h2 class="section-title"><span class="section-number">1</span>Report Details</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="propertyName">Property Name *</label>
+                            <input type="text" id="propertyName" name="propertyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="premisesNo">Premises No. *</label>
+                            <input type="text" id="premisesNo" name="premisesNo" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateTaken">Date Taken *</label>
+                            <input type="date" id="dateTaken" name="dateTaken" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Inspection Type *</label>
+                            <div class="radio-group">
+                                <label class="radio-option"><input type="radio" name="inspectionType" value="Move In" required> Move In</label>
+                                <label class="radio-option"><input type="radio" name="inspectionType" value="Move Out"> Move Out</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="unitType">Type of rented unit *</label>
+                        <select id="unitType" name="unitType" required>
+                            <option value="">Select unit type</option>
+                            <option value="Single Room">Single Room</option>
+                            <option value="Bedsitter / Studio">Bedsitter / Studio</option>
+                            <option value="One Bedroom">One Bedroom</option>
+                            <option value="Two Bedroom">Two Bedroom</option>
+                            <option value="Three Bedroom">Three Bedroom</option>
+                            <option value="Four Bedroom+">Four Bedroom+</option>
+                            <option value="Servant Quarter / DSQ">Servant Quarter / DSQ</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="scope-panel" id="optionalFeaturesPanel" hidden>
+                        <label>Additional areas/facilities included in the rented premises</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-option" data-feature-option="kitchen"><input type="checkbox" id="featureKitchen" name="feature_kitchen" value="Yes"> Kitchen / kitchenette / sink area present</label>
+                            <label class="checkbox-option" data-feature-option="bathroom"><input type="checkbox" id="featureBathroom" name="feature_bathroom" value="Yes"> Bathroom inside the rented unit</label>
+                            <label class="checkbox-option" data-feature-option="toilet"><input type="checkbox" id="featureToilet" name="feature_toilet" value="Yes"> Toilet inside the rented unit</label>
+                            <label class="checkbox-option" data-feature-option="balcony"><input type="checkbox" id="featureBalcony" name="feature_balcony" value="Yes"> Balcony / verandah exclusive to tenant</label>
+                            <label class="checkbox-option" data-feature-option="yard"><input type="checkbox" id="featureYard" name="feature_yard" value="Yes"> Yard / compound area exclusive to tenant</label>
+                            <label class="checkbox-option" data-feature-option="store"><input type="checkbox" id="featureStore" name="feature_store" value="Yes"> Store / pantry included</label>
+                            <label class="checkbox-option" data-feature-option="other_area"><input type="checkbox" id="featureOtherArea" name="feature_other_area" value="Yes"> Other area/facility included</label>
+                        </div>
+                    </div>
+                    <div class="scope-panel" id="manualScopePanel" hidden>
+                        <label>Select areas included in this inspection</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="main_room"> Main room / living area</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="bedrooms"> Bedroom(s)</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="kitchen"> Kitchen / kitchenette / sink area</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="bathroom"> Bathroom</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="toilet"> Toilet</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="balcony"> Balcony / verandah</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="store"> Store / pantry</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="yard"> Yard / compound area exclusive to tenant</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="doors_windows"> External access / keys exclusive to tenant</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="electrical"> Other electrical fittings</label>
+                            <label class="checkbox-option"><input type="checkbox" name="manualScope" value="other_area"> Other</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="main_room">
+                    <h2 class="section-title"><span class="section-number">2</span><span id="mainRoomTitle">Main Room / Living Area</span></h2>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="mainRoomFloor">Floor type and condition</label><textarea id="mainRoomFloor" name="mainRoomFloor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea></div>
+                        <div class="form-group"><label for="mainRoomWalls">Wall condition and painting (indicate the colour)</label><textarea id="mainRoomWalls" name="mainRoomWalls"></textarea></div>
+                        <div class="form-group"><label for="mainRoomCeiling">Ceiling condition and finish (indicate the colour)</label><textarea id="mainRoomCeiling" name="mainRoomCeiling"></textarea></div>
+                        <div class="form-group"><label for="mainRoomDoors">Door condition and finish (indicate the colour)</label><textarea id="mainRoomDoors" name="mainRoomDoors"></textarea></div>
+                        <div class="form-group"><label for="mainRoomWindows">Window condition and finish (indicate the colour)</label><textarea id="mainRoomWindows" name="mainRoomWindows"></textarea></div>
+                        <div class="form-group"><label for="mainRoomLighting">Lighting and switches</label><textarea id="mainRoomLighting" name="mainRoomLighting"></textarea></div>
+                        <div class="form-group"><label for="mainRoomSockets">Sockets</label><textarea id="mainRoomSockets" name="mainRoomSockets"></textarea></div>
+                        <div class="form-group"><label for="mainRoomRemarks">General remarks</label><textarea id="mainRoomRemarks" name="mainRoomRemarks"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="bedrooms">
+                    <h2 class="section-title"><span class="section-number">3</span>Bedroom Section</h2>
+                    <div class="form-group conditional-field" id="bedroomCountGroup" hidden>
+                        <label for="bedroomCount">Number of bedrooms inspected *</label>
+                        <input type="number" id="bedroomCount" name="bedroomCount" min="4" max="10" value="4" required>
+                    </div>
+                    <div id="bedroomFields"></div>
+                </div>
+
+                <div class="section" data-inspection-section="kitchen">
+                    <h2 class="section-title"><span class="section-number">4</span>Kitchen / Kitchenette / Sink Area</h2>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="kitchenSink">Sink condition *</label><textarea id="kitchenSink" name="kitchenSink" required></textarea></div>
+                        <div class="form-group"><label for="kitchenTap">Tap condition *</label><textarea id="kitchenTap" name="kitchenTap" required></textarea></div>
+                        <div class="form-group"><label for="kitchenDrainage">Drainage</label><textarea id="kitchenDrainage" name="kitchenDrainage"></textarea></div>
+                        <div class="form-group"><label for="kitchenCabinet">Cabinet/shelf condition *</label><textarea id="kitchenCabinet" name="kitchenCabinet" required></textarea></div>
+                        <div class="form-group"><label for="kitchenCounter">Counter/worktop condition</label><textarea id="kitchenCounter" name="kitchenCounter"></textarea></div>
+                        <div class="form-group"><label for="kitchenWallFloor">Wall/floor type and condition</label><textarea id="kitchenWallFloor" name="kitchenWallFloor" placeholder="Indicate wall/floor finish and condition..."></textarea></div>
+                        <div class="form-group"><label for="kitchenElectrical">Electrical points</label><textarea id="kitchenElectrical" name="kitchenElectrical"></textarea></div>
+                        <div class="form-group"><label for="kitchenRemarks">General remarks</label><textarea id="kitchenRemarks" name="kitchenRemarks"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="bathroom">
+                    <h2 class="section-title"><span class="section-number">5</span>Bathroom</h2>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="bathroomShower">Showerhead condition *</label><textarea id="bathroomShower" name="bathroomShower" required></textarea></div>
+                        <div class="form-group"><label for="bathroomTaps">Taps *</label><textarea id="bathroomTaps" name="bathroomTaps" required></textarea></div>
+                        <div class="form-group"><label for="bathroomDrainage">Drainage</label><textarea id="bathroomDrainage" name="bathroomDrainage"></textarea></div>
+                        <div class="form-group"><label for="bathroomFloor">Floor type and condition</label><textarea id="bathroomFloor" name="bathroomFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea></div>
+                        <div class="form-group"><label for="bathroomWall">Wall condition and painting/finish (indicate the colour)</label><textarea id="bathroomWall" name="bathroomWall"></textarea></div>
+                        <div class="form-group"><label for="bathroomDoor">Door condition and finish (indicate the colour)</label><textarea id="bathroomDoor" name="bathroomDoor"></textarea></div>
+                        <div class="form-group"><label for="bathroomVentilation">Ventilation</label><textarea id="bathroomVentilation" name="bathroomVentilation"></textarea></div>
+                        <div class="form-group"><label for="bathroomRemarks">General remarks</label><textarea id="bathroomRemarks" name="bathroomRemarks"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="toilet">
+                    <h2 class="section-title"><span class="section-number">6</span>Toilet</h2>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="toiletWc">WC/toilet condition *</label><textarea id="toiletWc" name="toiletWc" required></textarea></div>
+                        <div class="form-group"><label for="toiletHandwashBasin">Handwash basin condition *</label><textarea id="toiletHandwashBasin" name="toiletHandwashBasin" required></textarea></div>
+                        <div class="form-group"><label for="toiletTaps">Taps *</label><textarea id="toiletTaps" name="toiletTaps" required></textarea></div>
+                        <div class="form-group"><label for="toiletFlush">Flush condition</label><textarea id="toiletFlush" name="toiletFlush"></textarea></div>
+                        <div class="form-group"><label for="toiletCistern">Cistern condition</label><textarea id="toiletCistern" name="toiletCistern"></textarea></div>
+                        <div class="form-group"><label for="toiletDoor">Door condition and finish (indicate the colour)</label><textarea id="toiletDoor" name="toiletDoor"></textarea></div>
+                        <div class="form-group"><label for="toiletFloor">Floor type and condition</label><textarea id="toiletFloor" name="toiletFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea></div>
+                        <div class="form-group"><label for="toiletWall">Wall condition and painting/finish (indicate the colour)</label><textarea id="toiletWall" name="toiletWall"></textarea></div>
+                        <div class="form-group"><label for="toiletVentilation">Ventilation</label><textarea id="toiletVentilation" name="toiletVentilation"></textarea></div>
+                        <div class="form-group"><label for="toiletRemarks">General remarks</label><textarea id="toiletRemarks" name="toiletRemarks"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="balcony">
+                    <h2 class="section-title"><span class="section-number">7</span>Balcony / Verandah</h2>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="balconyFloor">Floor type and condition</label><textarea id="balconyFloor" name="balconyFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea></div>
+                        <div class="form-group"><label for="balconyRailings">Railings</label><textarea id="balconyRailings" name="balconyRailings"></textarea></div>
+                        <div class="form-group"><label for="balconyDrainage">Drainage</label><textarea id="balconyDrainage" name="balconyDrainage"></textarea></div>
+                        <div class="form-group"><label for="balconyAccess">Door/access</label><textarea id="balconyAccess" name="balconyAccess"></textarea></div>
+                        <div class="form-group"><label for="balconyRemarks">General remarks</label><textarea id="balconyRemarks" name="balconyRemarks"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="yard">
+                    <h2 class="section-title"><span class="section-number">8</span>Yard / Compound Area</h2>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="yardSurface">Surface condition</label><textarea id="yardSurface" name="yardSurface"></textarea></div>
+                        <div class="form-group"><label for="yardDrainage">Drainage</label><textarea id="yardDrainage" name="yardDrainage"></textarea></div>
+                        <div class="form-group"><label for="yardGate">Gate/access</label><textarea id="yardGate" name="yardGate"></textarea></div>
+                        <div class="form-group"><label for="yardFencing">Fencing/walling</label><textarea id="yardFencing" name="yardFencing"></textarea></div>
+                        <div class="form-group"><label for="yardTaps">External taps, if any</label><textarea id="yardTaps" name="yardTaps"></textarea></div>
+                        <div class="form-group"><label for="yardRemarks">General remarks</label><textarea id="yardRemarks" name="yardRemarks"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="store">
+                    <h2 class="section-title"><span class="section-number">9</span>Store / Pantry</h2>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="storeDoor">Door condition and finish (indicate the colour)</label><textarea id="storeDoor" name="storeDoor"></textarea></div>
+                        <div class="form-group"><label for="storeShelving">Shelving</label><textarea id="storeShelving" name="storeShelving"></textarea></div>
+                        <div class="form-group"><label for="storeFloor">Floor type and condition</label><textarea id="storeFloor" name="storeFloor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea></div>
+                        <div class="form-group"><label for="storeWall">Wall condition and painting (indicate the colour)</label><textarea id="storeWall" name="storeWall"></textarea></div>
+                        <div class="form-group"><label for="storeCeiling">Ceiling condition and finish (indicate the colour)</label><textarea id="storeCeiling" name="storeCeiling"></textarea></div>
+                        <div class="form-group"><label for="storeRemarks">General remarks</label><textarea id="storeRemarks" name="storeRemarks"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="other_area">
+                    <h2 class="section-title"><span class="section-number">10</span>Other Area / Facility</h2>
+                    <div class="form-group">
+                        <label for="otherAreaName">Area/facility name</label>
+                        <input type="text" id="otherAreaName" name="otherAreaName">
+                    </div>
+                    <div class="form-group">
+                        <label for="otherAreaRemarks">Findings / remarks</label>
+                        <textarea id="otherAreaRemarks" name="otherAreaRemarks"></textarea>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="doors_windows">
+                    <h2 class="section-title"><span class="section-number">10</span>External Access and Keys</h2>
+                    <div class="form-group">
+                        <label for="doorsCondition">External/access doors - condition and finish (indicate the colour)</label>
+                        <textarea id="doorsCondition" name="doorsCondition" placeholder="Describe only external or access doors not already covered above..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="windowsCondition">External/access windows - condition and finish (indicate the colour)</label>
+                        <textarea id="windowsCondition" name="windowsCondition" placeholder="Describe only external or access windows not already covered above..."></textarea>
+                    </div>
+                    <label>Locks and keys availed</label>
+                    <div class="checkbox-grid" id="keysGrid">
+                        <label class="checkbox-option key-option" data-key-section="always"><span class="key-main"><input type="checkbox" name="lockFitted_Gate" value="Yes" data-lock-checkbox> Gate lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Gate" data-key-checkbox disabled> Gate key given</span><input type="number" class="key-quantity" name="keyCount_Gate" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="doors_windows"><span class="key-main"><input type="checkbox" name="lockFitted_MainDoor" value="Yes" data-lock-checkbox> Main door lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Main door" data-key-checkbox disabled> Main door key given</span><input type="number" class="key-quantity" name="keyCount_MainDoor" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="doors_windows"><span class="key-main"><input type="checkbox" name="lockFitted_BackDoor" value="Yes" data-lock-checkbox> Back door lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Back door" data-key-checkbox disabled> Back door key given</span><input type="number" class="key-quantity" name="keyCount_BackDoor" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="main_room"><span class="key-main"><input type="checkbox" name="lockFitted_MainRoom" value="Yes" data-lock-checkbox> Main room lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Main room / living area" data-key-checkbox disabled> Main room key given</span><input type="number" class="key-quantity" name="keyCount_MainRoom" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="bedrooms"><span class="key-main"><input type="checkbox" name="lockFitted_Bedroom1" value="Yes" data-lock-checkbox> Bedroom 1 lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Bedroom 1" data-key-checkbox disabled> Bedroom 1 key given</span><input type="number" class="key-quantity" name="keyCount_Bedroom1" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="bedrooms"><span class="key-main"><input type="checkbox" name="lockFitted_Bedroom2" value="Yes" data-lock-checkbox> Bedroom 2 lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Bedroom 2" data-key-checkbox disabled> Bedroom 2 key given</span><input type="number" class="key-quantity" name="keyCount_Bedroom2" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="bedrooms"><span class="key-main"><input type="checkbox" name="lockFitted_Bedroom3" value="Yes" data-lock-checkbox> Bedroom 3 lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Bedroom 3" data-key-checkbox disabled> Bedroom 3 key given</span><input type="number" class="key-quantity" name="keyCount_Bedroom3" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="kitchen"><span class="key-main"><input type="checkbox" name="lockFitted_Kitchen" value="Yes" data-lock-checkbox> Kitchen lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Kitchen" data-key-checkbox disabled> Kitchen key given</span><input type="number" class="key-quantity" name="keyCount_Kitchen" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="store"><span class="key-main"><input type="checkbox" name="lockFitted_StorePantry" value="Yes" data-lock-checkbox> Store / pantry lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Store / pantry" data-key-checkbox disabled> Store / pantry key given</span><input type="number" class="key-quantity" name="keyCount_StorePantry" min="1" placeholder="No. of keys" disabled></label>
+                        <label class="checkbox-option key-option" data-key-section="toilet"><span class="key-main"><input type="checkbox" name="lockFitted_Toilet" value="Yes" data-lock-checkbox> Toilet lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Toilet" data-key-checkbox disabled> Toilet key given</span><input type="number" class="key-quantity" name="keyCount_Toilet" min="1" placeholder="No. of keys" disabled></label>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="electrical">
+                    <h2 class="section-title"><span class="section-number">12</span>Other Electrical Fittings</h2>
+                    <div class="form-group">
+                        <label for="electricalCondition">Other electrical fittings (apart from sockets, lighting and switches) *</label>
+                        <textarea id="electricalCondition" name="electricalCondition" placeholder="Describe fittings not already captured under sockets, lighting and switches..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="section" data-inspection-section="meters">
+                    <h2 class="section-title"><span class="section-number">13</span>Utilities</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="isWaterMetered">Is water metered?</label>
+                            <select id="isWaterMetered" name="isWaterMetered">
+                                <option value="">Select option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group conditional-field" id="waterReadingGroup" hidden>
+                            <label for="waterMeterReading">Water meter reading *</label>
+                            <input type="text" id="waterMeterReading" name="waterMeterReading">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="electricityBillingType">Electricity billing type</label>
+                            <select id="electricityBillingType" name="electricityBillingType">
+                                <option value="">Select option</option>
+                                <option value="Prepaid">Prepaid</option>
+                                <option value="Postpaid">Postpaid</option>
+                            </select>
+                        </div>
+                        <div class="form-group conditional-field" id="electricityMeterGroup" hidden>
+                            <label for="electricityMeterNo">Electricity meter No.</label>
+                            <input type="text" id="electricityMeterNo" name="electricityMeterNo">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group conditional-field" id="electricityReadingGroup" hidden>
+                            <label for="electricityMeterReading">Electricity meter reading</label>
+                            <input type="text" id="electricityMeterReading" name="electricityMeterReading">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title"><span class="section-number">14</span>Notes</h2>
+                    <div class="form-group">
+                        <label for="notes">Additional notes / observations</label>
+                        <textarea id="notes" name="notes" class="notes-area" placeholder="Record any further details about the state of the premises..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title"><span class="section-number">15</span>Declaration &amp; Sign-off</h2>
+                    <div class="declaration-box">
+                        <p id="declarationText">I hereby confirm that the above is the true and actual state of the premises for the selected inspection type and will endeavour to leave them in the same state as I found them.</p>
+                    </div>
+                    <div class="signoff-block">
+                        <h4>Tenant</h4>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label for="tenantName">Tenant name *</label>
+                                <input type="text" id="tenantName" name="tenantName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tenantSign">Tenant typed signature *</label>
+                                <input type="text" id="tenantSign" name="tenantSign" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tenantDate">Tenant sign-off date *</label>
+                                <input type="date" id="tenantDate" name="tenantDate" required>
+                            </div>
+                        </div>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="tenantConfirmation" name="tenantConfirmation" value="Confirmed" required>
+                            I confirm that the information recorded in this inspection form is correct to the best of my knowledge.
+                        </label>
+                    </div>
+                    <div class="signoff-block">
+                        <h4>Caretaker</h4>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label for="caretakerName">Caretaker name *</label>
+                                <input type="text" id="caretakerName" name="caretakerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="caretakerSign">Caretaker typed signature *</label>
+                                <input type="text" id="caretakerSign" name="caretakerSign" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="caretakerDate">Caretaker sign-off date *</label>
+                                <input type="date" id="caretakerDate" name="caretakerDate" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="signoff-block">
+                        <h4>Property Manager</h4>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label for="managerName">Property manager name</label>
+                                <input type="text" id="managerName" name="managerName">
+                            </div>
+                            <div class="form-group">
+                                <label for="managerSign">Property manager typed signature</label>
+                                <input type="text" id="managerSign" name="managerSign">
+                            </div>
+                            <div class="form-group">
+                                <label for="managerDate">Property manager sign-off date</label>
+                                <input type="date" id="managerDate" name="managerDate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_subject" value="Property Inspection Report Submitted">
+                <input type="hidden" name="form_type" value="inspection_report">
+                <input type="hidden" name="main_room_applicable" id="main_room_applicable" value="No">
+                <input type="hidden" name="bedroom_applicable" id="bedroom_applicable" value="No">
+                <input type="hidden" name="kitchen_applicable" id="kitchen_applicable" value="No">
+                <input type="hidden" name="bathroom_applicable" id="bathroom_applicable" value="No">
+                <input type="hidden" name="toilet_applicable" id="toilet_applicable" value="No">
+                <input type="hidden" name="balcony_applicable" id="balcony_applicable" value="No">
+                <input type="hidden" name="yard_applicable" id="yard_applicable" value="No">
+                <input type="hidden" name="store_applicable" id="store_applicable" value="No">
+                <input type="hidden" name="other_area_applicable" id="other_area_applicable" value="No">
+                <input type="hidden" name="doors_windows_applicable" id="doors_windows_applicable" value="No">
+                <input type="hidden" name="electrical_applicable" id="electrical_applicable" value="No">
+
+                <div class="submit-section">
+                    <div class="download-note" id="downloadNote">Please download your PDF copy first before you submit.</div>
+                    <div class="submit-buttons">
+                        <button type="button" class="btn-pdf" id="downloadBtn" onclick="downloadPdf()">📥 Download My PDF Copy</button>
+                        <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit Inspection Report</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="summary-modal" id="summaryModal">
+        <div class="summary-content">
+            <div class="summary-header">
+                <h2 id="summaryTitle">Property Inspection Report</h2>
+                <p id="summarySubtitle">Review, print, or save a PDF copy.</p>
+            </div>
+            <div id="summaryBody"></div>
+            <div class="summary-actions">
+                <button type="button" class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+                <button type="button" class="btn-close" onclick="closeSummary()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pdfSource" class="pdf-source" aria-hidden="true"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdlezna';
+
+        const SECTION_LABELS = {
+            main_room: 'Main Room / Living Area',
+            bedrooms: 'Bedroom Section',
+            kitchen: 'Kitchen / Kitchenette / Sink Area',
+            bathroom: 'Bathroom',
+            toilet: 'Toilet',
+            balcony: 'Balcony / Verandah',
+            yard: 'Yard / Compound Area',
+            store: 'Store / Pantry',
+            other_area: 'Other Area / Facility',
+            doors_windows: 'External Access and Keys',
+            electrical: 'Other Electrical Fittings',
+            meters: 'Utilities'
+        };
+
+        const CORE_SECTIONS = ['main_room', 'doors_windows', 'electrical'];
+        const APPLICABILITY_FIELD = {
+            main_room: 'main_room_applicable',
+            bedrooms: 'bedroom_applicable',
+            kitchen: 'kitchen_applicable',
+            bathroom: 'bathroom_applicable',
+            toilet: 'toilet_applicable',
+            balcony: 'balcony_applicable',
+            yard: 'yard_applicable',
+            store: 'store_applicable',
+            other_area: 'other_area_applicable',
+            doors_windows: 'doors_windows_applicable',
+            electrical: 'electrical_applicable'
+        };
+
+        const UNIT_RULES = {
+            'Single Room': {
+                sections: CORE_SECTIONS,
+                optional: ['kitchen', 'bathroom', 'toilet', 'balcony', 'yard', 'store', 'other_area'],
+                bedroomCount: 0,
+                mainRoomTitle: 'Main Room / General Room Condition'
+            },
+            'Bedsitter / Studio': {
+                sections: CORE_SECTIONS.concat(['kitchen', 'bathroom', 'toilet']),
+                optional: ['balcony', 'yard', 'store', 'other_area'],
+                bedroomCount: 0,
+                mainRoomTitle: 'Main Room / Combined Living-Sleeping Area'
+            },
+            'One Bedroom': {
+                sections: CORE_SECTIONS.concat(['bedrooms', 'kitchen', 'bathroom', 'toilet']),
+                optional: ['balcony', 'yard', 'store', 'other_area'],
+                bedroomCount: 1,
+                mainRoomTitle: 'Living Room / Main Area'
+            },
+            'Two Bedroom': {
+                sections: CORE_SECTIONS.concat(['bedrooms', 'kitchen', 'bathroom', 'toilet']),
+                optional: ['balcony', 'yard', 'store', 'other_area'],
+                bedroomCount: 2,
+                mainRoomTitle: 'Living Room / Main Area'
+            },
+            'Three Bedroom': {
+                sections: CORE_SECTIONS.concat(['bedrooms', 'kitchen', 'bathroom', 'toilet']),
+                optional: ['balcony', 'yard', 'store', 'other_area'],
+                bedroomCount: 3,
+                mainRoomTitle: 'Living Room / Main Area'
+            },
+            'Four Bedroom+': {
+                sections: CORE_SECTIONS.concat(['bedrooms', 'kitchen', 'bathroom', 'toilet']),
+                optional: ['balcony', 'yard', 'store', 'other_area'],
+                bedroomCount: 4,
+                variableBedrooms: true,
+                mainRoomTitle: 'Living Room / Main Area'
+            },
+            'Servant Quarter / DSQ': {
+                sections: CORE_SECTIONS,
+                optional: ['kitchen', 'bathroom', 'toilet', 'balcony', 'yard', 'store', 'other_area'],
+                bedroomCount: 0,
+                mainRoomTitle: 'Main Room / Bedroom'
+            },
+            'Other': {
+                sections: [],
+                optional: [],
+                bedroomCount: 1,
+                variableBedrooms: true,
+                manual: true,
+                mainRoomTitle: 'Main Room / Living Area'
+            }
+        };
+
+        const FIELD_GROUPS = {
+            main_room: [
+                ['Floor type and condition', 'mainRoomFloor'],
+                ['Wall condition and painting (indicate the colour)', 'mainRoomWalls'],
+                ['Ceiling condition and finish (indicate the colour)', 'mainRoomCeiling'],
+                ['Door condition and finish (indicate the colour)', 'mainRoomDoors'],
+                ['Window condition and finish (indicate the colour)', 'mainRoomWindows'],
+                ['Lighting and switches', 'mainRoomLighting'],
+                ['Sockets', 'mainRoomSockets'],
+                ['General remarks', 'mainRoomRemarks']
+            ],
+            kitchen: [
+                ['Sink condition', 'kitchenSink'],
+                ['Tap condition', 'kitchenTap'],
+                ['Drainage', 'kitchenDrainage'],
+                ['Cabinet/shelf condition', 'kitchenCabinet'],
+                ['Counter/worktop condition', 'kitchenCounter'],
+                ['Wall/floor type and condition', 'kitchenWallFloor'],
+                ['Electrical points', 'kitchenElectrical'],
+                ['General remarks', 'kitchenRemarks']
+            ],
+            bathroom: [
+                ['Shower condition', 'bathroomShower'],
+                ['Taps', 'bathroomTaps'],
+                ['Drainage', 'bathroomDrainage'],
+                ['Floor type and condition', 'bathroomFloor'],
+                ['Wall condition and painting/finish (indicate the colour)', 'bathroomWall'],
+                ['Door condition and finish (indicate the colour)', 'bathroomDoor'],
+                ['Ventilation', 'bathroomVentilation'],
+                ['General remarks', 'bathroomRemarks']
+            ],
+            toilet: [
+                ['WC/toilet condition', 'toiletWc'],
+                ['Handwash basin condition', 'toiletHandwashBasin'],
+                ['Taps', 'toiletTaps'],
+                ['Flush condition', 'toiletFlush'],
+                ['Cistern condition', 'toiletCistern'],
+                ['Door condition and finish (indicate the colour)', 'toiletDoor'],
+                ['Floor type and condition', 'toiletFloor'],
+                ['Wall condition and painting/finish (indicate the colour)', 'toiletWall'],
+                ['Ventilation', 'toiletVentilation'],
+                ['General remarks', 'toiletRemarks']
+            ],
+            balcony: [
+                ['Floor type and condition', 'balconyFloor'],
+                ['Railings', 'balconyRailings'],
+                ['Drainage', 'balconyDrainage'],
+                ['Door/access', 'balconyAccess'],
+                ['General remarks', 'balconyRemarks']
+            ],
+            yard: [
+                ['Surface condition', 'yardSurface'],
+                ['Drainage', 'yardDrainage'],
+                ['Gate/access', 'yardGate'],
+                ['Fencing/walling', 'yardFencing'],
+                ['External taps, if any', 'yardTaps'],
+                ['General remarks', 'yardRemarks']
+            ],
+            store: [
+                ['Door condition and finish (indicate the colour)', 'storeDoor'],
+                ['Shelving', 'storeShelving'],
+                ['Floor type and condition', 'storeFloor'],
+                ['Wall condition and painting (indicate the colour)', 'storeWall'],
+                ['Ceiling condition and finish (indicate the colour)', 'storeCeiling'],
+                ['General remarks', 'storeRemarks']
+            ],
+            other_area: [
+                ['Area/facility name', 'otherAreaName'],
+                ['Findings / remarks', 'otherAreaRemarks']
+            ]
+        };
+
+        let activeSections = new Set();
+        let hasDownloaded = false;
+
+        function esc(value) {
+            if (value === undefined || value === null || value === '') return '';
+            return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function checked(id) {
+            const el = document.getElementById(id);
+            return Boolean(el && el.checked);
+        }
+
+        function selectedManualSections() {
+            return Array.from(document.querySelectorAll('input[name="manualScope"]:checked')).map(function (el) {
+                return el.value;
+            });
+        }
+
+        function setSectionVisibility(section, visible) {
+            const el = document.querySelector(`[data-inspection-section="${section}"]`);
+            if (!el) return;
+            el.hidden = !visible;
+            el.querySelectorAll('input, textarea, select').forEach(function (field) {
+                field.disabled = !visible;
+                if (!visible && field.type === 'checkbox') field.checked = false;
+            });
+        }
+
+        function updateOptionalFeatureOptions(rule) {
+            const panel = document.getElementById('optionalFeaturesPanel');
+            panel.hidden = !rule || rule.manual;
+            document.querySelectorAll('[data-feature-option]').forEach(function (label) {
+                const feature = label.dataset.featureOption;
+                const visible = Boolean(rule && rule.optional && rule.optional.includes(feature));
+                label.hidden = !visible;
+                const input = label.querySelector('input');
+                input.disabled = !visible;
+                if (!visible) input.checked = false;
+            });
+        }
+
+        function updateBedroomFields(count) {
+            const container = document.getElementById('bedroomFields');
+            container.innerHTML = '';
+            for (let i = 1; i <= count; i += 1) {
+                const group = document.createElement('div');
+                group.className = 'signoff-block';
+                group.innerHTML = `<h4>Bedroom ${i}</h4>
+                    <div class="inspection-grid">
+                        <div class="form-group"><label for="bedroom${i}Floor">Floor type and condition</label><textarea id="bedroom${i}Floor" name="bedroom${i}Floor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Walls">Wall condition and painting (indicate the colour)</label><textarea id="bedroom${i}Walls" name="bedroom${i}Walls"></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Ceiling">Ceiling condition and finish (indicate the colour)</label><textarea id="bedroom${i}Ceiling" name="bedroom${i}Ceiling"></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Wardrobe">Wardrobe/cabinet condition *</label><textarea id="bedroom${i}Wardrobe" name="bedroom${i}Wardrobe" required></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Door">Door condition and finish (indicate the colour)</label><textarea id="bedroom${i}Door" name="bedroom${i}Door"></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Window">Window condition and finish (indicate the colour)</label><textarea id="bedroom${i}Window" name="bedroom${i}Window"></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Lighting">Lighting and switches</label><textarea id="bedroom${i}Lighting" name="bedroom${i}Lighting"></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Sockets">Sockets</label><textarea id="bedroom${i}Sockets" name="bedroom${i}Sockets"></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Remarks">General remarks</label><textarea id="bedroom${i}Remarks" name="bedroom${i}Remarks"></textarea></div>
+                    </div>`;
+                container.appendChild(group);
+            }
+        }
+
+        function computeScope() {
+            const unitType = document.getElementById('unitType').value;
+            const rule = UNIT_RULES[unitType];
+            const sections = new Set();
+
+            if (!rule) return { rule: null, sections };
+
+            rule.sections.forEach(function (section) { sections.add(section); });
+
+            if (rule.manual) {
+                selectedManualSections().forEach(function (section) { sections.add(section); });
+            } else {
+                if (checked('featureKitchen')) sections.add('kitchen');
+                if (checked('featureBathroom')) sections.add('bathroom');
+                if (checked('featureToilet')) sections.add('toilet');
+                if (checked('featureBalcony')) sections.add('balcony');
+                if (checked('featureYard')) sections.add('yard');
+                if (checked('featureStore')) sections.add('store');
+                if (checked('featureOtherArea')) sections.add('other_area');
+            }
+
+            sections.add('meters');
+
+            return { rule, sections };
+        }
+
+        function updateScope() {
+            const result = computeScope();
+            const rule = result.rule;
+            activeSections = result.sections;
+
+            document.getElementById('manualScopePanel').hidden = !(rule && rule.manual);
+            updateOptionalFeatureOptions(rule);
+            document.getElementById('mainRoomTitle').textContent = rule ? rule.mainRoomTitle : 'Main Room / Living Area';
+
+            Object.keys(SECTION_LABELS).forEach(function (section) {
+                setSectionVisibility(section, activeSections.has(section));
+            });
+
+            Object.entries(APPLICABILITY_FIELD).forEach(function ([section, id]) {
+                document.getElementById(id).value = activeSections.has(section) ? 'Yes' : 'No';
+            });
+
+            const bedroomCountGroup = document.getElementById('bedroomCountGroup');
+            const bedroomCountInput = document.getElementById('bedroomCount');
+            if (rule && rule.manual) {
+                bedroomCountInput.min = '1';
+                if (Number(bedroomCountInput.value || 0) < 1) bedroomCountInput.value = '1';
+            } else {
+                bedroomCountInput.min = '4';
+                if (rule && rule.variableBedrooms && Number(bedroomCountInput.value || 0) < 4) bedroomCountInput.value = '4';
+            }
+            const bedroomCount = rule && rule.variableBedrooms
+                ? Math.max(Number(bedroomCountInput.value || rule.bedroomCount || 1), rule.manual ? 1 : 4)
+                : Number(rule && rule.bedroomCount ? rule.bedroomCount : 0);
+            bedroomCountGroup.hidden = !(rule && rule.variableBedrooms && activeSections.has('bedrooms'));
+            bedroomCountInput.disabled = bedroomCountGroup.hidden;
+            if (activeSections.has('bedrooms')) {
+                const bedroomFields = document.getElementById('bedroomFields');
+                if (bedroomFields.dataset.count !== String(bedroomCount)) {
+                    updateBedroomFields(bedroomCount);
+                    bedroomFields.dataset.count = String(bedroomCount);
+                }
+            } else {
+                const bedroomFields = document.getElementById('bedroomFields');
+                bedroomFields.innerHTML = '';
+                bedroomFields.dataset.count = '0';
+            }
+
+            document.querySelectorAll('[data-key-section]').forEach(function (label) {
+                const keySection = label.dataset.keySection;
+                const visible = keySection === 'always' || activeSections.has(keySection);
+                label.hidden = !visible;
+                label.querySelectorAll('input').forEach(function (input) {
+                    input.disabled = !visible;
+                    if (!visible && input.type === 'checkbox') input.checked = false;
+                    if (!visible && input.type === 'number') input.value = '';
+                });
+            });
+            updateKeyQuantities();
+
+            renumberVisibleSections();
+            updateUtilitiesVisibility();
+        }
+
+        function setConditionalField(groupId, visible) {
+            const group = document.getElementById(groupId);
+            if (!group) return;
+            group.hidden = !visible;
+            group.querySelectorAll('input, textarea, select').forEach(function (field) {
+                field.disabled = !visible;
+                if (!visible) field.value = '';
+            });
+        }
+
+        function updateUtilitiesVisibility() {
+            const waterMetered = document.getElementById('isWaterMetered').value;
+            const electricityType = document.getElementById('electricityBillingType').value;
+            const waterReading = document.getElementById('waterMeterReading');
+            const electricityMeter = document.getElementById('electricityMeterNo');
+            const electricityReading = document.getElementById('electricityMeterReading');
+
+            setConditionalField('waterReadingGroup', waterMetered === 'Yes');
+            setConditionalField('electricityMeterGroup', electricityType === 'Prepaid' || electricityType === 'Postpaid');
+            setConditionalField('electricityReadingGroup', electricityType === 'Postpaid');
+
+            waterReading.required = waterMetered === 'Yes';
+            electricityMeter.required = electricityType === 'Postpaid';
+            electricityReading.required = electricityType === 'Postpaid';
+        }
+
+        function updateKeyQuantities() {
+            document.querySelectorAll('.key-option').forEach(function (label) {
+                const lock = label.querySelector('[data-lock-checkbox]');
+                const checkbox = label.querySelector('[data-key-checkbox]');
+                const quantity = label.querySelector('.key-quantity');
+                const visible = !label.hidden;
+                const lockFitted = visible && lock && lock.checked;
+                checkbox.disabled = !lockFitted;
+                if (!lockFitted) checkbox.checked = false;
+                const keyGiven = lockFitted && checkbox.checked;
+                quantity.disabled = !keyGiven;
+                quantity.required = keyGiven;
+                if (!keyGiven) quantity.value = '';
+            });
+        }
+
+        function renumberVisibleSections() {
+            let number = 1;
+            document.querySelectorAll('.section').forEach(function (section) {
+                if (section.hidden) return;
+                const badge = section.querySelector('.section-number');
+                if (badge) {
+                    badge.textContent = number;
+                    number += 1;
+                }
+            });
+        }
+
+        function row(label, value, full) {
+            if (!value) return '';
+            return `<div class="summary-item${full ? ' full' : ''}">
+                        <div class="summary-label">${esc(label)}</div>
+                        <div class="summary-value">${esc(value)}</div>
+                    </div>`;
+        }
+
+        function rowsFromFields(data, fields) {
+            return fields.map(function ([label, name]) {
+                return row(label, data[name], true);
+            });
+        }
+
+        function keySummary(formData) {
+            const parts = [];
+            document.querySelectorAll('.key-option').forEach(function (label) {
+                const checkbox = label.querySelector('[data-key-checkbox]');
+                const quantity = label.querySelector('.key-quantity');
+                if (!checkbox || !quantity || checkbox.disabled || !checkbox.checked) return;
+                const count = formData.get(quantity.name);
+                parts.push(`${checkbox.value}${count ? ' x ' + count : ''}`);
+            });
+            return parts.join(', ');
+        }
+
+        function sectionHtml(title, rows) {
+            const content = rows.filter(Boolean).join('');
+            if (!content) return '';
+            return `<div class="summary-section"><h3>${esc(title)}</h3><div class="summary-row">${content}</div></div>`;
+        }
+
+        function buildSummaryHTML() {
+            updateScope();
+            const fd = new FormData(document.getElementById('inspectionForm'));
+            const d = Object.fromEntries(fd);
+            const keys = keySummary(fd);
+            let html = '';
+
+            html += sectionHtml('Report Details', [
+                row('Property Name', d.propertyName),
+                row('Premises No.', d.premisesNo),
+                row('Date Taken', d.dateTaken),
+                row('Inspection Type', d.inspectionType),
+                row('Type of rented unit', d.unitType)
+            ]);
+
+            if (activeSections.has('main_room')) {
+                html += sectionHtml(document.getElementById('mainRoomTitle').textContent, rowsFromFields(d, FIELD_GROUPS.main_room));
+            }
+
+            if (activeSections.has('bedrooms')) {
+                const bedroomRows = [];
+                const count = Number(d.bedroomCount || document.querySelectorAll('#bedroomFields textarea').length || 0);
+                if (d.unitType === 'Four Bedroom+' || d.unitType === 'Other') bedroomRows.push(row('Bedrooms inspected', String(count)));
+                for (let i = 1; i <= count; i += 1) {
+                    bedroomRows.push(row('Bedroom ' + i + ' floor type and condition', d['bedroom' + i + 'Floor'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' wall condition and painting (indicate the colour)', d['bedroom' + i + 'Walls'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' ceiling condition and finish (indicate the colour)', d['bedroom' + i + 'Ceiling'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' wardrobe/cabinet condition', d['bedroom' + i + 'Wardrobe'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' door condition and finish (indicate the colour)', d['bedroom' + i + 'Door'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' window condition and finish (indicate the colour)', d['bedroom' + i + 'Window'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' lighting and switches', d['bedroom' + i + 'Lighting'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' sockets', d['bedroom' + i + 'Sockets'], true));
+                    bedroomRows.push(row('Bedroom ' + i + ' general remarks', d['bedroom' + i + 'Remarks'], true));
+                }
+                html += sectionHtml('Bedroom Section', bedroomRows);
+            }
+
+            const simpleSections = [
+                ['kitchen', 'Kitchen / Kitchenette / Sink Area'],
+                ['bathroom', 'Bathroom'],
+                ['toilet', 'Toilet'],
+                ['balcony', 'Balcony / Verandah'],
+                ['yard', 'Yard / Compound Area'],
+                ['store', 'Store / Pantry'],
+                ['other_area', 'Other Area / Facility']
+            ];
+
+            simpleSections.forEach(function ([section, title]) {
+                if (activeSections.has(section)) html += sectionHtml(title, rowsFromFields(d, FIELD_GROUPS[section]));
+            });
+
+            if (activeSections.has('doors_windows')) {
+                html += sectionHtml('External Access and Keys', [
+                    row('External/access doors', d.doorsCondition, true),
+                    row('External/access windows', d.windowsCondition, true),
+                    row('Locks and keys availed', keys, true)
+                ]);
+            }
+
+            if (activeSections.has('electrical')) {
+                html += sectionHtml('Other Electrical Fittings', [
+                    row('Other electrical fittings (apart from sockets, lighting and switches)', d.electricalCondition, true)
+                ]);
+            }
+
+            if (activeSections.has('meters')) {
+                html += sectionHtml('Utilities', [
+                    row('Is water metered?', d.isWaterMetered),
+                    row('Water meter reading', d.waterMeterReading),
+                    row('Electricity billing type', d.electricityBillingType),
+                    row('Electricity meter No.', d.electricityMeterNo),
+                    row('Electricity meter reading', d.electricityMeterReading)
+                ]);
+            }
+
+            html += sectionHtml('Notes', [row('Notes', d.notes, true)]);
+            html += sectionHtml('Sign-off', [
+                row('Declaration', document.getElementById('declarationText').textContent, true),
+                row('Tenant', d.tenantName),
+                row('Tenant signed', d.tenantSign),
+                row('Tenant date', d.tenantDate),
+                row('Caretaker', d.caretakerName),
+                row('Caretaker signed', d.caretakerSign),
+                row('Caretaker date', d.caretakerDate),
+                row('Property manager', d.managerName),
+                row('Property manager signed', d.managerSign),
+                row('Property manager date', d.managerDate),
+                row('Tenant confirmation', d.tenantConfirmation)
+            ]);
+
+            return html;
+        }
+
+        function resetDownloadGate() {
+            hasDownloaded = false;
+            const submitBtn = document.getElementById('submitBtn');
+            const dlBtn = document.getElementById('downloadBtn');
+            const note = document.getElementById('downloadNote');
+            submitBtn.disabled = true;
+            dlBtn.classList.remove('done');
+            dlBtn.textContent = '📥 Download My PDF Copy';
+            note.textContent = 'Please download your PDF copy first before you submit.';
+            note.style.display = 'block';
+        }
+
+        function safeFileName(value) {
+            return (value || 'report').replace(/[^a-z0-9\-_ ]/gi, '').trim().replace(/\s+/g, '-') || 'report';
+        }
+
+        async function downloadPdf() {
+            const form = document.getElementById('inspectionForm');
+            if (!form.reportValidity()) return;
+            if (typeof html2pdf === 'undefined') {
+                alert('PDF generator could not load. Please check your internet connection and try again.');
+                return;
+            }
+
+            const fd = new FormData(form);
+            const d = Object.fromEntries(fd);
+            const pdfSource = document.getElementById('pdfSource');
+            document.getElementById('summaryTitle').textContent = 'Property Inspection Report';
+            document.getElementById('summarySubtitle').textContent = 'Review, print, or save a PDF copy.';
+            pdfSource.innerHTML = `<h1>Property Inspection Report</h1>${buildSummaryHTML()}`;
+
+            const filename = `Inspection-Report-${safeFileName(d.propertyName)}-${safeFileName(d.premisesNo)}.pdf`;
+            await html2pdf().set({
+                margin: 10,
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(pdfSource).save();
+
+            hasDownloaded = true;
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('downloadBtn').classList.add('done');
+            document.getElementById('downloadBtn').textContent = '✅ PDF Copy Downloaded';
+            document.getElementById('downloadNote').style.display = 'none';
+        }
+
+        function closeSummary() {
+            const modal = document.getElementById('summaryModal');
+            modal.classList.remove('active');
+        }
+
+        function setDefaultDates() {
+            const today = new Date();
+            ['dateTaken', 'tenantDate', 'caretakerDate', 'managerDate'].forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) el.valueAsDate = today;
+            });
+        }
+
+        function updateDeclarationText() {
+            const inspectionType = document.querySelector('input[name="inspectionType"]:checked');
+            const text = inspectionType && inspectionType.value === 'Move In'
+                ? 'I hereby confirm that the above is the true and actual state of the premises as I move in and will endeavour to leave them in the same state as I found them.'
+                : inspectionType && inspectionType.value === 'Move Out'
+                    ? 'I hereby confirm that the above is the true and actual state of the premises as I move out.'
+                    : 'I hereby confirm that the above is the true and actual state of the premises for the selected inspection type and will endeavour to leave them in the same state as I found them.';
+            document.getElementById('declarationText').textContent = text;
+        }
+
+        document.getElementById('unitType').addEventListener('change', function () {
+            updateScope();
+            resetDownloadGate();
+        });
+
+        document.querySelectorAll('input[name="inspectionType"]').forEach(function (input) {
+            input.addEventListener('change', function () {
+                updateDeclarationText();
+                resetDownloadGate();
+            });
+        });
+
+        document.getElementById('bedroomCount').addEventListener('input', function () {
+            updateScope();
+            resetDownloadGate();
+        });
+
+        document.querySelectorAll('#optionalFeaturesPanel input, #manualScopePanel input').forEach(function (input) {
+            input.addEventListener('change', function () {
+                updateScope();
+                resetDownloadGate();
+            });
+        });
+
+        document.querySelectorAll('#isWaterMetered, #electricityBillingType').forEach(function (input) {
+            input.addEventListener('change', function () {
+                updateUtilitiesVisibility();
+                resetDownloadGate();
+            });
+        });
+
+        document.querySelectorAll('[data-key-checkbox], [data-lock-checkbox]').forEach(function (input) {
+            input.addEventListener('change', function () {
+                updateKeyQuantities();
+                resetDownloadGate();
+            });
+        });
+
+        document.getElementById('inspectionForm').addEventListener('input', function (event) {
+            if (event.target.id === 'unitType' || event.target.id === 'bedroomCount') return;
+            if (event.target.closest('#optionalFeaturesPanel') || event.target.closest('#manualScopePanel')) return;
+            if (hasDownloaded) resetDownloadGate();
+        });
+
+        document.getElementById('inspectionForm').addEventListener('change', function (event) {
+            if (event.target.id === 'unitType' || event.target.id === 'bedroomCount') return;
+            if (event.target.closest('#optionalFeaturesPanel') || event.target.closest('#manualScopePanel')) return;
+            if (hasDownloaded) resetDownloadGate();
+        });
+
+        document.getElementById('inspectionForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            updateScope();
+
+            if (!hasDownloaded) {
+                const note = document.getElementById('downloadNote');
+                note.textContent = 'Please download your PDF copy first before you submit.';
+                note.style.display = 'block';
+                document.getElementById('downloadBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(FORMSPREE_ENDPOINT, {
+                    method: 'POST',
+                    body: new FormData(event.target),
+                    headers: { Accept: 'application/json' }
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error((data && data.error) || 'Submission failed');
+                submitBtn.textContent = 'Submitted';
+                document.getElementById('summaryTitle').textContent = 'Inspection Report Submitted';
+                document.getElementById('summarySubtitle').textContent = 'The report has been recorded successfully.';
+                document.getElementById('summaryBody').innerHTML = buildSummaryHTML();
+                document.getElementById('summaryModal').classList.add('active');
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('There was an error submitting this report. Please check your connection, confirm the Formspree endpoint is configured, and try again.');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        setDefaultDates();
+        updateDeclarationText();
+        updateScope();
+        resetDownloadGate();
+    </script>
+</body>
+</html>
