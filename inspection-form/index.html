@@ -306,13 +306,18 @@
         }
 
         .pdf-source {
-            position: fixed;
-            left: -9999px;
-            top: 0;
             width: 794px;
             background: #fff;
             color: #333;
             padding: 28px;
+        }
+
+        .pdf-rendering {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 2000;
+            pointer-events: none;
         }
 
         .btn-print { background: #27ae60; padding: 12px 25px; }
@@ -420,14 +425,14 @@
                 <div class="section" data-inspection-section="main_room">
                     <h2 class="section-title"><span class="section-number">2</span><span id="mainRoomTitle">Main Room / Living Area</span></h2>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="mainRoomFloor">Floor type and condition</label><textarea id="mainRoomFloor" name="mainRoomFloor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea></div>
-                        <div class="form-group"><label for="mainRoomWalls">Wall condition and painting (indicate the colour)</label><textarea id="mainRoomWalls" name="mainRoomWalls"></textarea></div>
-                        <div class="form-group"><label for="mainRoomCeiling">Ceiling condition and finish (indicate the colour)</label><textarea id="mainRoomCeiling" name="mainRoomCeiling"></textarea></div>
-                        <div class="form-group"><label for="mainRoomDoors">Door condition and finish (indicate the colour)</label><textarea id="mainRoomDoors" name="mainRoomDoors"></textarea></div>
-                        <div class="form-group"><label for="mainRoomWindows">Window condition and finish (indicate the colour)</label><textarea id="mainRoomWindows" name="mainRoomWindows" placeholder="Include window holds/stays and the condition of curtain rods or boxes..."></textarea></div>
-                        <div class="form-group"><label for="mainRoomLighting">Lighting and switches</label><textarea id="mainRoomLighting" name="mainRoomLighting"></textarea></div>
-                        <div class="form-group"><label for="mainRoomSockets">Sockets</label><textarea id="mainRoomSockets" name="mainRoomSockets"></textarea></div>
-                        <div class="form-group"><label for="mainRoomRemarks">General remarks</label><textarea id="mainRoomRemarks" name="mainRoomRemarks"></textarea></div>
+                        <div class="form-group"><label for="mainRoomFloor">Floor type and condition</label><textarea id="mainRoomFloor" name="mainRoomFloor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea><div class="field-hint">Note the floor type and any cracks, loose sections, stains, chips or worn areas.</div></div>
+                        <div class="form-group"><label for="mainRoomWalls">Wall condition and painting (indicate the colour)</label><textarea id="mainRoomWalls" name="mainRoomWalls"></textarea><div class="field-hint">Record paint colour/finish and any visible cracks, marks, dampness, peeling or repairs.</div></div>
+                        <div class="form-group"><label for="mainRoomCeiling">Ceiling condition and finish (indicate the colour)</label><textarea id="mainRoomCeiling" name="mainRoomCeiling"></textarea><div class="field-hint">Mention the finish/colour and any stains, cracks, peeling, leaks or sagging.</div></div>
+                        <div class="form-group"><label for="mainRoomDoors">Door condition and finish (indicate the colour)</label><textarea id="mainRoomDoors" name="mainRoomDoors"></textarea><div class="field-hint">Include frame, hinges, handles, visible damage and whether the door closes properly.</div></div>
+                        <div class="form-group"><label for="mainRoomWindows">Window condition and finish (indicate the colour)</label><textarea id="mainRoomWindows" name="mainRoomWindows"></textarea><div class="field-hint">Include window holds/stays and the condition of curtain rods or boxes, where present.</div></div>
+                        <div class="form-group"><label for="mainRoomLighting">Lighting and switches</label><textarea id="mainRoomLighting" name="mainRoomLighting"></textarea><div class="field-hint">Note whether lights and switches are present, working and visibly intact.</div></div>
+                        <div class="form-group"><label for="mainRoomSockets">Sockets</label><textarea id="mainRoomSockets" name="mainRoomSockets"></textarea><div class="field-hint">Record visible condition, loose plates, cracks, burn marks or missing covers.</div></div>
+                        <div class="form-group"><label for="mainRoomRemarks">General remarks</label><textarea id="mainRoomRemarks" name="mainRoomRemarks"></textarea><div class="field-hint">Add any other observation relevant to this area.</div></div>
                     </div>
                 </div>
 
@@ -443,79 +448,79 @@
                 <div class="section" data-inspection-section="kitchen">
                     <h2 class="section-title"><span class="section-number">4</span>Kitchen / Kitchenette / Sink Area</h2>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="kitchenSink">Sink condition *</label><textarea id="kitchenSink" name="kitchenSink" required></textarea></div>
-                        <div class="form-group"><label for="kitchenTap">Tap condition *</label><textarea id="kitchenTap" name="kitchenTap" required></textarea></div>
-                        <div class="form-group"><label for="kitchenDrainage">Drainage</label><textarea id="kitchenDrainage" name="kitchenDrainage"></textarea></div>
-                        <div class="form-group"><label for="kitchenCabinet">Cabinet/shelf condition *</label><textarea id="kitchenCabinet" name="kitchenCabinet" required></textarea></div>
-                        <div class="form-group"><label for="kitchenCounter">Counter/worktop condition</label><textarea id="kitchenCounter" name="kitchenCounter"></textarea></div>
-                        <div class="form-group"><label for="kitchenWallFloor">Wall/floor type and condition</label><textarea id="kitchenWallFloor" name="kitchenWallFloor" placeholder="Indicate wall/floor finish and condition..."></textarea></div>
-                        <div class="form-group"><label for="kitchenElectrical">Electrical points</label><textarea id="kitchenElectrical" name="kitchenElectrical"></textarea></div>
-                        <div class="form-group"><label for="kitchenRemarks">General remarks</label><textarea id="kitchenRemarks" name="kitchenRemarks"></textarea></div>
+                        <div class="form-group"><label for="kitchenSink">Sink condition *</label><textarea id="kitchenSink" name="kitchenSink" required></textarea><div class="field-hint">Note material, stains, cracks, rust, loose fitting or leakage.</div></div>
+                        <div class="form-group"><label for="kitchenTap">Tap condition *</label><textarea id="kitchenTap" name="kitchenTap" required></textarea><div class="field-hint">Mention whether taps are present, working, firm and not leaking.</div></div>
+                        <div class="form-group"><label for="kitchenDrainage">Drainage</label><textarea id="kitchenDrainage" name="kitchenDrainage"></textarea><div class="field-hint">Record whether water drains normally and any smell, blockage or leak observed.</div></div>
+                        <div class="form-group"><label for="kitchenCabinet">Cabinet/shelf condition *</label><textarea id="kitchenCabinet" name="kitchenCabinet" required></textarea><div class="field-hint">Include doors, hinges, handles, shelves, water damage or missing parts.</div></div>
+                        <div class="form-group"><label for="kitchenCounter">Counter/worktop condition</label><textarea id="kitchenCounter" name="kitchenCounter"></textarea><div class="field-hint">Note material and any burns, chips, swelling, cracks or stains.</div></div>
+                        <div class="form-group"><label for="kitchenWallFloor">Wall/floor type and condition</label><textarea id="kitchenWallFloor" name="kitchenWallFloor" placeholder="Indicate wall/floor finish and condition..."></textarea><div class="field-hint">Mention wall finish, floor type, colour and any cracks, stains or dampness.</div></div>
+                        <div class="form-group"><label for="kitchenElectrical">Electrical points</label><textarea id="kitchenElectrical" name="kitchenElectrical"></textarea><div class="field-hint">Record visible socket/switch condition and any loose, cracked or exposed points.</div></div>
+                        <div class="form-group"><label for="kitchenRemarks">General remarks</label><textarea id="kitchenRemarks" name="kitchenRemarks"></textarea><div class="field-hint">Add any other kitchen observation not captured above.</div></div>
                     </div>
                 </div>
 
                 <div class="section" data-inspection-section="bathroom">
                     <h2 class="section-title"><span class="section-number">5</span>Bathroom</h2>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="bathroomShower">Showerhead condition *</label><textarea id="bathroomShower" name="bathroomShower" required></textarea></div>
-                        <div class="form-group"><label for="bathroomTaps">Taps *</label><textarea id="bathroomTaps" name="bathroomTaps" required></textarea></div>
-                        <div class="form-group"><label for="bathroomDrainage">Drainage</label><textarea id="bathroomDrainage" name="bathroomDrainage"></textarea></div>
-                        <div class="form-group"><label for="bathroomFloor">Floor type and condition</label><textarea id="bathroomFloor" name="bathroomFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea></div>
-                        <div class="form-group"><label for="bathroomWall">Wall condition and painting/finish (indicate the colour)</label><textarea id="bathroomWall" name="bathroomWall"></textarea></div>
-                        <div class="form-group"><label for="bathroomDoor">Door condition and finish (indicate the colour)</label><textarea id="bathroomDoor" name="bathroomDoor"></textarea></div>
-                        <div class="form-group"><label for="bathroomVentilation">Ventilation</label><textarea id="bathroomVentilation" name="bathroomVentilation"></textarea></div>
-                        <div class="form-group"><label for="bathroomRemarks">General remarks</label><textarea id="bathroomRemarks" name="bathroomRemarks"></textarea></div>
+                        <div class="form-group"><label for="bathroomShower">Showerhead condition *</label><textarea id="bathroomShower" name="bathroomShower" required></textarea><div class="field-hint">Mention whether it is present, working, firm and free from visible leaks.</div></div>
+                        <div class="form-group"><label for="bathroomTaps">Taps *</label><textarea id="bathroomTaps" name="bathroomTaps" required></textarea><div class="field-hint">Record condition, water flow, leakage, rust or loose fittings.</div></div>
+                        <div class="form-group"><label for="bathroomDrainage">Drainage</label><textarea id="bathroomDrainage" name="bathroomDrainage"></textarea><div class="field-hint">Note whether water drains normally and any blockage, smell or pooling.</div></div>
+                        <div class="form-group"><label for="bathroomFloor">Floor type and condition</label><textarea id="bathroomFloor" name="bathroomFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea><div class="field-hint">Include floor type and any cracks, missing tiles, stains or slippery/damaged areas.</div></div>
+                        <div class="form-group"><label for="bathroomWall">Wall condition and painting/finish (indicate the colour)</label><textarea id="bathroomWall" name="bathroomWall"></textarea><div class="field-hint">Record wall finish/colour and any dampness, cracks, mould, stains or peeling.</div></div>
+                        <div class="form-group"><label for="bathroomDoor">Door condition and finish (indicate the colour)</label><textarea id="bathroomDoor" name="bathroomDoor"></textarea><div class="field-hint">Include frame, hinges, handle, lock/latch if present, and whether it closes properly.</div></div>
+                        <div class="form-group"><label for="bathroomVentilation">Ventilation</label><textarea id="bathroomVentilation" name="bathroomVentilation"></textarea><div class="field-hint">Mention window, vent or extractor condition where present.</div></div>
+                        <div class="form-group"><label for="bathroomRemarks">General remarks</label><textarea id="bathroomRemarks" name="bathroomRemarks"></textarea><div class="field-hint">Add any other bathroom observation not captured above.</div></div>
                     </div>
                 </div>
 
                 <div class="section" data-inspection-section="toilet">
                     <h2 class="section-title"><span class="section-number">6</span>Toilet</h2>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="toiletWc">WC/toilet condition *</label><textarea id="toiletWc" name="toiletWc" required></textarea></div>
-                        <div class="form-group"><label for="toiletHandwashBasin">Handwash basin condition *</label><textarea id="toiletHandwashBasin" name="toiletHandwashBasin" required></textarea></div>
-                        <div class="form-group"><label for="toiletTaps">Taps *</label><textarea id="toiletTaps" name="toiletTaps" required></textarea></div>
-                        <div class="form-group"><label for="toiletFlush">Flush condition</label><textarea id="toiletFlush" name="toiletFlush"></textarea></div>
-                        <div class="form-group"><label for="toiletCistern">Cistern condition</label><textarea id="toiletCistern" name="toiletCistern"></textarea></div>
-                        <div class="form-group"><label for="toiletDoor">Door condition and finish (indicate the colour)</label><textarea id="toiletDoor" name="toiletDoor"></textarea></div>
-                        <div class="form-group"><label for="toiletFloor">Floor type and condition</label><textarea id="toiletFloor" name="toiletFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea></div>
-                        <div class="form-group"><label for="toiletWall">Wall condition and painting/finish (indicate the colour)</label><textarea id="toiletWall" name="toiletWall"></textarea></div>
-                        <div class="form-group"><label for="toiletVentilation">Ventilation</label><textarea id="toiletVentilation" name="toiletVentilation"></textarea></div>
-                        <div class="form-group"><label for="toiletRemarks">General remarks</label><textarea id="toiletRemarks" name="toiletRemarks"></textarea></div>
+                        <div class="form-group"><label for="toiletWc">WC/toilet condition *</label><textarea id="toiletWc" name="toiletWc" required></textarea><div class="field-hint">Note cleanliness, cracks, stability, stains, leaks or visible damage.</div></div>
+                        <div class="form-group"><label for="toiletHandwashBasin">Handwash basin condition *</label><textarea id="toiletHandwashBasin" name="toiletHandwashBasin" required></textarea><div class="field-hint">Mention cracks, stains, leaks, loose fitting or missing parts.</div></div>
+                        <div class="form-group"><label for="toiletTaps">Taps *</label><textarea id="toiletTaps" name="toiletTaps" required></textarea><div class="field-hint">Record whether taps are present, working, firm and not leaking.</div></div>
+                        <div class="form-group"><label for="toiletFlush">Flush condition</label><textarea id="toiletFlush" name="toiletFlush"></textarea><div class="field-hint">Note whether the flush works normally and any leakage or weak flow.</div></div>
+                        <div class="form-group"><label for="toiletCistern">Cistern condition</label><textarea id="toiletCistern" name="toiletCistern"></textarea><div class="field-hint">Mention cover, handle/button, cracks, leaks or loose fitting.</div></div>
+                        <div class="form-group"><label for="toiletDoor">Door condition and finish (indicate the colour)</label><textarea id="toiletDoor" name="toiletDoor"></textarea><div class="field-hint">Include frame, hinges, handle, latch/lock if present, and whether it closes properly.</div></div>
+                        <div class="form-group"><label for="toiletFloor">Floor type and condition</label><textarea id="toiletFloor" name="toiletFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea><div class="field-hint">Include floor type and any cracks, missing tiles, stains or damaged areas.</div></div>
+                        <div class="form-group"><label for="toiletWall">Wall condition and painting/finish (indicate the colour)</label><textarea id="toiletWall" name="toiletWall"></textarea><div class="field-hint">Record wall finish/colour and any dampness, cracks, stains or peeling.</div></div>
+                        <div class="form-group"><label for="toiletVentilation">Ventilation</label><textarea id="toiletVentilation" name="toiletVentilation"></textarea><div class="field-hint">Mention window, vent or extractor condition where present.</div></div>
+                        <div class="form-group"><label for="toiletRemarks">General remarks</label><textarea id="toiletRemarks" name="toiletRemarks"></textarea><div class="field-hint">Add any other toilet observation not captured above.</div></div>
                     </div>
                 </div>
 
                 <div class="section" data-inspection-section="balcony">
                     <h2 class="section-title"><span class="section-number">7</span>Balcony / Verandah</h2>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="balconyFloor">Floor type and condition</label><textarea id="balconyFloor" name="balconyFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea></div>
-                        <div class="form-group"><label for="balconyRailings">Railings</label><textarea id="balconyRailings" name="balconyRailings"></textarea></div>
-                        <div class="form-group"><label for="balconyDrainage">Drainage</label><textarea id="balconyDrainage" name="balconyDrainage"></textarea></div>
-                        <div class="form-group"><label for="balconyAccess">Door/access</label><textarea id="balconyAccess" name="balconyAccess"></textarea></div>
-                        <div class="form-group"><label for="balconyRemarks">General remarks</label><textarea id="balconyRemarks" name="balconyRemarks"></textarea></div>
+                        <div class="form-group"><label for="balconyFloor">Floor type and condition</label><textarea id="balconyFloor" name="balconyFloor" placeholder="Example: tiles, cement, terrazzo..."></textarea><div class="field-hint">Note floor type and any cracks, stains, broken tiles or pooling water.</div></div>
+                        <div class="form-group"><label for="balconyRailings">Railings</label><textarea id="balconyRailings" name="balconyRailings"></textarea><div class="field-hint">Mention firmness, rust, missing parts, cracks or visible damage.</div></div>
+                        <div class="form-group"><label for="balconyDrainage">Drainage</label><textarea id="balconyDrainage" name="balconyDrainage"></textarea><div class="field-hint">Record whether drainage is clear and any blockage or standing water.</div></div>
+                        <div class="form-group"><label for="balconyAccess">Door/access</label><textarea id="balconyAccess" name="balconyAccess"></textarea><div class="field-hint">Include door/access condition, handle, lock/latch if present and ease of opening.</div></div>
+                        <div class="form-group"><label for="balconyRemarks">General remarks</label><textarea id="balconyRemarks" name="balconyRemarks"></textarea><div class="field-hint">Add any other observation relevant to the balcony/verandah.</div></div>
                     </div>
                 </div>
 
                 <div class="section" data-inspection-section="yard">
                     <h2 class="section-title"><span class="section-number">8</span>Yard / Compound Area</h2>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="yardSurface">Surface condition</label><textarea id="yardSurface" name="yardSurface"></textarea></div>
-                        <div class="form-group"><label for="yardDrainage">Drainage</label><textarea id="yardDrainage" name="yardDrainage"></textarea></div>
-                        <div class="form-group"><label for="yardGate">Gate/access</label><textarea id="yardGate" name="yardGate"></textarea></div>
-                        <div class="form-group"><label for="yardFencing">Fencing/walling</label><textarea id="yardFencing" name="yardFencing"></textarea></div>
-                        <div class="form-group"><label for="yardTaps">External taps, if any</label><textarea id="yardTaps" name="yardTaps"></textarea></div>
-                        <div class="form-group"><label for="yardRemarks">General remarks</label><textarea id="yardRemarks" name="yardRemarks"></textarea></div>
+                        <div class="form-group"><label for="yardSurface">Surface condition</label><textarea id="yardSurface" name="yardSurface"></textarea><div class="field-hint">Note paving, soil, grass or concrete condition and any uneven/damaged areas.</div></div>
+                        <div class="form-group"><label for="yardDrainage">Drainage</label><textarea id="yardDrainage" name="yardDrainage"></textarea><div class="field-hint">Record whether water drains normally and any blockage or pooling.</div></div>
+                        <div class="form-group"><label for="yardGate">Gate/access</label><textarea id="yardGate" name="yardGate"></textarea><div class="field-hint">Mention gate, hinges, latch/lock if present, and ease of opening/closing.</div></div>
+                        <div class="form-group"><label for="yardFencing">Fencing/walling</label><textarea id="yardFencing" name="yardFencing"></textarea><div class="field-hint">Note visible cracks, loose sections, holes, rust or missing parts.</div></div>
+                        <div class="form-group"><label for="yardTaps">External taps, if any</label><textarea id="yardTaps" name="yardTaps"></textarea><div class="field-hint">Record condition, leaks and whether the tap is working, where present.</div></div>
+                        <div class="form-group"><label for="yardRemarks">General remarks</label><textarea id="yardRemarks" name="yardRemarks"></textarea><div class="field-hint">Add any other observation relevant to the exclusive yard/compound area.</div></div>
                     </div>
                 </div>
 
                 <div class="section" data-inspection-section="store">
                     <h2 class="section-title"><span class="section-number">9</span>Store / Pantry</h2>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="storeDoor">Door condition and finish (indicate the colour)</label><textarea id="storeDoor" name="storeDoor"></textarea></div>
-                        <div class="form-group"><label for="storeShelving">Shelving</label><textarea id="storeShelving" name="storeShelving"></textarea></div>
-                        <div class="form-group"><label for="storeFloor">Floor type and condition</label><textarea id="storeFloor" name="storeFloor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea></div>
-                        <div class="form-group"><label for="storeWall">Wall condition and painting (indicate the colour)</label><textarea id="storeWall" name="storeWall"></textarea></div>
-                        <div class="form-group"><label for="storeCeiling">Ceiling condition and finish (indicate the colour)</label><textarea id="storeCeiling" name="storeCeiling"></textarea></div>
-                        <div class="form-group"><label for="storeRemarks">General remarks</label><textarea id="storeRemarks" name="storeRemarks"></textarea></div>
+                        <div class="form-group"><label for="storeDoor">Door condition and finish (indicate the colour)</label><textarea id="storeDoor" name="storeDoor"></textarea><div class="field-hint">Include frame, hinges, handle, latch/lock if present, and whether it closes properly.</div></div>
+                        <div class="form-group"><label for="storeShelving">Shelving</label><textarea id="storeShelving" name="storeShelving"></textarea><div class="field-hint">Mention firmness, missing shelves, damage, stains or loose fittings.</div></div>
+                        <div class="form-group"><label for="storeFloor">Floor type and condition</label><textarea id="storeFloor" name="storeFloor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea><div class="field-hint">Note floor type and any cracks, stains, chips or worn areas.</div></div>
+                        <div class="form-group"><label for="storeWall">Wall condition and painting (indicate the colour)</label><textarea id="storeWall" name="storeWall"></textarea><div class="field-hint">Record paint colour/finish and any cracks, marks, dampness or peeling.</div></div>
+                        <div class="form-group"><label for="storeCeiling">Ceiling condition and finish (indicate the colour)</label><textarea id="storeCeiling" name="storeCeiling"></textarea><div class="field-hint">Mention finish/colour and any stains, cracks, leaks or peeling.</div></div>
+                        <div class="form-group"><label for="storeRemarks">General remarks</label><textarea id="storeRemarks" name="storeRemarks"></textarea><div class="field-hint">Add any other store/pantry observation not captured above.</div></div>
                     </div>
                 </div>
 
@@ -528,6 +533,7 @@
                     <div class="form-group">
                         <label for="otherAreaRemarks">Findings / remarks</label>
                         <textarea id="otherAreaRemarks" name="otherAreaRemarks"></textarea>
+                        <div class="field-hint">Describe the condition of the selected area or facility in neutral, factual terms.</div>
                     </div>
                 </div>
 
@@ -536,10 +542,12 @@
                     <div class="form-group">
                         <label for="doorsCondition">External/access doors - condition and finish (indicate the colour)</label>
                         <textarea id="doorsCondition" name="doorsCondition" placeholder="Describe only external or access doors not already covered above..."></textarea>
+                        <div class="field-hint">Include frames, hinges, handles, locks/latches if present, colour/finish and visible damage.</div>
                     </div>
                     <div class="form-group">
                         <label for="windowsCondition">External/access windows - condition and finish (indicate the colour)</label>
                         <textarea id="windowsCondition" name="windowsCondition" placeholder="Describe only external or access windows not already covered above..."></textarea>
+                        <div class="field-hint">Include frames, glass, latches, holds/stays and curtain rods or boxes, where present.</div>
                     </div>
                     <label>Locks and keys availed</label>
                     <div class="field-hint">Tick "lock fitted" only where a lock actually exists — many internal doors have none. The "key given" and number-of-keys fields appear once a lock is confirmed.</div>
@@ -562,6 +570,7 @@
                     <div class="form-group">
                         <label for="electricalCondition">Other electrical fittings (apart from sockets, lighting and switches) *</label>
                         <textarea id="electricalCondition" name="electricalCondition" placeholder="Describe fittings not already captured under sockets, lighting and switches..." required></textarea>
+                        <div class="field-hint">Examples: bell, extractor, heater switch, distribution board, intercom or other fitted electrical items.</div>
                     </div>
                 </div>
 
@@ -712,7 +721,6 @@
         </div>
     </div>
 
-    <div id="pdfSource" class="pdf-source" aria-hidden="true"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdlezna';
@@ -923,15 +931,15 @@
                 group.className = 'signoff-block';
                 group.innerHTML = `<h4>Bedroom ${i}</h4>
                     <div class="inspection-grid">
-                        <div class="form-group"><label for="bedroom${i}Floor">Floor type and condition</label><textarea id="bedroom${i}Floor" name="bedroom${i}Floor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Walls">Wall condition and painting (indicate the colour)</label><textarea id="bedroom${i}Walls" name="bedroom${i}Walls"></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Ceiling">Ceiling condition and finish (indicate the colour)</label><textarea id="bedroom${i}Ceiling" name="bedroom${i}Ceiling"></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Wardrobe">Wardrobe/cabinet condition *</label><textarea id="bedroom${i}Wardrobe" name="bedroom${i}Wardrobe" required></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Door">Door condition and finish (indicate the colour)</label><textarea id="bedroom${i}Door" name="bedroom${i}Door"></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Window">Window condition and finish (indicate the colour)</label><textarea id="bedroom${i}Window" name="bedroom${i}Window" placeholder="Include window holds/stays and the condition of curtain rods or boxes..."></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Lighting">Lighting and switches</label><textarea id="bedroom${i}Lighting" name="bedroom${i}Lighting"></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Sockets">Sockets</label><textarea id="bedroom${i}Sockets" name="bedroom${i}Sockets"></textarea></div>
-                        <div class="form-group"><label for="bedroom${i}Remarks">General remarks</label><textarea id="bedroom${i}Remarks" name="bedroom${i}Remarks"></textarea></div>
+                        <div class="form-group"><label for="bedroom${i}Floor">Floor type and condition</label><textarea id="bedroom${i}Floor" name="bedroom${i}Floor" placeholder="Example: tiles, cement, wood, terrazzo, vinyl..."></textarea><div class="field-hint">Note the floor type and any cracks, loose sections, stains, chips or worn areas.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Walls">Wall condition and painting (indicate the colour)</label><textarea id="bedroom${i}Walls" name="bedroom${i}Walls"></textarea><div class="field-hint">Record paint colour/finish and any visible cracks, marks, dampness, peeling or repairs.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Ceiling">Ceiling condition and finish (indicate the colour)</label><textarea id="bedroom${i}Ceiling" name="bedroom${i}Ceiling"></textarea><div class="field-hint">Mention the finish/colour and any stains, cracks, peeling, leaks or sagging.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Wardrobe">Wardrobe/cabinet condition *</label><textarea id="bedroom${i}Wardrobe" name="bedroom${i}Wardrobe" required></textarea><div class="field-hint">Include doors, hinges, handles, shelves, drawers and any visible damage or missing parts.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Door">Door condition and finish (indicate the colour)</label><textarea id="bedroom${i}Door" name="bedroom${i}Door"></textarea><div class="field-hint">Include frame, hinges, handles, lock/latch if present and whether the door closes properly.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Window">Window condition and finish (indicate the colour)</label><textarea id="bedroom${i}Window" name="bedroom${i}Window"></textarea><div class="field-hint">Include window holds/stays and the condition of curtain rods or boxes, where present.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Lighting">Lighting and switches</label><textarea id="bedroom${i}Lighting" name="bedroom${i}Lighting"></textarea><div class="field-hint">Note whether lights and switches are present, working and visibly intact.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Sockets">Sockets</label><textarea id="bedroom${i}Sockets" name="bedroom${i}Sockets"></textarea><div class="field-hint">Record visible condition, loose plates, cracks, burn marks or missing covers.</div></div>
+                        <div class="form-group"><label for="bedroom${i}Remarks">General remarks</label><textarea id="bedroom${i}Remarks" name="bedroom${i}Remarks"></textarea><div class="field-hint">Add any other observation relevant to this bedroom.</div></div>
                     </div>`;
                 container.appendChild(group);
             }
@@ -1230,19 +1238,25 @@
 
             const fd = new FormData(form);
             const d = Object.fromEntries(fd);
-            const pdfSource = document.getElementById('pdfSource');
             document.getElementById('summaryTitle').textContent = 'Property Inspection Report';
             document.getElementById('summarySubtitle').textContent = 'Review, print, or save a PDF copy.';
+            const pdfSource = document.createElement('div');
+            pdfSource.className = 'pdf-source pdf-rendering';
             pdfSource.innerHTML = `<h1>Property Inspection Report</h1>${buildSummaryHTML()}`;
+            document.body.appendChild(pdfSource);
 
             const filename = `Inspection-Report-${safeFileName(d.propertyName)}-${safeFileName(d.premisesNo)}.pdf`;
-            await html2pdf().set({
-                margin: 10,
-                filename: filename,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            }).from(pdfSource).save();
+            try {
+                await html2pdf().set({
+                    margin: 10,
+                    filename: filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                }).from(pdfSource).save();
+            } finally {
+                pdfSource.remove();
+            }
 
             hasDownloaded = true;
             document.getElementById('submitBtn').disabled = false;
