@@ -42,7 +42,7 @@
         }
 
         .section:last-child { border-bottom: none; }
-        .section[hidden], .scope-panel[hidden], .conditional-field[hidden] { display: none; }
+        .section[hidden], .scope-panel[hidden], .conditional-field[hidden], .key-main[hidden], .key-quantity[hidden] { display: none; }
 
         .section-title {
             color: #667eea;
@@ -542,6 +542,7 @@
                         <textarea id="windowsCondition" name="windowsCondition" placeholder="Describe only external or access windows not already covered above..."></textarea>
                     </div>
                     <label>Locks and keys availed</label>
+                    <div class="field-hint">Tick "lock fitted" only where a lock actually exists — many internal doors have none. The "key given" and number-of-keys fields appear once a lock is confirmed.</div>
                     <div class="checkbox-grid" id="keysGrid">
                         <label class="checkbox-option key-option" data-key-section="always"><span class="key-main"><input type="checkbox" name="lockFitted_Gate" value="Yes" data-lock-checkbox> Gate lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Gate" data-key-checkbox disabled> Gate key given</span><input type="number" class="key-quantity" name="keyCount_Gate" min="1" placeholder="No. of keys" disabled></label>
                         <label class="checkbox-option key-option" data-key-section="doors_windows"><span class="key-main"><input type="checkbox" name="lockFitted_MainDoor" value="Yes" data-lock-checkbox> Main door lock fitted</span><span class="key-main"><input type="checkbox" name="keysAvailed" value="Main door" data-key-checkbox disabled> Main door key given</span><input type="number" class="key-quantity" name="keyCount_MainDoor" min="1" placeholder="No. of keys" disabled></label>
@@ -1051,12 +1052,15 @@
             document.querySelectorAll('.key-option').forEach(function (label) {
                 const lock = label.querySelector('[data-lock-checkbox]');
                 const checkbox = label.querySelector('[data-key-checkbox]');
+                const keyGivenWrap = checkbox.closest('.key-main');
                 const quantity = label.querySelector('.key-quantity');
                 const visible = !label.hidden;
                 const lockFitted = visible && lock && lock.checked;
+                if (keyGivenWrap) keyGivenWrap.hidden = !lockFitted;
                 checkbox.disabled = !lockFitted;
                 if (!lockFitted) checkbox.checked = false;
                 const keyGiven = lockFitted && checkbox.checked;
+                quantity.hidden = !keyGiven;
                 quantity.disabled = !keyGiven;
                 quantity.required = keyGiven;
                 if (!keyGiven) quantity.value = '';
