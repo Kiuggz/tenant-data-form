@@ -162,6 +162,25 @@
         .email-error.active {
             display: block;
         }
+
+        .field-hint {
+            color: #777;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+
+        .validation-warning {
+            color: #8a6d00;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .validation-warning.active {
+            display: block;
+        }
         
         .declaration-box {
             background: #f8f9ff;
@@ -574,10 +593,12 @@
                         <div class="form-group">
                             <label for="propertyName">Property Name *</label>
                             <input type="text" id="propertyName" name="propertyName" required>
+                            <div class="field-hint">Use the name shown by the caretaker, agent or landlord.</div>
                         </div>
                         <div class="form-group">
                             <label for="premisesNo">Premises No. *</label>
                             <input type="text" id="premisesNo" name="premisesNo" required>
+                            <div class="field-hint">Enter the unit, room, house or door number being applied for.</div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -595,11 +616,13 @@
                     <div class="form-group">
                         <label for="fullName">Full Name *</label>
                         <input type="text" id="fullName" name="fullName" required>
+                        <div class="field-hint">Write your full legal name as it appears on your ID or Passport.</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="idNumber">National ID / Passport No. *</label>
                             <input type="text" id="idNumber" name="idNumber" required>
+                            <div class="field-hint">Use the same document number for the copy you will send after submission.</div>
                         </div>
                         <div class="form-group">
                             <label for="citizenship">Citizenship *</label>
@@ -636,20 +659,26 @@
                         <div class="form-group">
                             <label for="email">Email Address *</label>
                             <input type="email" id="email" name="email" required onchange="validateEmailMatch()">
+                            <div class="field-hint">Use an email address you can access in case we need to reach you.</div>
                         </div>
                         <div class="form-group">
                             <label for="phone1">Phone No. 1 *</label>
                             <input type="tel" id="phone1" name="phone1" required>
+                            <div class="field-hint">Enter your main reachable phone number.</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="emailConfirm">Confirm Email Address *</label>
                         <input type="email" id="emailConfirm" name="emailConfirm" placeholder="Re-enter your email to verify" required onchange="validateEmailMatch()">
+                        <div class="field-hint">Re-type the same email address to avoid errors.</div>
                         <div class="email-error" id="emailMatchError"></div>
                     </div>
                     <div class="form-group">
                         <label for="phone2">Phone No. 2</label>
                         <input type="tel" id="phone2" name="phone2">
+                        <div class="field-hint">Optional alternate number; do not repeat Phone No. 1.</div>
+                        <div class="email-error" id="phoneValidationError"></div>
+                        <div class="validation-warning" id="phoneValidationWarning"></div>
                     </div>
                 </div>
 
@@ -662,6 +691,7 @@
                     <div class="form-group">
                         <label for="employer">Where do you currently work? What do you do for a living? *</label>
                         <input type="text" id="employer" name="employer" required>
+                        <div class="field-hint">State your employer/business and the work you do.</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
@@ -684,10 +714,12 @@
                         <div class="form-group">
                             <label for="workReferee">Referee at your place of work *</label>
                             <input type="text" id="workReferee" name="workReferee" required>
+                            <div class="field-hint">Give a supervisor, HR contact, colleague or business contact who can confirm your work.</div>
                         </div>
                         <div class="form-group">
                             <label for="refereePhone">Referee's Phone Number *</label>
                             <input type="tel" id="refereePhone" name="refereePhone" required>
+                            <div class="field-hint">This should be the referee's own phone number, not yours.</div>
                         </div>
                     </div>
                 </div>
@@ -703,6 +735,7 @@
                             <div class="form-group">
                                 <label for="spouseName">Name of Spouse</label>
                                 <input type="text" id="spouseName" name="spouseName">
+                                <div class="field-hint">Complete this only if your marital status is married.</div>
                             </div>
                             <div class="form-group">
                                 <label for="spouseEmployment">Employment Status</label>
@@ -716,14 +749,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="spousePhone">Spouse Phone Number</label>
-                            <input type="tel" id="spousePhone" name="spousePhone">
-                        </div>
+                        <label for="spousePhone">Spouse Phone Number</label>
+                        <input type="tel" id="spousePhone" name="spousePhone">
+                        <div class="field-hint">If you share one number, the form will warn you but still allow it.</div>
+                    </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nextOfKin">Next of Kin (Not Spouse) *</label>
                             <input type="text" id="nextOfKin" name="nextOfKin" required>
+                            <div class="field-hint">Provide a close relative or trusted contact who is not your spouse.</div>
                         </div>
                         <div class="form-group">
                             <label for="kinRelationship">Relationship with Kin *</label>
@@ -733,6 +768,7 @@
                     <div class="form-group">
                         <label for="kinPhone">Next of Kin Phone *</label>
                         <input type="tel" id="kinPhone" name="kinPhone" required>
+                        <div class="field-hint">Use the next of kin's own reachable number.</div>
                     </div>
                 </div>
 
@@ -745,6 +781,7 @@
                     <div class="form-group">
                         <label for="currentLocation">Where are you staying now? (Estate / Area) *</label>
                         <input type="text" id="currentLocation" name="currentLocation" placeholder="e.g., Westlands, Mombasa" required>
+                        <div class="field-hint">Give the estate/area and town where you currently live.</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
@@ -760,15 +797,18 @@
                         <div class="form-group">
                             <label for="currentLandlord">Landlord's name *</label>
                             <input type="text" id="currentLandlord" name="currentLandlord" required>
+                            <div class="field-hint">If you deal with a caretaker or agent, give the person who can confirm your tenancy.</div>
                         </div>
                         <div class="form-group">
                             <label for="landlordPhone">Landlord's phone number *</label>
                             <input type="tel" id="landlordPhone" name="landlordPhone" required>
+                            <div class="field-hint">This should be the landlord/caretaker/agent contact, not your own number.</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="agentDetails">Agent or Caretaker (if you pay through them)</label>
                         <input type="text" id="agentDetails" name="agentDetails" placeholder="Name and phone number (optional)">
+                        <div class="field-hint">Optional; fill this if rent or communication goes through an agent/caretaker.</div>
                     </div>
                     <div class="form-group">
                         <label for="rentDueDate">When do you usually pay rent? *</label>
@@ -784,6 +824,7 @@
                     <div class="form-group">
                         <label for="rentProofDetails">Proof of your last rent payment </label>
                         <textarea id="rentProofDetails" name="rentProofDetails" placeholder="Paste M-PESA message, bank transfer details, or payment reference "></textarea>
+                        <div class="field-hint">Optional; paste a payment reference or brief details if available.</div>
                     </div>
                 </div>
 
@@ -796,6 +837,7 @@
                     <div class="form-group">
                         <label for="reasonMoving">Why are you moving from your current residence? *</label>
                         <textarea id="reasonMoving" name="reasonMoving" required></textarea>
+                        <div class="field-hint">Give a brief factual reason, for example work, space, rent, family or location.</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
@@ -805,6 +847,7 @@
                         <div class="form-group">
                             <label for="numberOfOccupants">How many persons will be living with you? *</label>
                             <input type="number" id="numberOfOccupants" name="numberOfOccupants" min="0" required>
+                            <div class="field-hint">Include yourself and anyone else who will regularly live in the premises.</div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -821,10 +864,12 @@
                     <div class="form-group" id="rentPayerDetailsGroup" style="display: none;">
                         <label for="rentPayer">Who will be paying the rent? (Name) *</label>
                         <input type="text" id="rentPayer" name="rentPayer" placeholder="Their full name">
+                        <div class="field-hint">Fill this only if someone else will pay rent on your behalf.</div>
                     </div>
                     <div class="form-group" id="rentPayerPhoneGroup" style="display: none;">
                         <label for="rentPayerPhone">Their phone number *</label>
                         <input type="tel" id="rentPayerPhone" name="rentPayerPhone" placeholder="Phone number">
+                        <div class="field-hint">Use the payer's own phone number.</div>
                     </div>
                     <div class="form-group">
                         <label>Do you have one month's rent and deposit ready in advance? *</label>
@@ -840,6 +885,7 @@
                     <div class="form-group">
                         <label for="intendedDuration">How long do you intend to rent the property? *</label>
                         <input type="text" id="intendedDuration" name="intendedDuration" placeholder="e.g., 1 year, 2 years" required>
+                        <div class="field-hint">Give the expected period; this is for planning and agreement preparation.</div>
                     </div>
                     <div class="form-group">
                         <label>Are you satisfied with the property as it is? *</label>
@@ -855,6 +901,7 @@
                     <div class="form-group">
                         <label for="improvements">Would you like any improvements made?</label>
                         <textarea id="improvements" name="improvements" placeholder="If yes, please specify"></textarea>
+                        <div class="field-hint">Optional; note practical requests before occupation, if any.</div>
                     </div>
                     <div class="form-group">
                         <label>Do you have any pets? *</label>
@@ -869,6 +916,7 @@
                     </div>
                     <div class="form-group" id="petVaccinationGroup" style="display: none;">
                         <label>If yes, do they have a vaccination certificate?</label>
+                        <div class="field-hint">This helps confirm care and safety where pets are allowed.</div>
                         <div class="radio-group">
                             <label class="radio-option">
                                 <input type="radio" name="petVaccination" value="yes"> Yes
@@ -916,6 +964,7 @@
                     <div class="form-group">
                         <label for="questions">Do you have any questions about the property or tenancy?</label>
                         <textarea id="questions" name="questions" placeholder="Optional"></textarea>
+                        <div class="field-hint">Optional; add anything you want clarified before the tenancy is confirmed.</div>
                     </div>
                 </div>
 
@@ -932,6 +981,7 @@
                         <div class="form-group">
                             <label for="signature">Signature (Type Full Name) *</label>
                             <input type="text" id="signature" name="signature" required>
+                            <div class="field-hint">Typing your full name confirms the declaration above.</div>
                         </div>
                         <div class="form-group">
                             <label for="declarationDate">Date *</label>
@@ -993,6 +1043,106 @@
             }
         }
 
+        const PHONE_FIELDS = [
+            'phone1',
+            'phone2',
+            'refereePhone',
+            'spousePhone',
+            'kinPhone',
+            'landlordPhone',
+            'rentPayerPhone'
+        ];
+
+        function phoneValue(id) {
+            const field = document.getElementById(id);
+            if (!field || field.disabled) return '';
+            const digits = field.value.replace(/\D/g, '');
+            return digits.length >= 9 ? digits.slice(-9) : digits;
+        }
+
+        function samePhone(firstId, secondId) {
+            const first = phoneValue(firstId);
+            const second = phoneValue(secondId);
+            return first && second && first === second;
+        }
+
+        function setPhoneValidity(ids, message) {
+            ids.forEach(function (id) {
+                const field = document.getElementById(id);
+                if (field) field.setCustomValidity(message);
+            });
+        }
+
+        function validatePhoneRules() {
+            const errorBox = document.getElementById('phoneValidationError');
+            const warningBox = document.getElementById('phoneValidationWarning');
+            const errors = [];
+            const warnings = [];
+            const maritalStatus = document.getElementById('maritalStatus').value;
+            const rentPayerType = document.querySelector('input[name="rentPayerType"]:checked');
+
+            PHONE_FIELDS.forEach(function (id) {
+                const field = document.getElementById(id);
+                if (field) field.setCustomValidity('');
+            });
+
+            function block(ids, message) {
+                errors.push(message);
+                setPhoneValidity(ids, message);
+            }
+
+            function warn(message) {
+                warnings.push(message);
+            }
+
+            if (samePhone('phone1', 'phone2')) {
+                block(['phone1', 'phone2'], 'Phone No. 2 should be a different number from Phone No. 1.');
+            }
+
+            if (samePhone('spousePhone', 'phone1') || samePhone('spousePhone', 'phone2')) {
+                warn('Spouse phone matches an applicant phone. This is allowed if it is intentional.');
+            }
+
+            if (maritalStatus === 'married' && samePhone('spousePhone', 'kinPhone')) {
+                block(['spousePhone', 'kinPhone'], 'Next of kin is marked as not spouse, so the kin phone should not be the spouse phone.');
+            }
+
+            ['phone1', 'phone2', 'spousePhone', 'kinPhone'].forEach(function (id) {
+                if (samePhone('refereePhone', id)) {
+                    block(['refereePhone', id], 'The work referee phone should be independent from applicant, spouse or next-of-kin phone numbers.');
+                }
+            });
+
+            ['phone1', 'phone2', 'spousePhone', 'kinPhone', 'refereePhone'].forEach(function (id) {
+                if (samePhone('landlordPhone', id)) {
+                    block(['landlordPhone', id], 'The landlord/caretaker phone should be different from applicant, spouse, next-of-kin or referee phone numbers.');
+                }
+            });
+
+            if (rentPayerType && rentPayerType.value === 'other') {
+                ['phone1', 'phone2'].forEach(function (id) {
+                    if (samePhone('rentPayerPhone', id)) {
+                        block(['rentPayerPhone', id], 'If someone else is paying rent, their phone number should be different from the applicant phone numbers.');
+                    }
+                });
+                if (samePhone('rentPayerPhone', 'spousePhone')) {
+                    warn('Rent payer phone matches spouse phone. This is allowed if the spouse is the payer.');
+                }
+            }
+
+            errorBox.innerHTML = errors.map(function (message) {
+                return `<div>${message}</div>`;
+            }).join('');
+            errorBox.classList.toggle('active', errors.length > 0);
+
+            warningBox.innerHTML = warnings.map(function (message) {
+                return `<div>${message}</div>`;
+            }).join('');
+            warningBox.classList.toggle('active', warnings.length > 0);
+
+            return errors.length === 0;
+        }
+
         function toggleSpouseDetails() {
             const maritalStatus = document.getElementById('maritalStatus').value;
             const spouseGroup = document.getElementById('spouseDetailsGroup');
@@ -1005,6 +1155,7 @@
                 document.getElementById('spouseEmployment').value = '';
                 document.getElementById('spousePhone').value = '';
             }
+            validatePhoneRules();
         }
 
         function togglePetVaccination(show) {
@@ -1037,6 +1188,7 @@
                 rentPayerInput.value = '';
                 rentPayerPhoneInput.value = '';
             }
+            validatePhoneRules();
         }
 
         function buildSummaryHTML() {
@@ -1265,8 +1417,13 @@
 
         function reviewBeforeSubmit() {
             const form = document.getElementById('tenantForm');
-            if (!form.reportValidity()) return;
             if (!validateEmailMatch()) return;
+            if (!validatePhoneRules()) {
+                form.reportValidity();
+                document.getElementById('phoneValidationError').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            if (!form.reportValidity()) return;
             showSummaryModal('review');
         }
 
@@ -1276,6 +1433,12 @@
             // Validate emails match
             if (!validateEmailMatch()) {
                 alert('Please fix the email address mismatch.');
+                return;
+            }
+
+            if (!validatePhoneRules()) {
+                e.target.reportValidity();
+                document.getElementById('phoneValidationError').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
@@ -1351,9 +1514,24 @@
             if (hasPrintedBeforeSubmit) resetPrintGate();
         });
 
+        PHONE_FIELDS.forEach(function (id) {
+            const field = document.getElementById(id);
+            if (!field) return;
+            field.addEventListener('input', validatePhoneRules);
+            field.addEventListener('change', validatePhoneRules);
+        });
+
+        ['email', 'emailConfirm'].forEach(function (id) {
+            const field = document.getElementById(id);
+            if (!field) return;
+            field.addEventListener('input', validateEmailMatch);
+            field.addEventListener('change', validateEmailMatch);
+        });
+
         // Set today's date as default
         document.getElementById('applicationDate').valueAsDate = new Date();
         document.getElementById('declarationDate').valueAsDate = new Date();
+        validatePhoneRules();
         resetPrintGate();
     </script>
 </body>
