@@ -363,24 +363,18 @@
                 margin: 0 !important;
                 padding: 0 !important;
                 min-height: auto !important;
+                overflow: visible !important;
             }
 
-            body * {
-                visibility: hidden !important;
-            }
-
-            #summaryModal,
-            #summaryModal * {
-                visibility: visible !important;
+            .container {
+                display: none !important;
             }
 
             #summaryModal {
                 display: block !important;
-                position: absolute !important;
+                position: static !important;
                 inset: auto !important;
-                left: 0 !important;
-                top: 0 !important;
-                width: 100% !important;
+                width: auto !important;
                 height: auto !important;
                 overflow: visible !important;
                 background: #fff !important;
@@ -973,7 +967,7 @@
             <div id="summaryBody"></div>
 
             <div class="summary-actions">
-                <button class="btn-print" onclick="printSummary()">Print / Save as PDF</button>
+                <button class="btn-print" id="printSummaryBtn" onclick="printSummary()">Print / Save Copy</button>
                 <button class="btn-close" id="closeSummaryBtn" onclick="closeSummary()">Edit Application</button>
             </div>
         </div>
@@ -1215,6 +1209,7 @@
             const title = document.getElementById('summaryTitle');
             const subtitle = document.getElementById('summarySubtitle');
             const closeBtn = document.getElementById('closeSummaryBtn');
+            const printBtn = document.getElementById('printSummaryBtn');
             summaryMode = mode;
             
             summaryBody.innerHTML = buildSummaryHTML();
@@ -1222,10 +1217,12 @@
                 title.textContent = 'Application Submitted Successfully!';
                 subtitle.textContent = 'Your information has been sent to the landlord.';
                 closeBtn.textContent = 'Close';
+                printBtn.hidden = true;
             } else {
                 title.textContent = 'Application Summary';
-                subtitle.textContent = 'Review your information before submission. Use Edit Application if anything needs correction.';
+                subtitle.textContent = 'Review your information before submission. Print/save a copy, or use Edit Application if anything needs correction.';
                 closeBtn.textContent = 'Edit Application';
+                printBtn.hidden = false;
             }
             modal.classList.add('active');
         }
@@ -1243,6 +1240,7 @@
 
         function printSummary() {
             window.print();
+            if (summaryMode === 'review') markPrintGateDone();
         }
 
         function resetPrintGate() {
@@ -1270,8 +1268,6 @@
             if (!form.reportValidity()) return;
             if (!validateEmailMatch()) return;
             showSummaryModal('review');
-            window.print();
-            markPrintGateDone();
         }
 
         document.getElementById('tenantForm').addEventListener('submit', async function(e) {
