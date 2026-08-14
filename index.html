@@ -182,6 +182,7 @@
             margin-top: 30px;
         }
         
+        .btn-review,
         .btn-submit {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -195,11 +196,13 @@
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
         
+        .btn-review:hover,
         .btn-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
         
+        .btn-review:active,
         .btn-submit:active {
             transform: translateY(0);
         }
@@ -207,6 +210,21 @@
         .btn-submit:disabled {
             opacity: 0.7;
             cursor: not-allowed;
+        }
+
+        .btn-review.done {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .download-note {
+            background: #fff8e1;
+            border: 1px solid #ffe0a3;
+            color: #7a5c00;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            text-align: center;
         }
 
         /* Summary Modal */
@@ -517,6 +535,7 @@
                 height: 20px;
             }
             
+            .btn-review,
             .btn-submit {
                 width: 100%;
                 padding: 16px 30px;
@@ -594,7 +613,7 @@
                         </div>
                     </div>
                     <div class="email-confirmation-note">
-                        📌 Since ID/Passport upload is not included in this form, please send a copy of your ID or Passport immediately after submitting your application.
+                        Note: Since ID/Passport upload is not included in this form, please send a copy of your ID or Passport immediately after submitting your application.
                         <br><br>
                         <strong>Send your ID/Passport copy to:</strong> fertileworkslimited@gmail.com or WhatsApp +254113405388
                     </div>
@@ -931,7 +950,9 @@
                 <input type="hidden" name="_subject" value="Tenant Application Submitted">
 
                 <div class="submit-section">
-                    <button type="submit" class="btn-submit">Submit Application</button>
+                    <div class="download-note" id="downloadNote">Please review and print/save your copy before you submit.</div>
+                    <button type="button" class="btn-review" id="reviewPrintBtn" onclick="reviewBeforeSubmit()">Review / Print My Copy</button>
+                    <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit Application</button>
                 </div>
             </form>
         </div>
@@ -941,8 +962,8 @@
     <div class="summary-modal" id="summaryModal">
         <div class="summary-content">
             <div class="summary-header">
-                <h2>✅ Application Submitted Successfully!</h2>
-                <p>Your information has been sent to the landlord</p>
+                <h2 id="summaryTitle">Application Summary</h2>
+                <p id="summarySubtitle">Review your information before submission.</p>
             </div>
             
             <div class="email-confirmation-note">
@@ -952,14 +973,16 @@
             <div id="summaryBody"></div>
 
             <div class="summary-actions">
-                <button class="btn-print" onclick="printSummary()">🖨️ Print / Save as PDF</button>
-                <button class="btn-close" onclick="closeSummary()">Close</button>
+                <button class="btn-print" onclick="printSummary()">Print / Save as PDF</button>
+                <button class="btn-close" id="closeSummaryBtn" onclick="closeSummary()">Edit Application</button>
             </div>
         </div>
     </div>
 
     <script>
         let formDataForSummary = {};
+        let hasPrintedBeforeSubmit = false;
+        let summaryMode = 'review';
 
         function validateEmailMatch() {
             const email = document.getElementById('email').value;
@@ -967,7 +990,7 @@
             const error = document.getElementById('emailMatchError');
 
             if (emailConfirm && email !== emailConfirm) {
-                error.textContent = '❌ Email addresses do not match. Please check and try again.';
+                error.textContent = 'Email addresses do not match. Please check and try again.';
                 error.classList.add('active');
                 return false;
             } else {
@@ -1186,25 +1209,69 @@
             return html;
         }
 
-        function showSummaryModal() {
+        function showSummaryModal(mode = 'review') {
             const modal = document.getElementById('summaryModal');
             const summaryBody = document.getElementById('summaryBody');
+            const title = document.getElementById('summaryTitle');
+            const subtitle = document.getElementById('summarySubtitle');
+            const closeBtn = document.getElementById('closeSummaryBtn');
+            summaryMode = mode;
             
             summaryBody.innerHTML = buildSummaryHTML();
+            if (mode === 'submitted') {
+                title.textContent = 'Application Submitted Successfully!';
+                subtitle.textContent = 'Your information has been sent to the landlord.';
+                closeBtn.textContent = 'Close';
+            } else {
+                title.textContent = 'Application Summary';
+                subtitle.textContent = 'Review your information before submission. Use Edit Application if anything needs correction.';
+                closeBtn.textContent = 'Edit Application';
+            }
             modal.classList.add('active');
         }
 
         function closeSummary() {
             const modal = document.getElementById('summaryModal');
             modal.classList.remove('active');
-            // Reset form
-            document.getElementById('tenantForm').reset();
-            document.getElementById('applicationDate').valueAsDate = new Date();
-            document.getElementById('declarationDate').valueAsDate = new Date();
+            if (summaryMode === 'submitted') {
+                document.getElementById('tenantForm').reset();
+                document.getElementById('applicationDate').valueAsDate = new Date();
+                document.getElementById('declarationDate').valueAsDate = new Date();
+                resetPrintGate();
+            }
         }
 
         function printSummary() {
             window.print();
+        }
+
+        function resetPrintGate() {
+            hasPrintedBeforeSubmit = false;
+            const submitBtn = document.getElementById('submitBtn');
+            const reviewBtn = document.getElementById('reviewPrintBtn');
+            const note = document.getElementById('downloadNote');
+            submitBtn.disabled = true;
+            reviewBtn.classList.remove('done');
+            reviewBtn.textContent = 'Review / Print My Copy';
+            note.textContent = 'Please review and print/save your copy before you submit.';
+            note.style.display = 'block';
+        }
+
+        function markPrintGateDone() {
+            hasPrintedBeforeSubmit = true;
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('reviewPrintBtn').classList.add('done');
+            document.getElementById('reviewPrintBtn').textContent = 'Copy Reviewed / Printed';
+            document.getElementById('downloadNote').style.display = 'none';
+        }
+
+        function reviewBeforeSubmit() {
+            const form = document.getElementById('tenantForm');
+            if (!form.reportValidity()) return;
+            if (!validateEmailMatch()) return;
+            showSummaryModal('review');
+            window.print();
+            markPrintGateDone();
         }
 
         document.getElementById('tenantForm').addEventListener('submit', async function(e) {
@@ -1212,13 +1279,21 @@
             
             // Validate emails match
             if (!validateEmailMatch()) {
-                alert('❌ Please fix the email address mismatch.');
+                alert('Please fix the email address mismatch.');
+                return;
+            }
+
+            if (!hasPrintedBeforeSubmit) {
+                const note = document.getElementById('downloadNote');
+                note.textContent = 'Please review and print/save your copy first before you submit.';
+                note.style.display = 'block';
+                document.getElementById('reviewPrintBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
             const submitBtn = document.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
-            submitBtn.textContent = '⏳ Submitting...';
+            submitBtn.textContent = 'Submitting...';
             submitBtn.disabled = true;
             
             const formData = new FormData(e.target);
@@ -1239,11 +1314,11 @@
                 console.log('Response data:', data);
                 
                 if (response.ok) {
-                    submitBtn.textContent = '✅ Submitted!';
+                    submitBtn.textContent = 'Submitted!';
                     submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
                     
                     // Show summary modal
-                    showSummaryModal();
+                    showSummaryModal('submitted');
                     
                     // Reset button after 2 seconds
                     setTimeout(() => {
@@ -1257,10 +1332,10 @@
             } catch (error) {
                 console.error('Submission error:', error);
                 
-                submitBtn.textContent = '❌ Failed';
+                submitBtn.textContent = 'Failed';
                 submitBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
                 
-                alert('❌ There was an error submitting your application.\n\nPlease check:\n1. Your internet connection\n2. All required fields are filled\n3. Try again in a moment\n\nIf the problem persists, please contact the landlord directly.');
+                alert('There was an error submitting your application.\n\nPlease check:\n1. Your internet connection\n2. All required fields are filled\n3. Try again in a moment\n\nIf the problem persists, please contact the landlord directly.');
                 
                 setTimeout(() => {
                     submitBtn.textContent = originalText;
@@ -1270,9 +1345,20 @@
             }
         });
 
+        document.getElementById('tenantForm').addEventListener('input', function (event) {
+            if (event.target.closest('.submit-section')) return;
+            if (hasPrintedBeforeSubmit) resetPrintGate();
+        });
+
+        document.getElementById('tenantForm').addEventListener('change', function (event) {
+            if (event.target.closest('.submit-section')) return;
+            if (hasPrintedBeforeSubmit) resetPrintGate();
+        });
+
         // Set today's date as default
         document.getElementById('applicationDate').valueAsDate = new Date();
         document.getElementById('declarationDate').valueAsDate = new Date();
+        resetPrintGate();
     </script>
 </body>
 </html>
