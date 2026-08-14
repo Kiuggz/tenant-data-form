@@ -927,20 +927,8 @@
                     </div>
                 </div>
 
-                <!-- Hidden Formspree fields for autoresponse -->
-                <input type="hidden" name="_subject" value="Tenant Application Confirmation">
-                <input type="hidden" name="_replyto" id="_replyto" value="">
-                <input type="hidden" name="_autoresponse.subject" value="We received your tenant application">
-                <input type="hidden" name="_autoresponse.body" value="Dear applicant,
-
-Thank you for submitting your prospective tenant application. We have received all your information and will review your application shortly.
-
-PLEASE NOTE: Send a copy of your ID or Passport immediately after submitting your application (to Email: fertileworkslimited@gmail.com or WhatsApp +254113405388).
-
-A copy of your submitted information is attached here below for your reference.
-
-Best regards,
-FERTILE WORKS LIMITED">
+                <!-- Hidden Formspree fields -->
+                <input type="hidden" name="_subject" value="Tenant Application Submitted">
 
                 <div class="submit-section">
                     <button type="submit" class="btn-submit">Submit Application</button>
@@ -958,9 +946,7 @@ FERTILE WORKS LIMITED">
             </div>
             
             <div class="email-confirmation-note">
-                📧 A confirmation copy of your application has been sent to: <strong id="confirmationEmail"></strong>
-                <br><br>
-                <strong style="color: #d9534f;">⚠️ IMPORTANT:</strong> Please send a copy of your ID or Passport to: fertileworkslimited@gmail.com or WhatsApp  +254113405388
+                <strong style="color: #d9534f;">IMPORTANT:</strong> Please send a copy of your ID or Passport to: fertileworkslimited@gmail.com or WhatsApp +254113405388.
             </div>
 
             <div id="summaryBody"></div>
@@ -1203,10 +1189,8 @@ FERTILE WORKS LIMITED">
         function showSummaryModal() {
             const modal = document.getElementById('summaryModal');
             const summaryBody = document.getElementById('summaryBody');
-            const emailDisplay = document.getElementById('confirmationEmail');
             
             summaryBody.innerHTML = buildSummaryHTML();
-            emailDisplay.textContent = document.getElementById('email').value;
             modal.classList.add('active');
         }
 
@@ -1231,8 +1215,6 @@ FERTILE WORKS LIMITED">
                 alert('❌ Please fix the email address mismatch.');
                 return;
             }
-
-            document.getElementById('_replyto').value = document.getElementById('email').value;
 
             const submitBtn = document.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
