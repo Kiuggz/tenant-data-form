@@ -1104,29 +1104,29 @@
             }
 
             if (maritalStatus === 'married' && samePhone('spousePhone', 'kinPhone')) {
-                block(['spousePhone', 'kinPhone'], 'Next of kin is marked as not spouse, so the kin phone should not be the spouse phone.');
+                warn('Next-of-kin phone matches spouse phone. Continue if this is intentional.');
             }
 
             ['phone1', 'phone2', 'spousePhone', 'kinPhone'].forEach(function (id) {
                 if (samePhone('refereePhone', id)) {
-                    block(['refereePhone', id], 'The work referee phone should be independent from applicant, spouse or next-of-kin phone numbers.');
+                    warn('Work referee phone matches another contact number. Continue if this is intentional.');
                 }
             });
 
             ['phone1', 'phone2', 'spousePhone', 'kinPhone', 'refereePhone'].forEach(function (id) {
                 if (samePhone('landlordPhone', id)) {
-                    block(['landlordPhone', id], 'The landlord/caretaker phone should be different from applicant, spouse, next-of-kin or referee phone numbers.');
+                    warn('Landlord/caretaker phone matches another contact number. Continue if this is intentional.');
                 }
             });
 
             if (rentPayerType && rentPayerType.value === 'other') {
                 ['phone1', 'phone2'].forEach(function (id) {
                     if (samePhone('rentPayerPhone', id)) {
-                        block(['rentPayerPhone', id], 'If someone else is paying rent, their phone number should be different from the applicant phone numbers.');
+                        warn('Rent payer phone matches an applicant phone. Continue if this is intentional.');
                     }
                 });
                 if (samePhone('rentPayerPhone', 'spousePhone')) {
-                    warn('Rent payer phone matches spouse phone. This is allowed if the spouse is the payer.');
+                    warn('Rent payer phone matches spouse phone. Continue if the spouse is the payer.');
                 }
             }
 
@@ -1135,7 +1135,7 @@
             }).join('');
             errorBox.classList.toggle('active', errors.length > 0);
 
-            warningBox.innerHTML = warnings.map(function (message) {
+            warningBox.innerHTML = Array.from(new Set(warnings)).map(function (message) {
                 return `<div>${message}</div>`;
             }).join('');
             warningBox.classList.toggle('active', warnings.length > 0);
