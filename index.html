@@ -401,11 +401,13 @@
         }
 
         .pdf-rendering {
-            position: fixed;
+            position: absolute;
             left: 0;
             top: 0;
             z-index: 2000;
             pointer-events: none;
+            visibility: visible;
+            opacity: 1;
         }
 
         @page {
@@ -1494,6 +1496,11 @@
             pdfSource.className = 'pdf-source pdf-rendering';
             pdfSource.innerHTML = `<h1>Prospective Tenant Application Form</h1>${buildSummaryHTML()}`;
             document.body.appendChild(pdfSource);
+            await new Promise(function (resolve) {
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(resolve);
+                });
+            });
 
             const filename = `Tenant-Application-${safeFileName(data.fullName)}-${safeFileName(data.premisesNo)}.pdf`;
             try {

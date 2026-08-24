@@ -335,11 +335,13 @@
         }
 
         .pdf-rendering {
-            position: fixed;
+            position: absolute;
             left: 0;
             top: 0;
             z-index: 2000;
             pointer-events: none;
+            visibility: visible;
+            opacity: 1;
         }
 
         .btn-print { background: #27ae60; padding: 12px 25px; }
@@ -1299,6 +1301,11 @@
             pdfSource.className = 'pdf-source pdf-rendering';
             pdfSource.innerHTML = `<h1>Property Inspection Report</h1>${buildSummaryHTML()}`;
             document.body.appendChild(pdfSource);
+            await new Promise(function (resolve) {
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(resolve);
+                });
+            });
 
             const filename = `Inspection-Report-${safeFileName(d.propertyName)}-${safeFileName(d.premisesNo)}.pdf`;
             try {
