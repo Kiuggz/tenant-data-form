@@ -755,7 +755,7 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdlezna';
         const DRAFT_KEY = 'fertileWorksInspectionReportDraftV1';
@@ -1143,17 +1143,14 @@
         }
 
         function row(label, value, full) {
-            if (!value) return '';
-            return `<div class="summary-item${full ? ' full' : ''}">
-                        <div class="summary-label">${esc(label)}</div>
-                        <div class="summary-value">${esc(value)}</div>
-                    </div>`;
+            if (!value) return null;
+            return { label: label, value: value, full: Boolean(full) };
         }
 
         function rowsFromFields(data, fields) {
             return fields.map(function ([label, name]) {
                 return row(label, data[name], true);
-            });
+            }).filter(Boolean);
         }
 
         function keySummary(formData) {
@@ -1169,19 +1166,29 @@
         }
 
         function sectionHtml(title, rows) {
-            const content = rows.filter(Boolean).join('');
+            const content = rows.filter(Boolean).map(function (item) {
+                return `<div class="summary-item${item.full ? ' full' : ''}">
+                            <div class="summary-label">${esc(item.label)}</div>
+                            <div class="summary-value">${esc(item.value)}</div>
+                        </div>`;
+            }).join('');
             if (!content) return '';
             return `<div class="summary-section"><h3>${esc(title)}</h3><div class="summary-row">${content}</div></div>`;
         }
 
-        function buildSummaryHTML() {
+        function buildSummarySections() {
             updateScope();
             const fd = new FormData(document.getElementById('inspectionForm'));
             const d = Object.fromEntries(fd);
             const keys = keySummary(fd);
-            let html = '';
+            const sections = [];
 
-            html += sectionHtml('Report Details', [
+            function addSection(title, rows) {
+                const filtered = rows.filter(Boolean);
+                if (filtered.length) sections.push({ title: title, rows: filtered });
+            }
+
+            addSection('Report Details', [
                 row('Property Name', d.propertyName),
                 row('Premises No.', d.premisesNo),
                 row('Tenant name', d.tenantFullName),
@@ -1192,7 +1199,7 @@
             ]);
 
             if (activeSections.has('main_room')) {
-                html += sectionHtml(document.getElementById('mainRoomTitle').textContent, rowsFromFields(d, FIELD_GROUPS.main_room));
+                addSection(document.getElementById('mainRoomTitle').textContent, rowsFromFields(d, FIELD_GROUPS.main_room));
             }
 
             if (activeSections.has('bedrooms')) {
@@ -1210,7 +1217,7 @@
                     bedroomRows.push(row('Bedroom ' + i + ' sockets', d['bedroom' + i + 'Sockets'], true));
                     bedroomRows.push(row('Bedroom ' + i + ' general remarks', d['bedroom' + i + 'Remarks'], true));
                 }
-                html += sectionHtml('Bedroom Section', bedroomRows);
+                addSection('Bedroom Section', bedroomRows);
             }
 
             const simpleSections = [
@@ -1224,11 +1231,11 @@
             ];
 
             simpleSections.forEach(function ([section, title]) {
-                if (activeSections.has(section)) html += sectionHtml(title, rowsFromFields(d, FIELD_GROUPS[section]));
+                if (activeSections.has(section)) addSection(title, rowsFromFields(d, FIELD_GROUPS[section]));
             });
 
             if (activeSections.has('doors_windows')) {
-                html += sectionHtml('External Access and Keys', [
+                addSection('External Access and Keys', [
                     row('External/access doors', d.doorsCondition, true),
                     row('External/access windows', d.windowsCondition, true),
                     row('Locks and keys availed', keys, true)
@@ -1236,13 +1243,13 @@
             }
 
             if (activeSections.has('electrical')) {
-                html += sectionHtml('Other Electrical Fittings', [
+                addSection('Other Electrical Fittings', [
                     row('Other electrical fittings (apart from sockets, lighting and switches)', d.electricalCondition, true)
                 ]);
             }
 
             if (activeSections.has('meters')) {
-                html += sectionHtml('Utilities', [
+                addSection('Utilities', [
                     row('Is water metered?', d.isWaterMetered),
                     row('Water meter reading', d.waterMeterReading),
                     row('Electricity billing type', d.electricityBillingType),
@@ -1251,8 +1258,8 @@
                 ]);
             }
 
-            html += sectionHtml('Notes', [row('Notes', d.notes, true)]);
-            html += sectionHtml('Sign-off', [
+            addSection('Notes', [row('Notes', d.notes, true)]);
+            addSection('Sign-off', [
                 row('Declaration', document.getElementById('declarationText').textContent, true),
                 row('Tenant', d.tenantName),
                 row('Tenant signed', d.tenantSign),
@@ -1266,7 +1273,13 @@
                 row('Tenant confirmation', d.tenantConfirmation)
             ]);
 
-            return html;
+            return { sections: sections, data: d };
+        }
+
+        function buildSummaryHTML() {
+            return buildSummarySections().sections.map(function (section) {
+                return sectionHtml(section.title, section.rows);
+            }).join('');
         }
 
         function resetDownloadGate() {
@@ -1285,46 +1298,90 @@
             return (value || 'report').replace(/[^a-z0-9\-_ ]/gi, '').trim().replace(/\s+/g, '-') || 'report';
         }
 
+        function addPdfText(doc, text, x, y, maxWidth, lineHeight) {
+            const lines = doc.splitTextToSize(String(text || '-'), maxWidth);
+            lines.forEach(function (line) {
+                if (y > 280) {
+                    doc.addPage();
+                    y = 18;
+                }
+                doc.text(line, x, y);
+                y += lineHeight;
+            });
+            return y;
+        }
+
+        function addPdfSection(doc, section, y) {
+            if (y > 260) {
+                doc.addPage();
+                y = 18;
+            }
+            doc.setFillColor(242, 244, 255);
+            doc.rect(14, y - 5, 182, 9, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.setTextColor(80, 88, 120);
+            doc.text(section.title, 16, y + 1);
+            y += 10;
+
+            section.rows.forEach(function (item) {
+                if (y > 270) {
+                    doc.addPage();
+                    y = 18;
+                }
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(9);
+                doc.setTextColor(90, 90, 90);
+                doc.text(item.label + ':', 16, y);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(30, 30, 30);
+                y = addPdfText(doc, item.value, 62, y, 130, 5);
+                y += 2;
+            });
+            return y + 4;
+        }
+
         async function downloadPdf() {
             const form = document.getElementById('inspectionForm');
             if (!form.reportValidity()) return;
-            if (typeof html2pdf === 'undefined') {
+            if (!window.jspdf || !window.jspdf.jsPDF) {
                 alert('PDF generator could not load. Please check your internet connection and try again.');
                 return;
             }
 
-            const fd = new FormData(form);
-            const d = Object.fromEntries(fd);
+            const summary = buildSummarySections();
+            const d = summary.data;
             document.getElementById('summaryTitle').textContent = 'Property Inspection Report';
             document.getElementById('summarySubtitle').textContent = 'Review and save a PDF copy.';
-            const pdfSource = document.createElement('div');
-            pdfSource.className = 'pdf-source pdf-rendering';
-            pdfSource.innerHTML = `<h1>Property Inspection Report</h1>${buildSummaryHTML()}`;
-            document.body.appendChild(pdfSource);
-            await new Promise(function (resolve) {
-                requestAnimationFrame(function () {
-                    requestAnimationFrame(resolve);
-                });
+
+            const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+            let y = 18;
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.setTextColor(30, 30, 30);
+            doc.text('Property Inspection Report', 14, y);
+            y += 10;
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(90, 90, 90);
+            y = addPdfText(doc, 'This report records only the sections inspected for the rented premises.', 14, y, 182, 5) + 4;
+
+            summary.sections.forEach(function (section) {
+                y = addPdfSection(doc, section, y);
             });
 
             const filename = `Inspection-Report-${safeFileName(d.propertyName)}-${safeFileName(d.premisesNo)}.pdf`;
             try {
-                await html2pdf().set({
-                    margin: 10,
-                    filename: filename,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                }).from(pdfSource).save();
-            } finally {
-                pdfSource.remove();
+                doc.save(filename);
+                hasDownloaded = true;
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('downloadBtn').classList.add('done');
+                document.getElementById('downloadBtn').textContent = 'PDF Copy Saved';
+                document.getElementById('downloadNote').style.display = 'none';
+            } catch (error) {
+                console.error('PDF download failed:', error);
+                alert('The PDF could not be saved. Please try again before submitting.');
             }
-
-            hasDownloaded = true;
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('downloadBtn').classList.add('done');
-            document.getElementById('downloadBtn').textContent = 'PDF Copy Saved';
-            document.getElementById('downloadNote').style.display = 'none';
         }
 
         function closeSummary() {
