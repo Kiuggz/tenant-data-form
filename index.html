@@ -370,6 +370,21 @@
             transform: translateY(-2px);
         }
 
+        .pdf-source {
+            width: 794px;
+            background: #fff;
+            color: #333;
+            padding: 28px;
+        }
+
+        .pdf-rendering {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 2000;
+            pointer-events: none;
+        }
+
         @page {
             size: A4;
             margin: 12mm;
@@ -994,8 +1009,8 @@
                 <input type="hidden" name="_subject" value="Tenant Application Submitted">
 
                 <div class="submit-section">
-                    <div class="download-note" id="downloadNote">Please review and print/save your copy before you submit.</div>
-                    <button type="button" class="btn-review" id="reviewPrintBtn" onclick="reviewBeforeSubmit()">Review / Print My Copy</button>
+                    <div class="download-note" id="downloadNote">Please save your PDF copy before you submit.</div>
+                    <button type="button" class="btn-review" id="reviewPrintBtn" onclick="downloadApplicationCopy()">Save PDF Copy</button>
                     <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit Application</button>
                 </div>
             </form>
@@ -1017,12 +1032,13 @@
             <div id="summaryBody"></div>
 
             <div class="summary-actions">
-                <button class="btn-print" id="printSummaryBtn" onclick="printSummary()">Print / Save Copy</button>
+                <button class="btn-print" id="printSummaryBtn" onclick="downloadApplicationCopy()">Save PDF Copy</button>
                 <button class="btn-close" id="closeSummaryBtn" onclick="closeSummary()">Edit Application</button>
             </div>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         let formDataForSummary = {};
         let hasPrintedBeforeSubmit = false;
@@ -1191,170 +1207,106 @@
             validatePhoneRules();
         }
 
+        function esc(value) {
+            if (value === undefined || value === null || value === '') return '-';
+            return String(value).replace(/[&<>"']/g, function (char) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
+            });
+        }
+
+        function summaryItem(label, value) {
+            return `<div class="summary-item">
+                        <div class="summary-label">${esc(label)}</div>
+                        <div class="summary-value">${esc(value)}</div>
+                    </div>`;
+        }
+
+        function summarySection(title, fields, data) {
+            const rows = [];
+            for (let i = 0; i < fields.length; i += 2) {
+                const first = fields[i];
+                const second = fields[i + 1];
+                rows.push(`<div class="summary-row">
+                    ${summaryItem(first[0], data[first[1]])}
+                    ${second ? summaryItem(second[0], data[second[1]]) : ''}
+                </div>`);
+            }
+            return `<div class="summary-section"><h3>${esc(title)}</h3>${rows.join('')}</div>`;
+        }
+
         function buildSummaryHTML() {
             const form = document.getElementById('tenantForm');
             const formData = new FormData(form);
             const data = Object.fromEntries(formData);
             formDataForSummary = data;
 
-            let html = '';
-
-            // Section 1: Property Details
-            html += `
-                <div class="summary-section">
-                    <h3>Property Details</h3>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Property Name</div>
-                            <div class="summary-value">${data.propertyName || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Premises No.</div>
-                            <div class="summary-value">${data.premisesNo || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Application Date</div>
-                            <div class="summary-value">${data.applicationDate || '-'}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Section 2: Personal Information
-            html += `
-                <div class="summary-section">
-                    <h3>Personal Information</h3>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Full Name</div>
-                            <div class="summary-value">${data.fullName || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">ID / Passport No.</div>
-                            <div class="summary-value">${data.idNumber || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Citizenship</div>
-                            <div class="summary-value">${data.citizenship || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Marital Status</div>
-                            <div class="summary-value">${data.maritalStatus || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Email</div>
-                            <div class="summary-value">${data.email || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Phone 1</div>
-                            <div class="summary-value">${data.phone1 || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Postal Address</div>
-                            <div class="summary-value">${data.postalAddress || '-'}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Section 3: Employment & Income
-            html += `
-                <div class="summary-section">
-                    <h3>Employment & Income</h3>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Employer</div>
-                            <div class="summary-value">${data.employer || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Position</div>
-                            <div class="summary-value">${data.position || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Monthly Income</div>
-                            <div class="summary-value">${data.income || '-'}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Section 4: Current Residence
-            html += `
-                <div class="summary-section">
-                    <h3>Current Residence</h3>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Current Location</div>
-                            <div class="summary-value">${data.currentLocation || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Current Landlord</div>
-                            <div class="summary-value">${data.currentLandlord || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Current Monthly Rent</div>
-                            <div class="summary-value">KES ${data.currentRent || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Duration at Current Place</div>
-                            <div class="summary-value">${data.residenceDuration || '-'}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Section 5: Vetting Information
-            html += `
-                <div class="summary-section">
-                    <h3>Vetting Information</h3>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Move-in Date</div>
-                            <div class="summary-value">${data.moveInDate || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Number of Occupants</div>
-                            <div class="summary-value">${data.numberOfOccupants || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Intended Rental Duration</div>
-                            <div class="summary-value">${data.intendedDuration || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Deposit Ready</div>
-                            <div class="summary-value">${data.depositReady || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary-item">
-                            <div class="summary-label">Has Pets</div>
-                            <div class="summary-value">${data.hasPets || '-'}</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">Smoking</div>
-                            <div class="summary-value">${data.smoking || '-'}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            return html;
+            return [
+                summarySection('Property Details', [
+                    ['Property Name', 'propertyName'],
+                    ['Premises No.', 'premisesNo'],
+                    ['Application Date', 'applicationDate']
+                ], data),
+                summarySection('Personal Information', [
+                    ['Full Name', 'fullName'],
+                    ['ID / Passport No.', 'idNumber'],
+                    ['Citizenship', 'citizenship'],
+                    ['Marital Status', 'maritalStatus'],
+                    ['Postal Code', 'postalCode'],
+                    ['Postal Address', 'postalAddress'],
+                    ['Email', 'email'],
+                    ['Phone No. 1', 'phone1'],
+                    ['Phone No. 2', 'phone2']
+                ], data),
+                summarySection('Employment and Income', [
+                    ['Employer / Work', 'employer'],
+                    ['Position / Title', 'position'],
+                    ['Monthly Income Range', 'income'],
+                    ['Work Referee', 'workReferee'],
+                    ["Referee's Phone Number", 'refereePhone']
+                ], data),
+                summarySection('Next of Kin Details', [
+                    ['Spouse Name', 'spouseName'],
+                    ['Spouse Employment Status', 'spouseEmployment'],
+                    ['Spouse Phone Number', 'spousePhone'],
+                    ['Next of Kin', 'nextOfKin'],
+                    ['Relationship with Kin', 'kinRelationship'],
+                    ['Next of Kin Phone', 'kinPhone']
+                ], data),
+                summarySection('Current Home', [
+                    ['Current Location', 'currentLocation'],
+                    ['Current Monthly Rent', 'currentRent'],
+                    ['Duration at Current Place', 'residenceDuration'],
+                    ["Landlord's Name", 'currentLandlord'],
+                    ["Landlord's Phone Number", 'landlordPhone'],
+                    ['Agent or Caretaker', 'agentDetails'],
+                    ['Usual Rent Payment Date', 'rentDueDate'],
+                    ['Proof of Last Rent Payment', 'rentProofDetails']
+                ], data),
+                summarySection('Vetting Questions', [
+                    ['Reason for Moving', 'reasonMoving'],
+                    ['Move-in Date', 'moveInDate'],
+                    ['Number of Occupants', 'numberOfOccupants'],
+                    ['Rent Payer', 'rentPayerType'],
+                    ['Rent Payer Name', 'rentPayer'],
+                    ['Rent Payer Phone', 'rentPayerPhone'],
+                    ['Rent and Deposit Ready', 'depositReady'],
+                    ['Intended Rental Duration', 'intendedDuration'],
+                    ['Satisfied with Property As Is', 'propertySatisfaction'],
+                    ['Requested Improvements', 'improvements'],
+                    ['Has Pets', 'hasPets'],
+                    ['Pet Vaccination Certificate', 'petVaccination'],
+                    ['Lifestyle', 'lifestyle'],
+                    ['Smoking', 'smoking'],
+                    ['Previously Evicted', 'evicted'],
+                    ['Eviction Follow-up Measures', 'evictionMeasures'],
+                    ['Questions', 'questions']
+                ], data),
+                summarySection('Declaration', [
+                    ['Typed Signature', 'signature'],
+                    ['Declaration Date', 'declarationDate']
+                ], data)
+            ].join('');
         }
-
         function showSummaryModal(mode = 'review') {
             const modal = document.getElementById('summaryModal');
             const summaryBody = document.getElementById('summaryBody');
@@ -1372,7 +1324,7 @@
                 printBtn.hidden = true;
             } else {
                 title.textContent = 'Application Summary';
-                subtitle.textContent = 'Review your information before submission. Print/save a copy, or use Edit Application if anything needs correction.';
+                subtitle.textContent = 'Review your information before submission. Save a PDF copy, or use Edit Application if anything needs correction.';
                 closeBtn.textContent = 'Edit Application';
                 printBtn.hidden = false;
             }
@@ -1390,9 +1342,50 @@
             }
         }
 
-        function printSummary() {
-            window.print();
-            if (summaryMode === 'review') markPrintGateDone();
+        function safeFileName(value) {
+            return String(value || 'application')
+                .trim()
+                .replace(/[^a-z0-9_-]+/gi, '-')
+                .replace(/^-+|-+$/g, '') || 'application';
+        }
+
+        async function downloadApplicationCopy() {
+            const form = document.getElementById('tenantForm');
+            if (!validateEmailMatch()) return;
+            if (!validatePhoneRules()) {
+                form.reportValidity();
+                document.getElementById('phoneValidationError').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            if (!form.reportValidity()) return;
+            if (typeof html2pdf === 'undefined') {
+                alert('PDF generator could not load. Please check your internet connection and try again.');
+                return;
+            }
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            const pdfSource = document.createElement('div');
+            pdfSource.className = 'pdf-source pdf-rendering';
+            pdfSource.innerHTML = `<h1>Prospective Tenant Application Form</h1>${buildSummaryHTML()}`;
+            document.body.appendChild(pdfSource);
+
+            const filename = `Tenant-Application-${safeFileName(data.fullName)}-${safeFileName(data.premisesNo)}.pdf`;
+            try {
+                await html2pdf().set({
+                    margin: 10,
+                    filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                }).from(pdfSource).save();
+                markPrintGateDone();
+            } catch (error) {
+                console.error('PDF download failed:', error);
+                alert('The PDF could not be saved. Please try again before submitting.');
+            } finally {
+                pdfSource.remove();
+            }
         }
 
         function resetPrintGate() {
@@ -1402,8 +1395,8 @@
             const note = document.getElementById('downloadNote');
             submitBtn.disabled = true;
             reviewBtn.classList.remove('done');
-            reviewBtn.textContent = 'Review / Print My Copy';
-            note.textContent = 'Please review and print/save your copy before you submit.';
+            reviewBtn.textContent = 'Save PDF Copy';
+            note.textContent = 'Please save your PDF copy before you submit.';
             note.style.display = 'block';
         }
 
@@ -1411,7 +1404,7 @@
             hasPrintedBeforeSubmit = true;
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('reviewPrintBtn').classList.add('done');
-            document.getElementById('reviewPrintBtn').textContent = 'Copy Reviewed / Printed';
+            document.getElementById('reviewPrintBtn').textContent = 'PDF Copy Saved';
             document.getElementById('downloadNote').style.display = 'none';
         }
 
@@ -1444,7 +1437,7 @@
 
             if (!hasPrintedBeforeSubmit) {
                 const note = document.getElementById('downloadNote');
-                note.textContent = 'Please review and print/save your copy first before you submit.';
+                note.textContent = 'Please save your PDF copy first before you submit.';
                 note.style.display = 'block';
                 document.getElementById('reviewPrintBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;

@@ -367,6 +367,16 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
+                            <label for="tenantFullName">Tenant name *</label>
+                            <input type="text" id="tenantFullName" name="tenantFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tenantPhone">Tenant phone number *</label>
+                            <input type="tel" id="tenantPhone" name="tenantPhone" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
                             <label for="dateTaken">Date Taken *</label>
                             <input type="date" id="dateTaken" name="dateTaken" required>
                         </div>
@@ -1145,6 +1155,8 @@
             html += sectionHtml('Report Details', [
                 row('Property Name', d.propertyName),
                 row('Premises No.', d.premisesNo),
+                row('Tenant name', d.tenantFullName),
+                row('Tenant phone number', d.tenantPhone),
                 row('Date Taken', d.dateTaken),
                 row('Inspection Type', d.inspectionType),
                 row('Type of rented unit', d.unitType)
