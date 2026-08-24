@@ -246,6 +246,29 @@
             text-align: center;
         }
 
+        .draft-note {
+            color: #4f5f76;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .btn-clear-draft {
+            background: transparent;
+            border: 1px solid #d0d7e2;
+            color: #4f5f76;
+            border-radius: 6px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-left: 8px;
+        }
+
+        .btn-clear-draft:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
         /* Summary Modal */
         .summary-modal {
             display: none;
@@ -1009,9 +1032,11 @@
                 <input type="hidden" name="_subject" value="Tenant Application Submitted">
 
                 <div class="submit-section">
+                    <div class="draft-note" id="draftNote">Your progress is saved on this device as you type.</div>
                     <div class="download-note" id="downloadNote">Please save your PDF copy before you submit.</div>
                     <button type="button" class="btn-review" id="reviewPrintBtn" onclick="downloadApplicationCopy()">Save PDF Copy</button>
                     <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit Application</button>
+                    <button type="button" class="btn-clear-draft" onclick="clearSavedDraft(true)">Clear Saved Progress</button>
                 </div>
             </form>
         </div>
@@ -1040,9 +1065,109 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        const DRAFT_KEY = 'fertileWorksTenantApplicationDraftV1';
         let formDataForSummary = {};
         let hasPrintedBeforeSubmit = false;
         let summaryMode = 'review';
+        let isRestoringDraft = false;
+        let draftSaveTimer = null;
+
+        function updateDraftNote(message) {
+            const note = document.getElementById('draftNote');
+            if (note) note.textContent = message;
+        }
+
+        function collectDraftData() {
+            const form = document.getElementById('tenantForm');
+            const data = {};
+            form.querySelectorAll('input, select, textarea').forEach(function (field) {
+                if (!field.name || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
+                if (field.type === 'radio') {
+                    if (field.checked) data[field.name] = field.value;
+                    return;
+                }
+                if (field.type === 'checkbox') {
+                    if (!data[field.name]) data[field.name] = [];
+                    if (field.checked) data[field.name].push(field.value);
+                    return;
+                }
+                data[field.name] = field.value;
+            });
+            return data;
+        }
+
+        function saveDraftNow() {
+            if (isRestoringDraft) return;
+            try {
+                localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    savedAt: new Date().toISOString(),
+                    data: collectDraftData()
+                }));
+                updateDraftNote('Progress saved on this device.');
+            } catch (error) {
+                updateDraftNote('Progress could not be saved on this device.');
+            }
+        }
+
+        function scheduleDraftSave() {
+            clearTimeout(draftSaveTimer);
+            draftSaveTimer = setTimeout(saveDraftNow, 250);
+        }
+
+        function applyConditionalVisibility() {
+            toggleSpouseDetails();
+            const hasPets = document.querySelector('input[name="hasPets"]:checked');
+            togglePetVaccination(hasPets && hasPets.value === 'yes');
+            const evicted = document.querySelector('input[name="evicted"]:checked');
+            toggleEvictionMeasures(evicted && evicted.value === 'yes');
+            const rentPayerType = document.querySelector('input[name="rentPayerType"]:checked');
+            if (rentPayerType) {
+                toggleRentPayerDetails();
+            } else {
+                document.getElementById('rentPayerDetailsGroup').style.display = 'none';
+                document.getElementById('rentPayerPhoneGroup').style.display = 'none';
+            }
+        }
+
+        function restoreSavedDraft() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+                if (!saved || !saved.data) return false;
+                const form = document.getElementById('tenantForm');
+                isRestoringDraft = true;
+                form.querySelectorAll('input, select, textarea').forEach(function (field) {
+                    if (!field.name || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
+                    const value = saved.data[field.name];
+                    if (value === undefined) return;
+                    if (field.type === 'radio') {
+                        field.checked = field.value === value;
+                    } else if (field.type === 'checkbox') {
+                        field.checked = Array.isArray(value) && value.includes(field.value);
+                    } else {
+                        field.value = value;
+                    }
+                });
+                applyConditionalVisibility();
+                validateEmailMatch();
+                validatePhoneRules();
+                updateDraftNote('Saved progress restored on this device.');
+                return true;
+            } catch (error) {
+                updateDraftNote('Saved progress could not be restored.');
+                return false;
+            } finally {
+                isRestoringDraft = false;
+            }
+        }
+
+        function clearSavedDraft(showMessage) {
+            try {
+                localStorage.removeItem(DRAFT_KEY);
+                if (showMessage) updateDraftNote('Saved draft cleared.');
+            } catch (error) {
+                if (showMessage) updateDraftNote('Saved draft could not be cleared.');
+            }
+        }
 
         function validateEmailMatch() {
             const email = document.getElementById('email').value;
@@ -1469,6 +1594,7 @@
                     submitBtn.textContent = 'Submitted!';
                     submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
                     
+                    clearSavedDraft(false);
                     // Show summary modal
                     showSummaryModal('submitted');
                     
@@ -1500,11 +1626,14 @@
         document.getElementById('tenantForm').addEventListener('input', function (event) {
             if (event.target.closest('.submit-section')) return;
             if (hasPrintedBeforeSubmit) resetPrintGate();
+            scheduleDraftSave();
         });
 
         document.getElementById('tenantForm').addEventListener('change', function (event) {
             if (event.target.closest('.submit-section')) return;
+            applyConditionalVisibility();
             if (hasPrintedBeforeSubmit) resetPrintGate();
+            scheduleDraftSave();
         });
 
         PHONE_FIELDS.forEach(function (id) {
@@ -1521,10 +1650,14 @@
             field.addEventListener('change', validateEmailMatch);
         });
 
-        // Set today's date as default
-        document.getElementById('applicationDate').valueAsDate = new Date();
-        document.getElementById('declarationDate').valueAsDate = new Date();
-        validatePhoneRules();
+        // Set today's date as default when there is no saved draft.
+        if (!restoreSavedDraft()) {
+            document.getElementById('applicationDate').valueAsDate = new Date();
+            document.getElementById('declarationDate').valueAsDate = new Date();
+            applyConditionalVisibility();
+            validatePhoneRules();
+            saveDraftNow();
+        }
         resetPrintGate();
     </script>
 </body>

@@ -247,6 +247,28 @@
         .signoff-block h4 { color: #667eea; font-size: 15px; margin-bottom: 14px; }
         .submit-section { text-align: center; margin-top: 30px; }
 
+        .draft-note {
+            color: #4f5f76;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .btn-clear-draft {
+            background: transparent;
+            border: 1px solid #d0d7e2;
+            color: #4f5f76;
+            border-radius: 6px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-top: 12px;
+        }
+
+        .btn-clear-draft:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
         .summary-modal {
             display: none;
             position: fixed;
@@ -705,11 +727,13 @@
                 <input type="hidden" name="electrical_applicable" id="electrical_applicable" value="No">
 
                 <div class="submit-section">
-                    <div class="download-note" id="downloadNote">Please download your PDF copy first before you submit.</div>
+                    <div class="draft-note" id="draftNote">Your progress is saved on this device as you type.</div>
+                    <div class="download-note" id="downloadNote">Please save your PDF copy first before you submit.</div>
                     <div class="submit-buttons">
-                        <button type="button" class="btn-pdf" id="downloadBtn" onclick="downloadPdf()">📥 Download My PDF Copy</button>
+                        <button type="button" class="btn-pdf" id="downloadBtn" onclick="downloadPdf()">Save PDF Copy</button>
                         <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit Inspection Report</button>
                     </div>
+                    <button type="button" class="btn-clear-draft" onclick="clearSavedDraft(true)">Clear Saved Progress</button>
                 </div>
             </form>
         </div>
@@ -719,11 +743,11 @@
         <div class="summary-content">
             <div class="summary-header">
                 <h2 id="summaryTitle">Property Inspection Report</h2>
-                <p id="summarySubtitle">Review, print, or save a PDF copy.</p>
+                <p id="summarySubtitle">Review and save a PDF copy.</p>
             </div>
             <div id="summaryBody"></div>
             <div class="summary-actions">
-                <button type="button" class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+                <button type="button" class="btn-print" onclick="downloadPdf()">Save PDF Copy</button>
                 <button type="button" class="btn-close" onclick="closeSummary()">Close</button>
             </div>
         </div>
@@ -732,6 +756,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdlezna';
+        const DRAFT_KEY = 'fertileWorksInspectionReportDraftV1';
+        let isRestoringDraft = false;
+        let draftSaveTimer = null;
 
         const SECTION_LABELS = {
             main_room: 'Main Room / Living Area',
@@ -1247,8 +1274,8 @@
             const note = document.getElementById('downloadNote');
             submitBtn.disabled = true;
             dlBtn.classList.remove('done');
-            dlBtn.textContent = '📥 Download My PDF Copy';
-            note.textContent = 'Please download your PDF copy first before you submit.';
+            dlBtn.textContent = 'Save PDF Copy';
+            note.textContent = 'Please save your PDF copy first before you submit.';
             note.style.display = 'block';
         }
 
@@ -1267,7 +1294,7 @@
             const fd = new FormData(form);
             const d = Object.fromEntries(fd);
             document.getElementById('summaryTitle').textContent = 'Property Inspection Report';
-            document.getElementById('summarySubtitle').textContent = 'Review, print, or save a PDF copy.';
+            document.getElementById('summarySubtitle').textContent = 'Review and save a PDF copy.';
             const pdfSource = document.createElement('div');
             pdfSource.className = 'pdf-source pdf-rendering';
             pdfSource.innerHTML = `<h1>Property Inspection Report</h1>${buildSummaryHTML()}`;
@@ -1289,7 +1316,7 @@
             hasDownloaded = true;
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('downloadBtn').classList.add('done');
-            document.getElementById('downloadBtn').textContent = '✅ PDF Copy Downloaded';
+            document.getElementById('downloadBtn').textContent = 'PDF Copy Saved';
             document.getElementById('downloadNote').style.display = 'none';
         }
 
@@ -1315,28 +1342,115 @@
                     : 'I hereby confirm that the above is the true and actual state of the premises for the selected inspection type and will endeavour to leave them in the same state as I found them.';
             document.getElementById('declarationText').textContent = text;
         }
+        function updateDraftNote(message) {
+            const note = document.getElementById('draftNote');
+            if (note) note.textContent = message;
+        }
+
+        function collectDraftData() {
+            const form = document.getElementById('inspectionForm');
+            const data = {};
+            form.querySelectorAll('input, select, textarea').forEach(function (field) {
+                if (!field.name || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
+                if (field.type === 'radio') {
+                    if (field.checked) data[field.name] = field.value;
+                    return;
+                }
+                if (field.type === 'checkbox') {
+                    if (!data[field.name]) data[field.name] = [];
+                    if (field.checked) data[field.name].push(field.value);
+                    return;
+                }
+                data[field.name] = field.value;
+            });
+            return data;
+        }
+
+        function saveDraftNow() {
+            if (isRestoringDraft) return;
+            try {
+                localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    savedAt: new Date().toISOString(),
+                    data: collectDraftData()
+                }));
+                updateDraftNote('Progress saved on this device.');
+            } catch (error) {
+                updateDraftNote('Progress could not be saved on this device.');
+            }
+        }
+
+        function scheduleDraftSave() {
+            clearTimeout(draftSaveTimer);
+            draftSaveTimer = setTimeout(saveDraftNow, 250);
+        }
+
+        function restoreSavedDraft() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+                if (!saved || !saved.data) return false;
+                const form = document.getElementById('inspectionForm');
+                isRestoringDraft = true;
+                form.querySelectorAll('input, select, textarea').forEach(function (field) {
+                    if (!field.name || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
+                    const value = saved.data[field.name];
+                    if (value === undefined) return;
+                    if (field.type === 'radio') {
+                        field.checked = field.value === value;
+                    } else if (field.type === 'checkbox') {
+                        field.checked = Array.isArray(value) && value.includes(field.value);
+                    } else {
+                        field.value = value;
+                    }
+                });
+                updateDeclarationText();
+                updateScope();
+                updateUtilitiesVisibility();
+                updateKeyQuantities();
+                updateDraftNote('Saved progress restored on this device.');
+                return true;
+            } catch (error) {
+                updateDraftNote('Saved progress could not be restored.');
+                return false;
+            } finally {
+                isRestoringDraft = false;
+            }
+        }
+
+        function clearSavedDraft(showMessage) {
+            try {
+                localStorage.removeItem(DRAFT_KEY);
+                if (showMessage) updateDraftNote('Saved draft cleared.');
+            } catch (error) {
+                if (showMessage) updateDraftNote('Saved draft could not be cleared.');
+            }
+        }
+
 
         document.getElementById('unitType').addEventListener('change', function () {
             updateScope();
             resetDownloadGate();
+            scheduleDraftSave();
         });
 
         document.querySelectorAll('input[name="inspectionType"]').forEach(function (input) {
             input.addEventListener('change', function () {
                 updateDeclarationText();
                 resetDownloadGate();
+                scheduleDraftSave();
             });
         });
 
         document.getElementById('bedroomCount').addEventListener('input', function () {
             updateScope();
             resetDownloadGate();
+            scheduleDraftSave();
         });
 
         document.querySelectorAll('#optionalFeaturesPanel input, #manualScopePanel input').forEach(function (input) {
             input.addEventListener('change', function () {
                 updateScope();
                 resetDownloadGate();
+                scheduleDraftSave();
             });
         });
 
@@ -1344,6 +1458,7 @@
             input.addEventListener('change', function () {
                 updateUtilitiesVisibility();
                 resetDownloadGate();
+                scheduleDraftSave();
             });
         });
 
@@ -1351,6 +1466,7 @@
             if (event.target.matches('[data-lock-checkbox], [data-key-checkbox]')) {
                 updateKeyQuantities();
                 resetDownloadGate();
+                scheduleDraftSave();
             }
         });
 
@@ -1358,12 +1474,14 @@
             if (event.target.id === 'unitType' || event.target.id === 'bedroomCount') return;
             if (event.target.closest('#optionalFeaturesPanel') || event.target.closest('#manualScopePanel')) return;
             if (hasDownloaded) resetDownloadGate();
+            scheduleDraftSave();
         });
 
         document.getElementById('inspectionForm').addEventListener('change', function (event) {
             if (event.target.id === 'unitType' || event.target.id === 'bedroomCount') return;
             if (event.target.closest('#optionalFeaturesPanel') || event.target.closest('#manualScopePanel')) return;
             if (hasDownloaded) resetDownloadGate();
+            scheduleDraftSave();
         });
 
         document.getElementById('inspectionForm').addEventListener('submit', async function (event) {
@@ -1372,7 +1490,7 @@
 
             if (!hasDownloaded) {
                 const note = document.getElementById('downloadNote');
-                note.textContent = 'Please download your PDF copy first before you submit.';
+                note.textContent = 'Please save your PDF copy first before you submit.';
                 note.style.display = 'block';
                 document.getElementById('downloadBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
@@ -1391,6 +1509,7 @@
                 });
                 const data = await response.json();
                 if (!response.ok) throw new Error((data && data.error) || 'Submission failed');
+                clearSavedDraft(false);
                 submitBtn.textContent = 'Submitted';
                 document.getElementById('summaryTitle').textContent = 'Inspection Report Submitted';
                 document.getElementById('summarySubtitle').textContent = 'The report has been recorded successfully.';
@@ -1404,9 +1523,12 @@
             }
         });
 
-        setDefaultDates();
-        updateDeclarationText();
-        updateScope();
+        if (!restoreSavedDraft()) {
+            setDefaultDates();
+            updateDeclarationText();
+            updateScope();
+            saveDraftNow();
+        }
         resetDownloadGate();
     </script>
 </body>
