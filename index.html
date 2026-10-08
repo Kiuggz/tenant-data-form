@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #eef2f1;
             padding: 20px;
             min-height: 100vh;
         }
@@ -22,13 +22,13 @@
             max-width: 900px;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
+            border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             overflow: hidden;
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #174c45;
             color: white;
             padding: 40px 30px;
             text-align: center;
@@ -58,9 +58,13 @@
         .section:last-child {
             border-bottom: none;
         }
+
+        [hidden] {
+            display: none !important;
+        }
         
         .section-title {
-            color: #667eea;
+            color: #174c45;
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 20px;
@@ -69,7 +73,7 @@
         }
         
         .section-number {
-            background: #667eea;
+            background: #b56a0b;
             color: white;
             width: 32px;
             height: 32px;
@@ -119,13 +123,13 @@
         select:focus,
         textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #1f6f65;
+            box-shadow: 0 0 0 3px rgba(31, 111, 101, 0.12);
         }
         
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
         }
         
         .radio-group,
@@ -140,6 +144,10 @@
             display: flex;
             align-items: center;
             cursor: pointer;
+            padding: 10px 12px;
+            background: #f5f8f7;
+            border: 1px solid #d9e2df;
+            border-radius: 6px;
         }
         
         input[type="radio"],
@@ -164,7 +172,7 @@
         }
 
         .field-hint {
-            color: #777;
+            color: #595959;
             font-size: 12px;
             line-height: 1.5;
             margin-top: 6px;
@@ -184,7 +192,7 @@
         
         .declaration-box {
             background: #f8f9ff;
-            border: 2px solid #667eea;
+            border: 2px solid #1f6f65;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
@@ -203,7 +211,7 @@
         
         .btn-review,
         .btn-submit {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #174c45;
             color: white;
             border: none;
             padding: 15px 50px;
@@ -212,13 +220,13 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(23, 76, 69, 0.25);
         }
         
         .btn-review:hover,
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            box-shadow: 0 6px 20px rgba(23, 76, 69, 0.3);
         }
         
         .btn-review:active,
@@ -232,7 +240,7 @@
         }
 
         .btn-review.done {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: #176b3a;
         }
 
         .download-note {
@@ -265,9 +273,71 @@
         }
 
         .btn-clear-draft:hover {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: #1f6f65;
+            color: #174c45;
         }
+
+        .start-guide,
+        .draft-resume,
+        .progress-panel,
+        .error-summary {
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .start-guide {
+            background: #f1f7f5;
+            border-left: 4px solid #1f6f65;
+            color: #263d39;
+            line-height: 1.6;
+        }
+
+        .draft-resume {
+            background: #fff8e1;
+            border: 1px solid #d6a400;
+            color: #4f3c00;
+        }
+
+        .draft-resume p { margin-bottom: 12px; line-height: 1.5; }
+        .draft-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .draft-actions button,
+        .progress-action {
+            border: 1px solid #1f6f65;
+            border-radius: 6px;
+            background: #fff;
+            color: #174c45;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .draft-actions .primary,
+        .progress-action { background: #174c45; color: #fff; }
+
+        .progress-panel {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: #fff;
+            border: 1px solid #cfd8d5;
+            box-shadow: 0 3px 12px rgba(32, 48, 45, 0.12);
+        }
+
+        .progress-line { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+        .progress-label { color: #263d39; font-weight: 600; }
+        progress { width: 100%; height: 10px; margin: 10px 0; accent-color: #1f6f65; }
+
+        .error-summary {
+            background: #fff1f0;
+            border: 2px solid #b42318;
+            color: #7a271a;
+        }
+
+        .error-summary h3 { font-size: 16px; margin-bottom: 8px; }
+        .error-summary ul { margin-left: 20px; }
+        .error-summary a { color: #7a271a; }
 
         /* Summary Modal */
         .summary-modal {
@@ -290,18 +360,18 @@
             background-color: white;
             margin: 10% auto;
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 8px;
             width: 90%;
             max-width: 700px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .summary-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #174c45;
             color: white;
             padding: 20px;
             margin: -30px -30px 20px -30px;
-            border-radius: 12px 12px 0 0;
+            border-radius: 8px 8px 0 0;
             text-align: center;
         }
 
@@ -326,7 +396,7 @@
         }
 
         .summary-section h3 {
-            color: #667eea;
+            color: #174c45;
             font-size: 16px;
             margin-bottom: 12px;
         }
@@ -352,6 +422,7 @@
         .summary-value {
             color: #333;
             margin-top: 4px;
+            white-space: pre-wrap;
         }
 
         .summary-actions {
@@ -578,7 +649,7 @@
             .radio-option,
             .checkbox-option {
                 padding: 10px;
-                background: #f8f9ff;
+                background: #f5f8f7;
                 border-radius: 6px;
             }
             
@@ -611,6 +682,10 @@
             .btn-close {
                 width: 100%;
             }
+
+            .progress-panel { margin-left: -8px; margin-right: -8px; }
+            .progress-line { align-items: stretch; flex-direction: column; }
+            .progress-action { width: 100%; }
         }
     </style>
 </head>
@@ -622,7 +697,28 @@
         </div>
         
         <div class="form-content">
-            <form id="tenantForm">
+            <div class="start-guide">
+                <strong>Before you begin</strong><br>
+                You can complete this application on a phone or computer. Required questions are marked with *. Your progress is saved on this device while you work, but your typed signature is never saved. Review your answers and save a PDF copy before submitting.
+            </div>
+
+            <div class="draft-resume" id="draftResumePanel" hidden>
+                <p id="draftResumeText">Saved application progress was found on this device.</p>
+                <div class="draft-actions">
+                    <button type="button" class="primary" onclick="continueSavedDraft()">Continue Saved Application</button>
+                    <button type="button" onclick="startNewApplication(false)">Start New Application</button>
+                </div>
+            </div>
+
+            <form id="tenantForm" action="https://formspree.io/f/myzlgaog" method="POST" hidden>
+                <div class="progress-panel" aria-live="polite">
+                    <div class="progress-line">
+                        <span class="progress-label" id="progressLabel">Complete the required details to prepare your application.</span>
+                        <button type="button" class="progress-action" onclick="goToNextRequired()">Go to Next Required Item</button>
+                    </div>
+                    <progress id="formProgress" value="0" max="1"></progress>
+                </div>
+                <div class="error-summary" id="formErrorSummary" role="alert" tabindex="-1" hidden></div>
                 <!-- Section 1: Property Details -->
                 <div class="section">
                     <h2 class="section-title">
@@ -632,12 +728,12 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="propertyName">Property Name *</label>
-                            <input type="text" id="propertyName" name="propertyName" required>
+                            <input type="text" id="propertyName" name="propertyName" placeholder="Example: Kibagare Estate" required>
                             <div class="field-hint">Use the name shown by the caretaker, agent or landlord.</div>
                         </div>
                         <div class="form-group">
                             <label for="premisesNo">Premises No. *</label>
-                            <input type="text" id="premisesNo" name="premisesNo" required>
+                            <input type="text" id="premisesNo" name="premisesNo" placeholder="House, unit or room number" required>
                             <div class="field-hint">Enter the unit, room, house or door number being applied for.</div>
                         </div>
                     </div>
@@ -655,13 +751,13 @@
                     </h2>
                     <div class="form-group">
                         <label for="fullName">Full Name *</label>
-                        <input type="text" id="fullName" name="fullName" required>
+                        <input type="text" id="fullName" name="fullName" autocomplete="name" required>
                         <div class="field-hint">Write your full legal name as it appears on your ID or Passport.</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="idNumber">National ID / Passport No. *</label>
-                            <input type="text" id="idNumber" name="idNumber" required>
+                            <input type="text" id="idNumber" name="idNumber" autocomplete="off" required>
                             <div class="field-hint">Use the same document number for the copy you will send after submission.</div>
                         </div>
                         <div class="form-group">
@@ -687,35 +783,36 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="postalCode">Postal Code *</label>
-                            <input type="text" id="postalCode" name="postalCode" required>
+                            <label for="postalCode">Postal Code (if available)</label>
+                            <input type="text" id="postalCode" name="postalCode" autocomplete="postal-code">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="postalAddress">Postal Address *</label>
-                        <input type="text" id="postalAddress" name="postalAddress" required>
+                        <label for="postalAddress">Postal Address (if available)</label>
+                        <input type="text" id="postalAddress" name="postalAddress" autocomplete="street-address">
+                        <div class="field-hint">Leave blank if you do not use a postal address.</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required onchange="validateEmailMatch()">
+                            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required onchange="validateEmailMatch()">
                             <div class="field-hint">Use an email address you can access in case we need to reach you.</div>
                         </div>
                         <div class="form-group">
                             <label for="phone1">Phone No. 1 *</label>
-                            <input type="tel" id="phone1" name="phone1" required>
+                            <input type="tel" id="phone1" name="phone1" autocomplete="tel" inputmode="tel" placeholder="Example: 0712 345 678" required>
                             <div class="field-hint">Enter your main reachable phone number.</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="emailConfirm">Confirm Email Address *</label>
-                        <input type="email" id="emailConfirm" name="emailConfirm" placeholder="Re-enter your email to verify" required onchange="validateEmailMatch()">
+                        <input type="email" id="emailConfirm" name="emailConfirm" autocomplete="off" inputmode="email" placeholder="Re-enter your email to verify" required onchange="validateEmailMatch()">
                         <div class="field-hint">Re-type the same email address to avoid errors.</div>
                         <div class="email-error" id="emailMatchError"></div>
                     </div>
                     <div class="form-group">
                         <label for="phone2">Phone No. 2</label>
-                        <input type="tel" id="phone2" name="phone2">
+                        <input type="tel" id="phone2" name="phone2" autocomplete="tel" inputmode="tel" placeholder="Optional alternate number">
                         <div class="field-hint">Optional alternate number; do not repeat Phone No. 1.</div>
                         <div class="email-error" id="phoneValidationError"></div>
                         <div class="validation-warning" id="phoneValidationWarning"></div>
@@ -728,15 +825,18 @@
                         <span class="section-number">3</span>
                         Employment & Income
                     </h2>
-                    <div class="form-group">
-                        <label for="employer">Where do you currently work? What do you do for a living? *</label>
-                        <input type="text" id="employer" name="employer" required>
-                        <div class="field-hint">State your employer/business and the work you do.</div>
-                    </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="position">What is your position or title, at your place of work? *</label>
-                            <input type="text" id="position" name="position" required>
+                            <label for="employmentStatus">Employment status *</label>
+                            <select id="employmentStatus" name="employmentStatus" required>
+                                <option value="">Select...</option>
+                                <option value="Employed">Employed</option>
+                                <option value="Self-employed">Self-employed</option>
+                                <option value="Student">Student</option>
+                                <option value="Unemployed">Not currently employed</option>
+                                <option value="Retired">Retired</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="income">Monthly Income Range *</label>
@@ -750,17 +850,33 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div id="employedDetailsGroup" hidden>
                         <div class="form-group">
-                            <label for="workReferee">Referee at your place of work *</label>
-                            <input type="text" id="workReferee" name="workReferee" required>
-                            <div class="field-hint">Give a supervisor, HR contact, colleague or business contact who can confirm your work.</div>
+                            <label for="employer">Employer or business name *</label>
+                            <input type="text" id="employer" name="employer" disabled>
+                            <div class="field-hint">For self-employment, give the business or trade name and the work you do.</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="position">Position, occupation or type of work *</label>
+                                <input type="text" id="position" name="position" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="workReferee">Work referee *</label>
+                                <input type="text" id="workReferee" name="workReferee" disabled>
+                                <div class="field-hint">Give a supervisor, HR contact, colleague, client or business contact who can confirm your work.</div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="refereePhone">Referee's Phone Number *</label>
-                            <input type="tel" id="refereePhone" name="refereePhone" required>
-                            <div class="field-hint">This should be the referee's own phone number, not yours.</div>
+                            <label for="refereePhone">Referee's phone number *</label>
+                            <input type="tel" id="refereePhone" name="refereePhone" inputmode="tel" placeholder="Example: 0712 345 678" disabled>
+                            <div class="field-hint">Use the referee's own reachable phone number.</div>
                         </div>
+                    </div>
+                    <div class="form-group" id="alternateIncomeGroup" hidden>
+                        <label for="incomeSourceDetails">Current activity and source of income *</label>
+                        <textarea id="incomeSourceDetails" name="incomeSourceDetails" placeholder="For example: student supported by parent, pension income, savings, contract work or other support" disabled></textarea>
+                        <div class="field-hint">Give a brief factual explanation relevant to rent payment.</div>
                     </div>
                 </div>
 
@@ -770,16 +886,16 @@
                         <span class="section-number">4</span>
                         Next of Kin Details
                     </h2>
-                    <div id="spouseDetailsGroup" style="display: none;">
+                    <div id="spouseDetailsGroup" hidden>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="spouseName">Name of Spouse</label>
-                                <input type="text" id="spouseName" name="spouseName">
+                                <input type="text" id="spouseName" name="spouseName" autocomplete="name" disabled>
                                 <div class="field-hint">Complete this only if your marital status is married.</div>
                             </div>
                             <div class="form-group">
                                 <label for="spouseEmployment">Employment Status</label>
-                                <select id="spouseEmployment" name="spouseEmployment">
+                                <select id="spouseEmployment" name="spouseEmployment" disabled>
                                     <option value="">Select...</option>
                                     <option value="employed">Employed</option>
                                     <option value="self-employed">Self-Employed</option>
@@ -790,14 +906,14 @@
                         </div>
                         <div class="form-group">
                         <label for="spousePhone">Spouse Phone Number</label>
-                        <input type="tel" id="spousePhone" name="spousePhone">
+                        <input type="tel" id="spousePhone" name="spousePhone" inputmode="tel" disabled>
                         <div class="field-hint">If you share one number, the form will warn you but still allow it.</div>
                     </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nextOfKin">Next of Kin (Not Spouse) *</label>
-                            <input type="text" id="nextOfKin" name="nextOfKin" required>
+                            <input type="text" id="nextOfKin" name="nextOfKin" autocomplete="name" required>
                             <div class="field-hint">Provide a close relative or trusted contact who is not your spouse.</div>
                         </div>
                         <div class="form-group">
@@ -807,7 +923,7 @@
                     </div>
                     <div class="form-group">
                         <label for="kinPhone">Next of Kin Phone *</label>
-                        <input type="tel" id="kinPhone" name="kinPhone" required>
+                        <input type="tel" id="kinPhone" name="kinPhone" inputmode="tel" required>
                         <div class="field-hint">Use the next of kin's own reachable number.</div>
                     </div>
                 </div>
@@ -819,52 +935,61 @@
                         Your Current Home
                     </h2>
                     <div class="form-group">
+                        <label for="currentHousingStatus">Current housing arrangement *</label>
+                        <select id="currentHousingStatus" name="currentHousingStatus" required>
+                            <option value="">Select...</option>
+                            <option value="Renting">I currently rent</option>
+                            <option value="Family or friends">I live with family or friends</option>
+                            <option value="Own home">I live in my own home</option>
+                            <option value="Employer-provided">Employer-provided housing</option>
+                            <option value="Other">Other arrangement</option>
+                        </select>
+                        <div class="field-hint">Landlord and rent questions will appear only when you select that you currently rent.</div>
+                    </div>
+                    <div class="form-group">
                         <label for="currentLocation">Where are you staying now? (Estate / Area) *</label>
                         <input type="text" id="currentLocation" name="currentLocation" placeholder="e.g., Westlands, Mombasa" required>
                         <div class="field-hint">Give the estate/area and town where you currently live.</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="currentRent">Monthly rent you pay now? *</label>
-                            <input type="number" id="currentRent" name="currentRent" placeholder="KES" required>
-                        </div>
-                        <div class="form-group">
                             <label for="residenceDuration">How long have you lived here? *</label>
                             <input type="text" id="residenceDuration" name="residenceDuration" placeholder="e.g., 2 years, 6 months" required>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="currentLandlord">Landlord's name *</label>
-                            <input type="text" id="currentLandlord" name="currentLandlord" required>
-                            <div class="field-hint">If you deal with a caretaker or agent, give the person who can confirm your tenancy.</div>
+                    <div id="currentRentalDetailsGroup" hidden>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currentRent">Current monthly rent *</label>
+                                <input type="number" id="currentRent" name="currentRent" min="0" step="1" placeholder="KES" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="rentDueDate">Usual rent payment day *</label>
+                                <input type="number" id="rentDueDate" name="rentDueDate" min="1" max="31" placeholder="Day of month, for example 5" disabled>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currentLandlord">Landlord, caretaker or agent name *</label>
+                                <input type="text" id="currentLandlord" name="currentLandlord" disabled>
+                                <div class="field-hint">Give the person who can confirm your current tenancy.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="landlordPhone">Their phone number *</label>
+                                <input type="tel" id="landlordPhone" name="landlordPhone" inputmode="tel" disabled>
+                                <div class="field-hint">Use their own reachable number, not your number.</div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="landlordPhone">Landlord's phone number *</label>
-                            <input type="tel" id="landlordPhone" name="landlordPhone" required>
-                            <div class="field-hint">This should be the landlord/caretaker/agent contact, not your own number.</div>
+                            <label for="agentDetails">Other agent or caretaker contact</label>
+                            <input type="text" id="agentDetails" name="agentDetails" placeholder="Name and phone number (optional)" disabled>
+                            <div class="field-hint">Optional; complete this only if another person also handles rent or communication.</div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="agentDetails">Agent or Caretaker (if you pay through them)</label>
-                        <input type="text" id="agentDetails" name="agentDetails" placeholder="Name and phone number (optional)">
-                        <div class="field-hint">Optional; fill this if rent or communication goes through an agent/caretaker.</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="rentDueDate">When do you usually pay rent? *</label>
-                        <select id="rentDueDate" name="rentDueDate" required>
-                            <option value="">Select...</option>
-                            <option value="1">1st of the month</option>
-                            <option value="5">5th of the month</option>
-                            <option value="10">10th of the month</option>
-                            <option value="15">15th of the month</option>
-                            <option value="other">Other date</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="rentProofDetails">Proof of your last rent payment </label>
-                        <textarea id="rentProofDetails" name="rentProofDetails" placeholder="Paste M-PESA message, bank transfer details, or payment reference "></textarea>
-                        <div class="field-hint">Optional; paste a payment reference or brief details if available.</div>
+                        <div class="form-group">
+                            <label for="rentProofDetails">Last rent payment reference</label>
+                            <textarea id="rentProofDetails" name="rentProofDetails" placeholder="Optional: payment date, method and reference only" disabled></textarea>
+                            <div class="field-hint">Do not paste a full M-PESA or bank message. A short reference is enough.</div>
+                        </div>
                     </div>
                 </div>
 
@@ -886,7 +1011,7 @@
                         </div>
                         <div class="form-group">
                             <label for="numberOfOccupants">How many persons will be living with you? *</label>
-                            <input type="number" id="numberOfOccupants" name="numberOfOccupants" min="0" required>
+                            <input type="number" id="numberOfOccupants" name="numberOfOccupants" min="1" step="1" required>
                             <div class="field-hint">Include yourself and anyone else who will regularly live in the premises.</div>
                         </div>
                     </div>
@@ -901,14 +1026,14 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group" id="rentPayerDetailsGroup" style="display: none;">
+                    <div class="form-group" id="rentPayerDetailsGroup" hidden>
                         <label for="rentPayer">Who will be paying the rent? (Name) *</label>
-                        <input type="text" id="rentPayer" name="rentPayer" placeholder="Their full name">
+                        <input type="text" id="rentPayer" name="rentPayer" placeholder="Their full name" autocomplete="name" disabled>
                         <div class="field-hint">Fill this only if someone else will pay rent on your behalf.</div>
                     </div>
-                    <div class="form-group" id="rentPayerPhoneGroup" style="display: none;">
+                    <div class="form-group" id="rentPayerPhoneGroup" hidden>
                         <label for="rentPayerPhone">Their phone number *</label>
-                        <input type="tel" id="rentPayerPhone" name="rentPayerPhone" placeholder="Phone number">
+                        <input type="tel" id="rentPayerPhone" name="rentPayerPhone" inputmode="tel" placeholder="Phone number" disabled>
                         <div class="field-hint">Use the payer's own phone number.</div>
                     </div>
                     <div class="form-group">
@@ -938,10 +1063,10 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="improvementsGroup" hidden>
                         <label for="improvements">Would you like any improvements made?</label>
-                        <textarea id="improvements" name="improvements" placeholder="If yes, please specify"></textarea>
-                        <div class="field-hint">Optional; note practical requests before occupation, if any.</div>
+                        <textarea id="improvements" name="improvements" placeholder="State the practical improvements requested before occupation" disabled></textarea>
+                        <div class="field-hint">Please identify what needs attention before you can accept the property as-is.</div>
                     </div>
                     <div class="form-group">
                         <label>Do you have any pets? *</label>
@@ -954,15 +1079,15 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group" id="petVaccinationGroup" style="display: none;">
-                        <label>If yes, do they have a vaccination certificate?</label>
+                    <div class="form-group" id="petVaccinationGroup" hidden>
+                        <label>If yes, do they have a vaccination certificate? *</label>
                         <div class="field-hint">This helps confirm care and safety where pets are allowed.</div>
                         <div class="radio-group">
                             <label class="radio-option">
-                                <input type="radio" name="petVaccination" value="yes"> Yes
+                                <input type="radio" name="petVaccination" value="yes" disabled> Yes
                             </label>
                             <label class="radio-option">
-                                <input type="radio" name="petVaccination" value="no"> No
+                                <input type="radio" name="petVaccination" value="no" disabled> No
                             </label>
                         </div>
                     </div>
@@ -997,9 +1122,9 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group" id="evictionMeasuresGroup" style="display: none;">
-                        <label for="evictionMeasures">If yes, what measures did you take to avoid such issues again?</label>
-                        <textarea id="evictionMeasures" name="evictionMeasures"></textarea>
+                    <div class="form-group" id="evictionMeasuresGroup" hidden>
+                        <label for="evictionMeasures">If yes, what measures did you take to avoid such issues again? *</label>
+                        <textarea id="evictionMeasures" name="evictionMeasures" disabled></textarea>
                     </div>
                     <div class="form-group">
                         <label for="questions">Do you have any questions about the property or tenancy?</label>
@@ -1020,7 +1145,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="signature">Signature (Type Full Name) *</label>
-                            <input type="text" id="signature" name="signature" required>
+                            <input type="text" id="signature" name="signature" autocomplete="off" required>
                             <div class="field-hint">Typing your full name confirms the declaration above.</div>
                         </div>
                         <div class="form-group">
@@ -1032,21 +1157,25 @@
 
                 <!-- Hidden Formspree fields -->
                 <input type="hidden" name="_subject" value="Tenant Application Submitted">
+                <input type="hidden" name="form_type" value="tenant_application">
+                <input type="hidden" name="form_version" value="2">
+                <input type="hidden" name="report_reference" id="reportReference">
+                <input type="hidden" name="submitted_at" id="submittedAt">
 
                 <div class="submit-section">
                     <div class="draft-note" id="draftNote">Your progress is saved on this device as you type.</div>
                     <div class="download-note" id="downloadNote">Please save your PDF copy before you submit.</div>
-                    <button type="button" class="btn-review" id="reviewPrintBtn" onclick="downloadApplicationCopy()">Save PDF Copy</button>
+                    <button type="button" class="btn-review" id="reviewPrintBtn" onclick="reviewBeforeSubmit()">Review and Save PDF</button>
                     <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit Application</button>
-                    <button type="button" class="btn-clear-draft" onclick="clearSavedDraft(true)">Clear Saved Progress</button>
+                    <button type="button" class="btn-clear-draft" onclick="startNewApplication(true)">Start New Application</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Summary Modal -->
-    <div class="summary-modal" id="summaryModal">
-        <div class="summary-content">
+    <div class="summary-modal" id="summaryModal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
+        <div class="summary-content" tabindex="-1">
             <div class="summary-header">
                 <h2 id="summaryTitle">Application Summary</h2>
                 <p id="summarySubtitle">Review your information before submission.</p>
@@ -1059,20 +1188,25 @@
             <div id="summaryBody"></div>
 
             <div class="summary-actions">
-                <button class="btn-print" id="printSummaryBtn" onclick="downloadApplicationCopy()">Save PDF Copy</button>
-                <button class="btn-close" id="closeSummaryBtn" onclick="closeSummary()">Edit Application</button>
+                <button type="button" class="btn-print" id="printSummaryBtn" onclick="downloadApplicationCopy()">Save PDF Copy</button>
+                <button type="button" class="btn-close" id="closeSummaryBtn" onclick="closeSummary()">Edit Application</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        const DRAFT_KEY = 'fertileWorksTenantApplicationDraftV1';
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/myzlgaog';
+        const DRAFT_KEY = 'fertileWorksTenantApplicationDraftV2';
+        const LEGACY_DRAFT_KEY = 'fertileWorksTenantApplicationDraftV1';
+        const DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
         let formDataForSummary = {};
         let hasPrintedBeforeSubmit = false;
         let summaryMode = 'review';
         let isRestoringDraft = false;
         let draftSaveTimer = null;
+        let pendingDraft = null;
+        let lastFocusedBeforeModal = null;
 
         function updateDraftNote(message) {
             const note = document.getElementById('draftNote');
@@ -1083,7 +1217,8 @@
             const form = document.getElementById('tenantForm');
             const data = {};
             form.querySelectorAll('input, select, textarea').forEach(function (field) {
-                if (!field.name || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
+                if (!field.name || field.disabled || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
+                if (field.name === 'signature') return;
                 if (field.type === 'radio') {
                     if (field.checked) data[field.name] = field.value;
                     return;
@@ -1099,13 +1234,26 @@
         }
 
         function saveDraftNow() {
-            if (isRestoringDraft) return;
+            const form = document.getElementById('tenantForm');
+            if (isRestoringDraft || form.hidden) return;
             try {
+                const data = collectDraftData();
+                const hasApplicantInput = Object.keys(data).some(function (name) {
+                    if (name === 'applicationDate') return false;
+                    const value = data[name];
+                    return Array.isArray(value) ? value.length > 0 : String(value || '').trim() !== '';
+                });
+                if (!hasApplicantInput) {
+                    localStorage.removeItem(DRAFT_KEY);
+                    return;
+                }
                 localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    version: 2,
+                    reportReference: document.getElementById('reportReference').value,
                     savedAt: new Date().toISOString(),
-                    data: collectDraftData()
+                    data: data
                 }));
-                updateDraftNote('Progress saved on this device.');
+                updateDraftNote('Progress saved on this device. Your typed signature is not saved.');
             } catch (error) {
                 updateDraftNote('Progress could not be saved on this device.');
             }
@@ -1118,41 +1266,46 @@
 
         function applyConditionalVisibility() {
             toggleSpouseDetails();
+            toggleEmploymentDetails();
+            toggleCurrentHousingDetails();
             const hasPets = document.querySelector('input[name="hasPets"]:checked');
             togglePetVaccination(hasPets && hasPets.value === 'yes');
             const evicted = document.querySelector('input[name="evicted"]:checked');
             toggleEvictionMeasures(evicted && evicted.value === 'yes');
             const rentPayerType = document.querySelector('input[name="rentPayerType"]:checked');
-            if (rentPayerType) {
-                toggleRentPayerDetails();
-            } else {
-                document.getElementById('rentPayerDetailsGroup').style.display = 'none';
-                document.getElementById('rentPayerPhoneGroup').style.display = 'none';
-            }
+            toggleRentPayerDetails(Boolean(rentPayerType && rentPayerType.value === 'other'));
+            const satisfaction = document.querySelector('input[name="propertySatisfaction"]:checked');
+            toggleImprovements(Boolean(satisfaction && satisfaction.value === 'no'));
         }
 
-        function restoreSavedDraft() {
+        function setDraftValues(data) {
+            const form = document.getElementById('tenantForm');
+            form.querySelectorAll('input, select, textarea').forEach(function (field) {
+                if (!field.name || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
+                const value = data[field.name];
+                if (value === undefined || field.name === 'signature') return;
+                if (field.type === 'radio') field.checked = field.value === value;
+                else if (field.type === 'checkbox') field.checked = Array.isArray(value) && value.includes(field.value);
+                else field.value = value;
+            });
+        }
+
+        function restoreSavedDraft(saved) {
             try {
-                const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
                 if (!saved || !saved.data) return false;
                 const form = document.getElementById('tenantForm');
                 isRestoringDraft = true;
-                form.querySelectorAll('input, select, textarea').forEach(function (field) {
-                    if (!field.name || field.type === 'hidden' || field.type === 'button' || field.type === 'submit') return;
-                    const value = saved.data[field.name];
-                    if (value === undefined) return;
-                    if (field.type === 'radio') {
-                        field.checked = field.value === value;
-                    } else if (field.type === 'checkbox') {
-                        field.checked = Array.isArray(value) && value.includes(field.value);
-                    } else {
-                        field.value = value;
-                    }
-                });
+                form.reset();
+                setDefaultDates();
+                setDraftValues(saved.data);
+                document.getElementById('signature').value = '';
+                document.getElementById('reportReference').value = saved.reportReference || generateReportReference();
                 applyConditionalVisibility();
                 validateEmailMatch();
                 validatePhoneRules();
-                updateDraftNote('Saved progress restored on this device.');
+                updateDraftNote('Saved progress restored. Please re-enter your typed signature before saving the PDF.');
+                resetPrintGate();
+                updateProgress();
                 return true;
             } catch (error) {
                 updateDraftNote('Saved progress could not be restored.');
@@ -1165,23 +1318,106 @@
         function clearSavedDraft(showMessage) {
             try {
                 localStorage.removeItem(DRAFT_KEY);
+                localStorage.removeItem(LEGACY_DRAFT_KEY);
                 if (showMessage) updateDraftNote('Saved draft cleared.');
             } catch (error) {
                 if (showMessage) updateDraftNote('Saved draft could not be cleared.');
             }
         }
 
+        function generateReportReference() {
+            const now = new Date();
+            const date = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('');
+            const time = [String(now.getHours()).padStart(2, '0'), String(now.getMinutes()).padStart(2, '0')].join('');
+            const suffix = Math.random().toString(36).slice(2, 6).toUpperCase();
+            return `TA-${date}-${time}-${suffix}`;
+        }
+
+        function setDefaultDates() {
+            const today = new Date();
+            const todayValue = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')].join('-');
+            document.getElementById('applicationDate').value = todayValue;
+            document.getElementById('moveInDate').min = todayValue;
+            document.getElementById('declarationDate').value = '';
+        }
+
+        function initialiseNewApplication() {
+            const form = document.getElementById('tenantForm');
+            isRestoringDraft = true;
+            form.reset();
+            form.hidden = false;
+            document.getElementById('reportReference').value = generateReportReference();
+            document.getElementById('submittedAt').value = '';
+            setDefaultDates();
+            applyConditionalVisibility();
+            validateEmailMatch();
+            validatePhoneRules();
+            document.getElementById('formErrorSummary').hidden = true;
+            updateDraftNote('Your progress is saved on this device as you type. Your typed signature is not saved.');
+            resetPrintGate();
+            updateProgress();
+            isRestoringDraft = false;
+        }
+
+        function continueSavedDraft() {
+            if (!pendingDraft) {
+                startNewApplication(false);
+                return;
+            }
+            document.getElementById('draftResumePanel').hidden = true;
+            document.getElementById('tenantForm').hidden = false;
+            restoreSavedDraft(pendingDraft);
+            pendingDraft = null;
+        }
+
+        function startNewApplication(requireConfirmation) {
+            if (requireConfirmation && !window.confirm('Start a new application? The saved progress and the information currently shown will be cleared.')) return;
+            clearTimeout(draftSaveTimer);
+            clearSavedDraft(false);
+            pendingDraft = null;
+            document.getElementById('draftResumePanel').hidden = true;
+            initialiseNewApplication();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function initialiseDraftChoice() {
+            try {
+                localStorage.removeItem(LEGACY_DRAFT_KEY);
+                const raw = localStorage.getItem(DRAFT_KEY);
+                const saved = raw ? JSON.parse(raw) : null;
+                const savedAt = saved && saved.savedAt ? new Date(saved.savedAt) : null;
+                const current = saved && saved.version === 2 && saved.data && savedAt && !Number.isNaN(savedAt.getTime());
+                const fresh = current && Date.now() - savedAt.getTime() <= DRAFT_MAX_AGE_MS;
+                if (!fresh) {
+                    if (raw) localStorage.removeItem(DRAFT_KEY);
+                    initialiseNewApplication();
+                    return;
+                }
+                pendingDraft = saved;
+                document.getElementById('tenantForm').hidden = true;
+                document.getElementById('draftResumeText').textContent = `Saved application progress from ${savedAt.toLocaleString()} was found on this device. Continue it or start a new application.`;
+                document.getElementById('draftResumePanel').hidden = false;
+            } catch (error) {
+                clearSavedDraft(false);
+                initialiseNewApplication();
+            }
+        }
+
         function validateEmailMatch() {
-            const email = document.getElementById('email').value;
-            const emailConfirm = document.getElementById('emailConfirm').value;
+            const emailField = document.getElementById('email');
+            const confirmField = document.getElementById('emailConfirm');
+            const email = emailField.value.trim().toLowerCase();
+            const emailConfirm = confirmField.value.trim().toLowerCase();
             const error = document.getElementById('emailMatchError');
 
             if (emailConfirm && email !== emailConfirm) {
                 error.textContent = 'Email addresses do not match. Please check and try again.';
                 error.classList.add('active');
+                confirmField.setCustomValidity('Email addresses do not match.');
                 return false;
             } else {
                 error.classList.remove('active');
+                confirmField.setCustomValidity('');
                 return true;
             }
         }
@@ -1238,6 +1474,16 @@
                 warnings.push(message);
             }
 
+            PHONE_FIELDS.forEach(function (id) {
+                const field = document.getElementById(id);
+                if (!field || field.disabled || !field.value.trim()) return;
+                const digits = field.value.replace(/\D/g, '');
+                if (digits.length < 9 || digits.length > 15) {
+                    const label = document.querySelector(`label[for="${id}"]`);
+                    block([id], `${label ? label.textContent.replace('*', '').trim() : 'Phone number'} should contain 9 to 15 digits.`);
+                }
+            });
+
             if (samePhone('phone1', 'phone2')) {
                 block(['phone1', 'phone2'], 'Phone No. 2 should be a different number from Phone No. 1.');
             }
@@ -1286,59 +1532,96 @@
             return errors.length === 0;
         }
 
+        function setGroupState(groupId, visible, requiredIds) {
+            const group = document.getElementById(groupId);
+            if (!group) return;
+            group.hidden = !visible;
+            const required = new Set(requiredIds || []);
+            group.querySelectorAll('input, select, textarea').forEach(function (field) {
+                field.disabled = !visible;
+                field.required = visible && required.has(field.id || field.name);
+                if (!visible) {
+                    if (field.type === 'radio' || field.type === 'checkbox') field.checked = false;
+                    else field.value = '';
+                    field.setCustomValidity('');
+                }
+            });
+        }
+
         function toggleSpouseDetails() {
-            const maritalStatus = document.getElementById('maritalStatus').value;
-            const spouseGroup = document.getElementById('spouseDetailsGroup');
-            
-            if (maritalStatus === 'married') {
-                spouseGroup.style.display = 'block';
-            } else {
-                spouseGroup.style.display = 'none';
-                document.getElementById('spouseName').value = '';
-                document.getElementById('spouseEmployment').value = '';
-                document.getElementById('spousePhone').value = '';
-            }
+            const married = document.getElementById('maritalStatus').value === 'married';
+            setGroupState('spouseDetailsGroup', married, ['spouseName', 'spousePhone']);
+            validatePhoneRules();
+        }
+
+        function toggleEmploymentDetails() {
+            const status = document.getElementById('employmentStatus').value;
+            const employed = status === 'Employed' || status === 'Self-employed';
+            const alternate = Boolean(status && !employed);
+            setGroupState('employedDetailsGroup', employed, ['employer', 'position', 'workReferee', 'refereePhone']);
+            setGroupState('alternateIncomeGroup', alternate, ['incomeSourceDetails']);
+        }
+
+        function toggleCurrentHousingDetails() {
+            const renting = document.getElementById('currentHousingStatus').value === 'Renting';
+            setGroupState('currentRentalDetailsGroup', renting, ['currentRent', 'rentDueDate', 'currentLandlord', 'landlordPhone']);
             validatePhoneRules();
         }
 
         function togglePetVaccination(show) {
-            const group = document.getElementById('petVaccinationGroup');
-            group.style.display = show ? 'block' : 'none';
+            const visible = Boolean(show);
+            setGroupState('petVaccinationGroup', visible, ['petVaccination']);
+            const first = document.querySelector('input[name="petVaccination"]');
+            if (first) first.required = visible;
         }
 
         function toggleEvictionMeasures(show) {
-            const group = document.getElementById('evictionMeasuresGroup');
-            group.style.display = show ? 'block' : 'none';
+            setGroupState('evictionMeasuresGroup', Boolean(show), ['evictionMeasures']);
         }
 
-        function toggleRentPayerDetails() {
-            const rentPayerType = document.querySelector('input[name="rentPayerType"]:checked').value;
-            const detailsGroup = document.getElementById('rentPayerDetailsGroup');
-            const phoneGroup = document.getElementById('rentPayerPhoneGroup');
-            const rentPayerInput = document.getElementById('rentPayer');
-            const rentPayerPhoneInput = document.getElementById('rentPayerPhone');
-            
-            if (rentPayerType === 'other') {
-                detailsGroup.style.display = 'block';
-                phoneGroup.style.display = 'block';
-                rentPayerInput.required = true;
-                rentPayerPhoneInput.required = true;
-            } else {
-                detailsGroup.style.display = 'none';
-                phoneGroup.style.display = 'none';
-                rentPayerInput.required = false;
-                rentPayerPhoneInput.required = false;
-                rentPayerInput.value = '';
-                rentPayerPhoneInput.value = '';
-            }
+        function toggleRentPayerDetails(show) {
+            const selected = document.querySelector('input[name="rentPayerType"]:checked');
+            const visible = show === undefined ? Boolean(selected && selected.value === 'other') : Boolean(show);
+            setGroupState('rentPayerDetailsGroup', visible, ['rentPayer']);
+            setGroupState('rentPayerPhoneGroup', visible, ['rentPayerPhone']);
             validatePhoneRules();
         }
 
+        function toggleImprovements(show) {
+            setGroupState('improvementsGroup', Boolean(show), ['improvements']);
+        }
+
         function esc(value) {
-            if (value === undefined || value === null || value === '') return '-';
-            return String(value).replace(/[&<>"']/g, function (char) {
+            return String(value === undefined || value === null ? '' : value).replace(/[&<>"']/g, function (char) {
                 return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
             });
+        }
+
+        function isFilled(value) {
+            return value !== undefined && value !== null && String(value).trim() !== '';
+        }
+
+        function ordinalDay(value) {
+            const day = Number(value);
+            if (!Number.isInteger(day) || day < 1 || day > 31) return value;
+            const lastTwo = day % 100;
+            const suffix = lastTwo >= 11 && lastTwo <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
+            return `${day}${suffix} day of each month`;
+        }
+
+        function displayValue(name, value) {
+            if (!isFilled(value)) return '';
+            const field = document.querySelector(`[name="${name}"]`);
+            if (field && field.tagName === 'SELECT') {
+                const option = Array.from(field.options).find(function (item) { return item.value === value; });
+                if (option) return option.textContent.trim();
+            }
+            if (value === 'yes') return 'Yes';
+            if (value === 'no') return 'No';
+            if (name === 'rentPayerType') return value === 'self' ? 'Applicant will pay' : 'Someone else will pay';
+            if (name === 'rentDueDate') return ordinalDay(value);
+            if (name === 'currentRent') return `KES ${Number(value).toLocaleString('en-KE')}`;
+            return value;
         }
 
         function summaryItem(label, value) {
@@ -1348,22 +1631,33 @@
                     </div>`;
         }
 
+        function populatedFields(fields, data) {
+            return fields.map(function (field) {
+                return [field[0], field[1], displayValue(field[1], data[field[1]])];
+            }).filter(function (field) {
+                return isFilled(field[2]);
+            });
+        }
+
         function summarySection(title, fields, data) {
+            const visibleFields = populatedFields(fields, data);
+            if (!visibleFields.length) return '';
             const rows = [];
-            for (let i = 0; i < fields.length; i += 2) {
-                const first = fields[i];
-                const second = fields[i + 1];
+            for (let i = 0; i < visibleFields.length; i += 2) {
+                const first = visibleFields[i];
+                const second = visibleFields[i + 1];
                 rows.push(`<div class="summary-row">
-                    ${summaryItem(first[0], data[first[1]])}
-                    ${second ? summaryItem(second[0], data[second[1]]) : ''}
+                    ${summaryItem(first[0], first[2])}
+                    ${second ? summaryItem(second[0], second[2]) : ''}
                 </div>`);
             }
             return `<div class="summary-section"><h3>${esc(title)}</h3>${rows.join('')}</div>`;
         }
 
-        function getSummarySections(data) {
+        function getSummarySections() {
             return [
-                ['Property Details', [
+                ['Application Details', [
+                    ['Application Reference', 'report_reference'],
                     ['Property Name', 'propertyName'],
                     ['Premises No.', 'premisesNo'],
                     ['Application Date', 'applicationDate']
@@ -1380,13 +1674,15 @@
                     ['Phone No. 2', 'phone2']
                 ]],
                 ['Employment and Income', [
-                    ['Employer / Work', 'employer'],
-                    ['Position / Title', 'position'],
+                    ['Employment Status', 'employmentStatus'],
                     ['Monthly Income Range', 'income'],
+                    ['Employer / Business', 'employer'],
+                    ['Position / Work', 'position'],
                     ['Work Referee', 'workReferee'],
-                    ["Referee's Phone Number", 'refereePhone']
+                    ["Referee's Phone Number", 'refereePhone'],
+                    ['Income Source Details', 'incomeSourceDetails']
                 ]],
-                ['Next of Kin Details', [
+                ['Family and Next of Kin', [
                     ['Spouse Name', 'spouseName'],
                     ['Spouse Employment Status', 'spouseEmployment'],
                     ['Spouse Phone Number', 'spousePhone'],
@@ -1395,20 +1691,21 @@
                     ['Next of Kin Phone', 'kinPhone']
                 ]],
                 ['Current Home', [
+                    ['Housing Status', 'currentHousingStatus'],
                     ['Current Location', 'currentLocation'],
-                    ['Current Monthly Rent', 'currentRent'],
                     ['Duration at Current Place', 'residenceDuration'],
-                    ["Landlord's Name", 'currentLandlord'],
-                    ["Landlord's Phone Number", 'landlordPhone'],
-                    ['Agent or Caretaker', 'agentDetails'],
+                    ['Current Monthly Rent', 'currentRent'],
                     ['Usual Rent Payment Date', 'rentDueDate'],
-                    ['Proof of Last Rent Payment', 'rentProofDetails']
+                    ['Landlord / Caretaker Name', 'currentLandlord'],
+                    ['Landlord / Caretaker Phone', 'landlordPhone'],
+                    ['Agent or Caretaker Details', 'agentDetails'],
+                    ['Last Rent Payment Reference', 'rentProofDetails']
                 ]],
-                ['Vetting Questions', [
+                ['Tenancy Details', [
                     ['Reason for Moving', 'reasonMoving'],
-                    ['Move-in Date', 'moveInDate'],
+                    ['Preferred Move-in Date', 'moveInDate'],
                     ['Number of Occupants', 'numberOfOccupants'],
-                    ['Rent Payer', 'rentPayerType'],
+                    ['Who Will Pay Rent', 'rentPayerType'],
                     ['Rent Payer Name', 'rentPayer'],
                     ['Rent Payer Phone', 'rentPayerPhone'],
                     ['Rent and Deposit Ready', 'depositReady'],
@@ -1420,8 +1717,8 @@
                     ['Lifestyle', 'lifestyle'],
                     ['Smoking', 'smoking'],
                     ['Previously Evicted', 'evicted'],
-                    ['Eviction Follow-up Measures', 'evictionMeasures'],
-                    ['Questions', 'questions']
+                    ['Steps Taken After Eviction', 'evictionMeasures'],
+                    ['Questions or Notes', 'questions']
                 ]],
                 ['Declaration', [
                     ['Typed Signature', 'signature'],
@@ -1430,49 +1727,49 @@
             ];
         }
 
-        function buildSummaryHTML() {
-            const form = document.getElementById('tenantForm');
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
-            formDataForSummary = data;
+        function currentFormData() {
+            return Object.fromEntries(new FormData(document.getElementById('tenantForm')));
+        }
 
-            return getSummarySections(data).map(function (section) {
+        function buildSummaryHTML() {
+            const data = currentFormData();
+            formDataForSummary = data;
+            return getSummarySections().map(function (section) {
                 return summarySection(section[0], section[1], data);
-            }).join('');
+            }).filter(Boolean).join('');
         }
 
         function showSummaryModal(mode = 'review') {
             const modal = document.getElementById('summaryModal');
-            const summaryBody = document.getElementById('summaryBody');
             const title = document.getElementById('summaryTitle');
             const subtitle = document.getElementById('summarySubtitle');
             const closeBtn = document.getElementById('closeSummaryBtn');
-            const printBtn = document.getElementById('printSummaryBtn');
+            const saveBtn = document.getElementById('printSummaryBtn');
             summaryMode = mode;
-            
-            summaryBody.innerHTML = buildSummaryHTML();
+            document.getElementById('summaryBody').innerHTML = buildSummaryHTML();
             if (mode === 'submitted') {
-                title.textContent = 'Application Submitted Successfully!';
-                subtitle.textContent = 'Your information has been sent to the landlord.';
+                title.textContent = 'Application Submitted Successfully';
+                subtitle.textContent = 'Your application has been sent. You may now close this summary.';
                 closeBtn.textContent = 'Close';
-                printBtn.hidden = true;
+                saveBtn.hidden = true;
             } else {
-                title.textContent = 'Application Summary';
-                subtitle.textContent = 'Review your information before submission. Save a PDF copy, or use Edit Application if anything needs correction.';
+                title.textContent = 'Review Your Application';
+                subtitle.textContent = 'Check your answers. Choose Edit Application to make a correction, or save your PDF copy when everything is right.';
                 closeBtn.textContent = 'Edit Application';
-                printBtn.hidden = false;
+                saveBtn.hidden = false;
             }
             modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            modal.querySelector('.summary-content').focus();
         }
 
         function closeSummary() {
-            const modal = document.getElementById('summaryModal');
-            modal.classList.remove('active');
+            document.getElementById('summaryModal').classList.remove('active');
+            document.body.style.overflow = '';
             if (summaryMode === 'submitted') {
-                document.getElementById('tenantForm').reset();
-                document.getElementById('applicationDate').valueAsDate = new Date();
-                document.getElementById('declarationDate').valueAsDate = new Date();
-                resetPrintGate();
+                startNewApplication(false);
+            } else if (lastFocusedBeforeModal) {
+                lastFocusedBeforeModal.focus();
             }
         }
 
@@ -1483,101 +1780,195 @@
                 .replace(/^-+|-+$/g, '') || 'application';
         }
 
-        function addPdfText(doc, text, x, y, maxWidth, lineHeight) {
-            const lines = doc.splitTextToSize(String(text || '-'), maxWidth);
-            lines.forEach(function (line) {
-                if (y > 280) {
-                    doc.addPage();
-                    y = 18;
-                }
-                doc.text(line, x, y);
-                y += lineHeight;
-            });
-            return y;
+        function addPdfPage(doc) {
+            doc.addPage();
+            return 18;
         }
 
-        function addPdfSection(doc, title, fields, data, y) {
-            if (y > 260) {
-                doc.addPage();
-                y = 18;
-            }
-            doc.setFillColor(242, 244, 255);
-            doc.rect(14, y - 5, 182, 9, 'F');
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(12);
-            doc.setTextColor(80, 88, 120);
-            doc.text(title, 16, y + 1);
-            y += 10;
+        function addPdfSection(doc, title, fields, data, startY) {
+            const visibleFields = populatedFields(fields, data);
+            if (!visibleFields.length) return startY;
+            let y = startY;
 
-            fields.forEach(function (field) {
-                const label = field[0];
-                const value = data[field[1]] || '-';
-                if (y > 270) {
-                    doc.addPage();
-                    y = 18;
+            function heading(continued) {
+                if (y > 258) y = addPdfPage(doc);
+                doc.setFillColor(226, 239, 235);
+                doc.rect(14, y - 5, 182, 9, 'F');
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.setTextColor(23, 76, 69);
+                doc.text(title + (continued ? ' (continued)' : ''), 16, y + 1);
+                y += 10;
+            }
+
+            heading(false);
+            visibleFields.forEach(function (field) {
+                const valueLines = doc.splitTextToSize(String(field[2]), 176);
+                const requiredHeight = 5 + valueLines.length * 4.6 + 3;
+                if (y + requiredHeight > 279) {
+                    y = addPdfPage(doc);
+                    heading(true);
                 }
                 doc.setFont('helvetica', 'bold');
-                doc.setFontSize(9);
-                doc.setTextColor(90, 90, 90);
-                doc.text(label + ':', 16, y);
+                doc.setFontSize(8.5);
+                doc.setTextColor(82, 92, 89);
+                doc.text(field[0] + ':', 16, y);
+                y += 4.5;
                 doc.setFont('helvetica', 'normal');
-                doc.setTextColor(30, 30, 30);
-                y = addPdfText(doc, value, 60, y, 132, 5);
-                y += 2;
+                doc.setFontSize(9.5);
+                doc.setTextColor(30, 34, 33);
+                doc.text(valueLines, 18, y);
+                y += valueLines.length * 4.6 + 3;
             });
-            return y + 4;
+            return y + 2;
+        }
+
+        function addPdfFooters(doc, reference) {
+            const pages = doc.getNumberOfPages();
+            for (let page = 1; page <= pages; page += 1) {
+                doc.setPage(page);
+                doc.setDrawColor(205, 216, 212);
+                doc.line(14, 287, 196, 287);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                doc.setTextColor(95, 105, 102);
+                doc.text(reference || '', 14, 292);
+                doc.text(`Page ${page} of ${pages}`, 196, 292, { align: 'right' });
+            }
         }
 
         async function downloadApplicationCopy() {
-            const form = document.getElementById('tenantForm');
-            if (!validateEmailMatch()) return;
-            if (!validatePhoneRules()) {
-                form.reportValidity();
-                document.getElementById('phoneValidationError').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            if (!form.reportValidity()) return;
+            if (!validateApplication()) return;
             if (!window.jspdf || !window.jspdf.jsPDF) {
                 alert('PDF generator could not load. Please check your internet connection and try again.');
                 return;
             }
 
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
+            const data = currentFormData();
             const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
             let y = 18;
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(16);
-            doc.setTextColor(30, 30, 30);
+            doc.setTextColor(23, 76, 69);
             doc.text('Prospective Tenant Application Form', 14, y);
-            y += 10;
+            y += 8;
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
-            doc.setTextColor(90, 90, 90);
-            y = addPdfText(doc, 'This copy records the information entered by the applicant before submission.', 14, y, 182, 5) + 4;
+            doc.setTextColor(82, 92, 89);
+            doc.text('Applicant copy saved before submission', 14, y);
+            y += 9;
 
-            getSummarySections(data).forEach(function (section) {
+            getSummarySections().forEach(function (section) {
                 y = addPdfSection(doc, section[0], section[1], data, y);
             });
+            addPdfFooters(doc, data.report_reference);
 
-            const filename = `Tenant-Application-${safeFileName(data.fullName)}-${safeFileName(data.premisesNo)}.pdf`;
+            const filename = `Tenant-Application-${safeFileName(data.fullName)}-${safeFileName(data.report_reference)}.pdf`;
             try {
                 doc.save(filename);
                 markPrintGateDone();
+                closeSummary();
             } catch (error) {
                 console.error('PDF download failed:', error);
                 alert('The PDF could not be saved. Please try again before submitting.');
             }
         }
+
+        function fieldLabel(field) {
+            const label = field.id ? document.querySelector(`label[for="${field.id}"]`) : null;
+            if (label) return label.textContent.replace('*', '').trim();
+            const group = field.closest('.form-group');
+            const groupLabel = group ? group.querySelector('label') : null;
+            return groupLabel ? groupLabel.textContent.replace('*', '').trim() : field.name;
+        }
+
+        function invalidFields() {
+            const seen = new Set();
+            return Array.from(document.getElementById('tenantForm').querySelectorAll(':invalid')).filter(function (field) {
+                if (field.disabled || field.closest('[hidden]')) return false;
+                const key = field.type === 'radio' ? `radio:${field.name}` : field.id || field.name;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
+
+        function showValidationSummary(fields) {
+            const box = document.getElementById('formErrorSummary');
+            if (!fields.length) {
+                box.hidden = true;
+                box.innerHTML = '';
+                return;
+            }
+            const labels = fields.slice(0, 8).map(fieldLabel);
+            const more = fields.length > labels.length ? `<li>And ${fields.length - labels.length} more required item(s)</li>` : '';
+            box.innerHTML = `<strong>Please complete these items:</strong><ul>${labels.map(function (label) { return `<li>${esc(label)}</li>`; }).join('')}${more}</ul>`;
+            box.hidden = false;
+            box.focus();
+        }
+
+        function validateApplication() {
+            applyConditionalVisibility();
+            validateEmailMatch();
+            validatePhoneRules();
+            const fields = invalidFields();
+            showValidationSummary(fields);
+            updateProgress();
+            if (!fields.length) return true;
+            fields[0].focus();
+            fields[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return false;
+        }
+
+        function goToNextRequired() {
+            applyConditionalVisibility();
+            validateEmailMatch();
+            validatePhoneRules();
+            const fields = invalidFields();
+            showValidationSummary(fields);
+            if (!fields.length) {
+                document.getElementById('reviewPrintBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            fields[0].focus();
+            fields[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function updateProgress() {
+            const form = document.getElementById('tenantForm');
+            const required = [];
+            const seen = new Set();
+            form.querySelectorAll('[required]').forEach(function (field) {
+                if (field.disabled || field.closest('[hidden]')) return;
+                const key = field.type === 'radio' ? `radio:${field.name}` : field.id || field.name;
+                if (seen.has(key)) return;
+                seen.add(key);
+                required.push(field);
+            });
+            const completed = required.filter(function (field) {
+                if (field.type === 'radio') return Boolean(form.querySelector(`input[name="${field.name}"]:checked`));
+                return field.checkValidity() && isFilled(field.value);
+            }).length;
+            const progress = document.getElementById('formProgress');
+            progress.max = Math.max(required.length, 1);
+            progress.value = completed;
+            const remaining = required.length - completed;
+            document.getElementById('progressLabel').textContent = remaining
+                ? `${completed} of ${required.length} required items completed. ${remaining} remaining.`
+                : 'All required items are complete. Review and save your PDF copy.';
+        }
+
         function resetPrintGate() {
             hasPrintedBeforeSubmit = false;
             const submitBtn = document.getElementById('submitBtn');
             const reviewBtn = document.getElementById('reviewPrintBtn');
             const note = document.getElementById('downloadNote');
             submitBtn.disabled = true;
+            submitBtn.classList.remove('done');
+            submitBtn.textContent = 'Submit Application';
             reviewBtn.classList.remove('done');
-            reviewBtn.textContent = 'Save PDF Copy';
+            reviewBtn.textContent = 'Review and Save PDF';
             note.textContent = 'Please save your PDF copy before you submit.';
             note.style.display = 'block';
         }
@@ -1591,31 +1982,14 @@
         }
 
         function reviewBeforeSubmit() {
-            const form = document.getElementById('tenantForm');
-            if (!validateEmailMatch()) return;
-            if (!validatePhoneRules()) {
-                form.reportValidity();
-                document.getElementById('phoneValidationError').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            if (!form.reportValidity()) return;
+            if (!validateApplication()) return;
+            lastFocusedBeforeModal = document.activeElement;
             showSummaryModal('review');
         }
 
         document.getElementById('tenantForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Validate emails match
-            if (!validateEmailMatch()) {
-                alert('Please fix the email address mismatch.');
-                return;
-            }
-
-            if (!validatePhoneRules()) {
-                e.target.reportValidity();
-                document.getElementById('phoneValidationError').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
+            if (!validateApplication()) return;
 
             if (!hasPrintedBeforeSubmit) {
                 const note = document.getElementById('downloadNote');
@@ -1630,12 +2004,11 @@
             submitBtn.textContent = 'Submitting...';
             submitBtn.disabled = true;
             
+            document.getElementById('submittedAt').value = new Date().toISOString();
             const formData = new FormData(e.target);
             
             try {
-                console.log('Attempting to submit form...');
-                
-                const response = await fetch('https://formspree.io/f/myzlgaog', {
+                const response = await fetch(FORMSPREE_ENDPOINT, {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -1643,47 +2016,31 @@
                     }
                 });
                 
-                console.log('Response status:', response.status);
                 const data = await response.json();
-                console.log('Response data:', data);
                 
                 if (response.ok) {
-                    submitBtn.textContent = 'Submitted!';
-                    submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-                    
+                    submitBtn.textContent = 'Submitted';
+                    submitBtn.classList.add('done');
                     clearSavedDraft(false);
-                    // Show summary modal
                     showSummaryModal('submitted');
-                    
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                        submitBtn.disabled = false;
-                    }, 2000);
                 } else {
                     throw new Error(data.error || 'Submission failed');
                 }
             } catch (error) {
                 console.error('Submission error:', error);
                 
-                submitBtn.textContent = 'Failed';
-                submitBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
-                
                 alert('There was an error submitting your application.\n\nPlease check:\n1. Your internet connection\n2. All required fields are filled\n3. Try again in a moment\n\nIf the problem persists, please contact the landlord directly.');
-                
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    submitBtn.disabled = false;
-                }, 3000);
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = !hasPrintedBeforeSubmit;
             }
         });
 
         document.getElementById('tenantForm').addEventListener('input', function (event) {
             if (event.target.closest('.submit-section')) return;
+            document.getElementById('formErrorSummary').hidden = true;
             if (hasPrintedBeforeSubmit) resetPrintGate();
             scheduleDraftSave();
+            updateProgress();
         });
 
         document.getElementById('tenantForm').addEventListener('change', function (event) {
@@ -1691,6 +2048,7 @@
             applyConditionalVisibility();
             if (hasPrintedBeforeSubmit) resetPrintGate();
             scheduleDraftSave();
+            updateProgress();
         });
 
         PHONE_FIELDS.forEach(function (id) {
@@ -1707,15 +2065,11 @@
             field.addEventListener('change', validateEmailMatch);
         });
 
-        // Set today's date as default when there is no saved draft.
-        if (!restoreSavedDraft()) {
-            document.getElementById('applicationDate').valueAsDate = new Date();
-            document.getElementById('declarationDate').valueAsDate = new Date();
-            applyConditionalVisibility();
-            validatePhoneRules();
-            saveDraftNow();
-        }
-        resetPrintGate();
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'hidden') saveDraftNow();
+        });
+        window.addEventListener('pagehide', saveDraftNow);
+        initialiseDraftChoice();
     </script>
 </body>
 </html>
